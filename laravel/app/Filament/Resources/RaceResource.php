@@ -1,0 +1,122 @@
+<?php
+
+namespace App\Filament\Resources;
+
+use App\Filament\Resources\RaceResource\Pages;
+// --- IMPORTANTE: ESTA ES LA LÍNEA QUE FALTABA O ESTABA MAL ---
+use App\Filament\Resources\RaceResource\RelationManagers\ResultsRelationManager; 
+use App\Models\Race;
+use Filament\Forms;
+use Filament\Forms\Form;
+use Filament\Resources\Resource;
+use Filament\Tables;
+use Filament\Tables\Table;
+
+class RaceResource extends Resource
+{
+    protected static ?string $model = Race::class;
+
+    protected static ?string $navigationIcon = 'heroicon-o-flag';
+    protected static ?string $navigationLabel = 'Races';
+    protected static ?string $modelLabel = 'Race';
+
+    public static function form(Form $form): Form
+    {
+        return $form
+            ->schema([
+                Forms\Components\Group::make()
+                    ->schema([
+                        Forms\Components\Select::make('track_id')
+                            ->relationship('track', 'name')
+                            ->label('Circuit')
+                            ->searchable()
+                            ->preload()
+                            ->required(),
+
+                        Forms\Components\TextInput::make('title')
+                            ->label('Event Title')
+                            ->placeholder('Ex: British Grand Prix')
+                            ->maxLength(255),
+                    ]),
+
+                Forms\Components\Group::make()
+                    ->schema([
+                        Forms\Components\TextInput::make('round_number')
+                            ->label('Round #')
+                            ->numeric()
+                            ->required()
+                            ->default(1),
+
+                        Forms\Components\DateTimePicker::make('race_date')
+                            ->label('Date & Time')
+                            ->required(),
+
+                        Forms\Components\Select::make('status')
+                            ->options([
+                                'scheduled' => 'Scheduled',
+                                'completed' => 'Completed',
+                                'cancelled' => 'Cancelled',
+                            ])
+                            ->default('scheduled')
+                            ->required(),
+                    ]),
+            ]);
+    }
+
+    public static function table(Table $table): Table
+    {
+        return $table
+            ->columns([
+                Tables\Columns\TextColumn::make('round_number')
+                    ->label('Round')
+                    ->sortable(),
+
+                Tables\Columns\TextColumn::make('title')
+                    ->label('Event')
+                    ->searchable()
+                    ->placeholder('No title'),
+
+                Tables\Columns\TextColumn::make('track.name')
+                    ->label('Circuit')
+                    ->sortable(),
+
+                Tables\Columns\TextColumn::make('track.country_code')
+                    ->label('Country')
+                    ->badge(),
+
+                Tables\Columns\TextColumn::make('race_date')
+                    ->label('Date')
+                    ->dateTime('M d, Y H:i')
+                    ->sortable(),
+
+                Tables\Columns\TextColumn::make('status')
+                    ->badge()
+                    ->color(fn (string $state): string => match ($state) {
+                        'scheduled' => 'info',
+                        'completed' => 'success',
+                        'cancelled' => 'danger',
+                    }),
+            ])
+            ->defaultSort('race_date', 'asc')
+            ->actions([
+                Tables\Actions\EditAction::make(),
+            ]);
+    }
+
+    public static function getRelations(): array
+    {
+        return [
+            // AHORA SÍ LO VA A ENCONTRAR
+            ResultsRelationManager::class,
+        ];
+    }
+
+    public static function getPages(): array
+    {
+        return [
+            'index' => Pages\ListRaces::route('/'),
+            'create' => Pages\CreateRace::route('/create'),
+            'edit' => Pages\EditRace::route('/{record}/edit'),
+        ];
+    }
+}
