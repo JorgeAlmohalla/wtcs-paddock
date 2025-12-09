@@ -33,10 +33,12 @@ The league was previously managed using static Excel spreadsheets shared via Dis
 
 ## 🚀 Features Roadmap
 
-- [x] **v0.1:** Project Setup, Database Design, & Architecture.
-- [ ] **v1.0 (MVP):** User Authentication, Admin Panel, & Standings Calculation Engine.
-- [ ] **v2.0:** News Module & Advanced Driver Profiles (Steam GUID integration).
-- [ ] **v3.0:** Full Mobile Responsiveness & Historical Data.
+- [x] **v0.1:** Project Setup, Database Design, & Architecture definition.
+- [ ] **v1.0 (Foundation):** User Authentication, Basic Admin Panel & Database Infrastructure.
+- [ ] **v2.0 (Management):** Calendar Management & Data Entry Tools (Backoffice).
+- [ ] **v3.0 (The Core):** Automated Scoring Engine, Standings Calculation & Public Mobile Dashboard.
+- [ ] **v4.0 (Expansion):** News Module, Rules Repository & Advanced Driver Profiles.
+- [ ] **v5.0 (Analytics):** Performance Charts, PDF Exports, Historical Data & Sanctions System.
 
 ## 📝 License
 This project is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
