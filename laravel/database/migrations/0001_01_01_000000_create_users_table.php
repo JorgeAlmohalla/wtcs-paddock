@@ -6,9 +6,6 @@ use Illuminate\Support\Facades\Schema;
 
 return new class extends Migration
 {
-    /**
-     * Run the migrations.
-     */
     public function up(): void
     {
         Schema::create('users', function (Blueprint $table) {
@@ -17,6 +14,14 @@ return new class extends Migration
             $table->string('email')->unique();
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password');
+            
+            // --- TUS CAMPOS DE WTCS ---
+            $table->string('steam_id')->nullable()->unique();
+            $table->string('nationality', 2)->default('ES');
+            $table->enum('role', ['admin', 'driver', 'steward'])->default('driver');
+            $table->unsignedBigInteger('team_id')->nullable(); // Equipo actual
+            // --------------------------
+            
             $table->rememberToken();
             $table->timestamps();
         });
@@ -37,9 +42,6 @@ return new class extends Migration
         });
     }
 
-    /**
-     * Reverse the migrations.
-     */
     public function down(): void
     {
         Schema::dropIfExists('users');

@@ -8,7 +8,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [Unreleased]
 *Work in progress for v1.0 MVP*
 
-## [v0.1.0] - 2025-12-02
+## [v0.1.0] - 09/12/2025
 ### Added
 - **Project Setup:** Initialized Git repository and Laravel environment structure.
 - **Documentation:** Added project proposal PDF and initial tech stack definition.
@@ -18,3 +18,4 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Changed
 - **Rebranding:** Pivoted project name from "WTCS Social Hub" to **"WTCS Paddock"** to better reflect its managerial focus.
 - **Scope Definition:** Defined milestones for v1.0 through v5.0.
+- **Environment:** Resolved port conflicts (3306) and successfully configured local XAMPP stack with Composer.
