@@ -57,12 +57,6 @@ class ResultsRelationManager extends RelationManager
                     ->label('Penalty (sec)')
                     ->numeric()
                     ->default(0),
-                
-                Tables\Columns\TextColumn::make('points')
-                    ->label('PTS')
-                    ->weight('extra-bold') // Que se vea bien fuerte
-                    ->color('primary')
-                    ->suffix(' pts'),
             ]);
     }
 
@@ -92,6 +86,12 @@ class ResultsRelationManager extends RelationManager
                     ->boolean()
                     ->label('DNF')
                     ->trueColor('danger'),
+                
+                Tables\Columns\TextColumn::make('points')
+                    ->label('PTS')
+                    ->weight('extra-bold')
+                    ->color('primary')
+                    ->suffix(' pts'),
             ])
             ->defaultSort('position', 'asc')
             ->headerActions([
