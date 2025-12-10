@@ -55,6 +55,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - **Drivers Page:** Created a grid view for the driver lineup (`/drivers`).
 - **Dynamic Styling:** Driver cards automatically inherit their Team's primary color.
 - **Flag Integration:** Implemented FlagCDN to render country flags based on ISO codes.
+- **Teams Page:** Implemented public constructors overview (`/teams`) displaying car info and active driver roster.
+- **Dynamic Gradient:** Team cards generate background gradients based on the team's primary hex color.
 
 ### Fixed
 - **Styles:** Resolved Tailwind v4 compatibility issues by updating PostCSS configuration and CSS imports.

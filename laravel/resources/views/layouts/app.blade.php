@@ -14,7 +14,7 @@
             <a href="/" class="text-2xl font-bold tracking-wider uppercase">WTCS Paddock</a>
             <div class="hidden md:flex space-x-6">
                 <a href="{{ route('drivers') }}" class="...">Drivers</a>
-                <a href="#" class="hover:text-gray-300">Teams</a>
+                <a href="{{ route('teams') }}" class="...">Teams</a>
                 <a href="{{ route('standings') }}" class="...">Standings</a>
                 <a href="{{ route('calendar') }}" class="...">Calendar</a>
                 <a href="/admin" class="bg-black px-4 py-2 rounded text-sm font-bold hover:bg-gray-800 transition">Login</a>
