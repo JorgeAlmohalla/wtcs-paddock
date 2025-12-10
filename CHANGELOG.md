@@ -47,5 +47,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - **Home Controller:** Implemented backend logic to fetch the next scheduled race and current championship leader.
 - **Dynamic Frontend:** Connected Blade views with database models using Eloquent relationships.
 
+### Added (Features)
+- **Standings Page:** Created full championship table view with dual columns (Drivers & Constructors).
+- **Scoring Logic:** Implemented backend calculation to aggregate points from `RaceResult` dynamically for both users and teams.
+- **Calendar Page:** Implemented season timeline view displaying scheduled races and past results.
+- **Winner Display:** Logic to automatically show the race winner on completed events in the calendar.
+
 ### Fixed
 - **Styles:** Resolved Tailwind v4 compatibility issues by updating PostCSS configuration and CSS imports.

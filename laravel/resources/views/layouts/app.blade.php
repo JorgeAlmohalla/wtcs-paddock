@@ -16,6 +16,7 @@
                 <a href="#" class="hover:text-gray-300">Drivers</a>
                 <a href="#" class="hover:text-gray-300">Teams</a>
                 <a href="{{ route('standings') }}" class="...">Standings</a>
+                <a href="{{ route('calendar') }}" class="...">Calendar</a>
                 <a href="/admin" class="bg-black px-4 py-2 rounded text-sm font-bold hover:bg-gray-800 transition">Login</a>
             </div>
         </div>
