@@ -71,5 +71,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - **Teams Page:** Implemented public constructors overview (`/teams`) displaying car info and active driver roster.
 - **Dynamic Gradient:** Team cards generate background gradients based on the team's primary hex color.
 
+### Added (UX/UI)
+- **Responsive Navigation:** Fixed mobile layout implementation using Alpine.js state management.
+- **Live Countdown:** Replaced static date with a real-time JS timer (Days/Hours/Mins/Secs) for the next race event.
+- **Interactivity:** Made Dashboard cards clickable to improve navigation flow to Standings.
+
 ### Fixed
 - **Styles:** Resolved Tailwind v4 compatibility issues by updating PostCSS configuration and CSS imports.
