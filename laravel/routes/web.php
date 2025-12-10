@@ -1,7 +1,7 @@
 <?php
 
+use App\Http\Controllers\HomeController;
 use Illuminate\Support\Facades\Route;
 
-Route::get('/', function () {
-    return view('welcome');
-});
+// Ruta principal usando el controlador que acabamos de crear
+Route::get('/', HomeController::class)->name('home');
