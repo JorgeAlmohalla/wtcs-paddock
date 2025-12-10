@@ -43,6 +43,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - **Home Page:** Implemented landing page prototype with "Next Race" and "Standings" cards.
 - **Navbar:** Added responsive navigation bar (desktop view).
 
+### Added (Backend)
+- **News System:** Created `Post` model and Filament resource with Rich Text Editor and automatic Slug generation.
+
 ### Added (Logic)
 - **Home Controller:** Implemented backend logic to fetch the next scheduled race and current championship leader.
 - **Dynamic Frontend:** Connected Blade views with database models using Eloquent relationships.
