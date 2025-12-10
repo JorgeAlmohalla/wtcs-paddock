@@ -13,7 +13,7 @@
         <div class="container mx-auto flex justify-between items-center">
             <a href="/" class="text-2xl font-bold tracking-wider uppercase">WTCS Paddock</a>
             <div class="hidden md:flex space-x-6">
-                <a href="#" class="hover:text-gray-300">Drivers</a>
+                <a href="{{ route('drivers') }}" class="...">Drivers</a>
                 <a href="#" class="hover:text-gray-300">Teams</a>
                 <a href="{{ route('standings') }}" class="...">Standings</a>
                 <a href="{{ route('calendar') }}" class="...">Calendar</a>

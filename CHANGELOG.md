@@ -52,6 +52,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - **Scoring Logic:** Implemented backend calculation to aggregate points from `RaceResult` dynamically for both users and teams.
 - **Calendar Page:** Implemented season timeline view displaying scheduled races and past results.
 - **Winner Display:** Logic to automatically show the race winner on completed events in the calendar.
+- **Drivers Page:** Created a grid view for the driver lineup (`/drivers`).
+- **Dynamic Styling:** Driver cards automatically inherit their Team's primary color.
+- **Flag Integration:** Implemented FlagCDN to render country flags based on ISO codes.
 
 ### Fixed
 - **Styles:** Resolved Tailwind v4 compatibility issues by updating PostCSS configuration and CSS imports.
