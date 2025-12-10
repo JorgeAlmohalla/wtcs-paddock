@@ -76,5 +76,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - **Live Countdown:** Replaced static date with a real-time JS timer (Days/Hours/Mins/Secs) for the next race event.
 - **Interactivity:** Made Dashboard cards clickable to improve navigation flow to Standings.
 
+### Added (Authentication & UI)
+- **User System:** Integrated Laravel Breeze for secure Login/Registration.
+- **Role Management:** Implemented logic to differentiate Guest vs Logged-in Driver views in the Navbar.
+- **Unified Layout:** Refactored `app.blade.php` to support both public views and the Driver Dashboard, resolving conflicts with Breeze components.
+- **Driver Dashboard:** Created a private area (`/dashboard`) displaying the driver's current Team assignment.
+
 ### Fixed
 - **Styles:** Resolved Tailwind v4 compatibility issues by updating PostCSS configuration and CSS imports.
