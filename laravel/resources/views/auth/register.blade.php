@@ -16,6 +16,21 @@
             <x-input-error :messages="$errors->get('email')" class="mt-2" />
         </div>
 
+        <!-- Steam ID -->
+        <div class="mt-4">
+            <x-input-label for="steam_id" :value="__('Steam ID (64-bit)')" />
+            <x-text-input id="steam_id" class="block mt-1 w-full" type="text" name="steam_id" :value="old('steam_id')" required />
+            <x-input-error :messages="$errors->get('steam_id')" class="mt-2" />
+            <p class="text-xs text-gray-500 mt-1">Found in your Steam profile URL (starts with 765...)</p>
+        </div>
+
+        <!-- Nationality -->
+        <div class="mt-4">
+            <x-input-label for="nationality" :value="__('Nationality (ISO Code)')" />
+            <x-text-input id="nationality" class="block mt-1 w-full uppercase" type="text" name="nationality" :value="old('nationality')" required maxlength="2" placeholder="ES" />
+            <x-input-error :messages="$errors->get('nationality')" class="mt-2" />
+        </div>
+
         <!-- Password -->
         <div class="mt-4">
             <x-input-label for="password" :value="__('Password')" />
