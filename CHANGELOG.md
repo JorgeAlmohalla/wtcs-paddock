@@ -43,6 +43,16 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - **Home Page:** Implemented landing page prototype with "Next Race" and "Standings" cards.
 - **Navbar:** Added responsive navigation bar (desktop view).
 
+### Added (Frontend Logic)
+- **Public Controllers:** Implemented logic for `Home`, `Standings`, `Calendar`, `Drivers`, `Teams`, and `News`.
+- **Dynamic Views:** Connected all Blade templates to Eloquent models.
+- **News System:** Added full "Read Article" view and a paginated News Archive page (`/news`).
+- **Formatting:** Implemented integer formatting for points to remove decimals.
+
+### Fixed
+- **Controller Architecture:** Resolved namespace conflicts in `HomeController`.
+- **Routing:** Fixed naming conventions for Blade view resolution.
+
 ### Added (Backend)
 - **News System:** Created `Post` model and Filament resource with Rich Text Editor and automatic Slug generation.
 

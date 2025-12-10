@@ -40,7 +40,7 @@
                 
                 @if($leader)
                     <p class="text-4xl font-bold text-white">{{ $leader->name }}</p>
-                    <p class="text-red-400 text-lg mt-1 font-bold">{{ $leaderPoints }} PTS</p>
+                    <p class="text-red-400 text-lg mt-1 font-bold">{{ intval($leaderPoints) }} PTS</p>
                     
                     @if($leader->team)
                         <div class="mt-4 inline-block px-3 py-1 rounded border border-gray-600 text-sm text-gray-300">
@@ -54,12 +54,37 @@
                 @endif
             </div>
 
-            <!-- Tarjeta 3: NOTICIAS (Aún estática hasta la V2) -->
-            <div class="bg-gray-800 p-6 rounded-lg shadow-md border border-gray-700">
-                <h3 class="text-xl font-bold text-red-500 mb-2 uppercase tracking-widest">Latest News</h3>
-                <p class="text-lg text-white">Season 3 Registrations are now OPEN!</p>
-                <a href="#" class="text-sm text-gray-400 hover:text-white underline mt-2 block">Read more -></a>
+            <!-- Tarjeta 3: NOTICIAS -->
+            <div class="bg-gray-800 p-6 rounded-lg shadow-md border border-gray-700 relative overflow-hidden group">
+                <h3 class="text-xl font-bold text-red-500 mb-2 uppercase tracking-widest relative z-10">Latest News</h3>
+                
+                @if($latestPost)
+                    <div class="relative z-10">
+                        <p class="text-lg text-white font-semibold leading-tight mb-2">{{ $latestPost->title }}</p>
+                        <p class="text-xs text-gray-400 mb-4">{{ $latestPost->published_at->format('M d, Y') }}</p>
+                        
+                        <!-- Botón leer más (Aún no lleva a ningún sitio, luego haremos la página individual) -->
+                        <a href="{{ route('post.show', $latestPost) }}" class="text-sm text-red-400 hover:text-white transition cursor-pointer font-bold">
+                            Read Article &rarr;
+                        </a>
+                    </div>
+
+                    <!-- Imagen de fondo de la noticia -->
+                    @if($latestPost->image_url)
+                        <div class="absolute inset-0 opacity-20 bg-cover bg-center group-hover:scale-105 transition duration-700"
+                             style="background-image: url('{{ asset('storage/' . $latestPost->image_url) }}');">
+                        </div>
+                        <!-- Gradiente para que se lea el texto -->
+                        <div class="absolute inset-0 bg-gradient-to-t from-gray-900 via-gray-900/50 to-transparent"></div>
+                    @endif
+                @else
+                    <p class="text-gray-500 italic mt-4">No news published yet.</p>
+                @endif
+
+                    <div class="mt-4 border-t border-gray-700 pt-4 text-center relative z-10">
+                        <a href="{{ route('news.index') }}" class="text-xs text-gray-500 hover:text-white uppercase tracking-widest transition">
+                            View All News
+                        </a>
+                    </div>
             </div>
-        </div>
-    </div>
 @endsection

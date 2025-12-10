@@ -29,7 +29,7 @@
                                 </div>
                             </td>
                             <td class="px-6 py-4 text-right font-mono font-bold text-red-400 text-lg">
-                                {{ floatval($driver->total_points) }}
+                                {{ intval($driver->total_points) }}
                             </td>
                         </tr>
                         @endforeach
