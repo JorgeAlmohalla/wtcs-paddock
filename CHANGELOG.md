@@ -8,6 +8,16 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [Unreleased]
 *Work in progress for v3.0 Features*
 
+## [v2.1.0-beta] - 11-12-2025
+### Added (Driver Experience)
+- **Profile Management:** Added dedicated form section to update SimRacing credentials (Steam ID) and Nationality.
+- **Validation Logic:** Custom controller logic to handle specific driver data updates separate from account credentials.
+- **Dashboard Hub:** Transformed the empty dashboard into a control center with "My Team" status, License data card, and quick action buttons (Settings/Logout).
+
+### Fixed
+- **View Architecture:** Solved conflicts between Breeze components and Blade layouts by standardizing `@yield` usage across all private views.
+- **CSRF & Sessions:** Fixed 419 errors during profile updates by segregating route logic.
+
 ## [v2.0.0-alpha] - 10-12-2025
 ### Added (Frontend & Public Web)
 - **Tech Stack:** Installed Tailwind CSS v4 via Vite/PostCSS and Alpine.js for interactivity.

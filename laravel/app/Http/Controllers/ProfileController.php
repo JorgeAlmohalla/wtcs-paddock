@@ -8,6 +8,8 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Redirect;
 use Illuminate\View\View;
+use Illuminate\Validation\Rule;
+use App\Models\User;
 
 class ProfileController extends Controller
 {
@@ -56,5 +58,27 @@ class ProfileController extends Controller
         $request->session()->regenerateToken();
 
         return Redirect::to('/');
+    }
+
+    /**
+     * Update the driver's SimRacing information.
+     */
+    public function updateDriverInfo(Request $request): RedirectResponse
+    {
+        // Validamos SOLO los campos de este formulario
+        $validated = $request->validate([
+            'steam_id' => ['required', 'string', 'max:20', Rule::unique(User::class)->ignore($request->user()->id)],
+            'nationality' => ['required', 'string', 'size:2'],
+        ]);
+
+        // Guardamos los datos
+        $request->user()->fill([
+            'steam_id' => $validated['steam_id'],
+            'nationality' => strtoupper($validated['nationality']),
+        ]);
+
+        $request->user()->save();
+
+        return Redirect::route('profile.edit')->with('status', 'driver-info-updated');
     }
 }
