@@ -19,6 +19,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - **Data Calculation:** Backend logic (`DashboardController`) to aggregate historical race results dynamically for the chart dataset.
 - **JS Architecture:** Configured global Chart.js instance via Vite/Alpine integration.
 
+### Changed (Data Structure)
+- **Race Results:** Expanded schema to include `status` (DNF/DNS/DSQ), `race_time` (String format), and `laps_completed`.
+- **Admin UI:** Enhanced Results table with conditional formatting (colors/icons) for Fastest Lap and Penalty status.
+- **Scoring Engine:** Updated logic to assign 0 points for DNF/DNS/DSQ statuses automatically.
+- **Data Cleanup:** Reverted experimental `race_type` field to implement a cleaner dedicated relationship structure for Qualifying sessions.
+
 ### Fixed
 - **View Architecture:** Solved conflicts between Breeze components and Blade layouts by standardizing `@yield` usage across all private views.
 - **CSRF & Sessions:** Fixed 419 errors during profile updates by segregating route logic.

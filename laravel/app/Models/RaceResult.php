@@ -19,7 +19,11 @@ class RaceResult extends Model
         'grid_position',
         'fastest_lap',
         'penalty_seconds',
-        'dnf',
+        'status', 
+        'race_time',
+        'laps_completed',
+        'fastest_lap',
+        'fastest_lap_time',
     ];
 
     // Pertenece a una carrera

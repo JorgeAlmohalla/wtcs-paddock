@@ -22,21 +22,24 @@ class RaceResultObserver
 
     public function saving(RaceResult $raceResult): void
     {
-        // 1. Si es DNF (No terminó), 0 puntos.
-        if ($raceResult->dnf) {
+        // CARGAR RELACIÓN SI NO ESTÁ
+        if (!$raceResult->relationLoaded('race')) {
+            $raceResult->load('race');
+        }
+
+        // 2. Si no terminó (DNF...), 0 puntos.
+        if (in_array($raceResult->status, ['dnf', 'dns', 'dsq'])) {
             $raceResult->points = 0;
             return;
         }
 
-        // 2. Buscar puntos por posición
-        $points = $this->pointsSystem[$raceResult->position] ?? 0; // Si queda el 11º o más, 0 puntos
+        // 3. Calcular puntos normales
+        $points = $this->pointsSystem[$raceResult->position] ?? 0;
 
-        // 3. Puntos extra por Vuelta Rápida (+1)
         if ($raceResult->fastest_lap) {
             $points += 1;
         }
 
-        // 4. Guardar el cálculo
         $raceResult->points = $points;
     }
 }
