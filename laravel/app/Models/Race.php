@@ -34,4 +34,9 @@ class Race extends Model
     {
         return $this->hasMany(RaceResult::class);
     }
+
+    public function qualifyingResults(): HasMany
+    {
+        return $this->hasMany(QualifyingResult::class);
+    }
 }

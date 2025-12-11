@@ -13,52 +13,69 @@
             @endphp
 
             <!-- Tarjeta de Carrera -->
-            <div class="relative bg-gray-800 rounded-xl overflow-hidden shadow-lg border {{ $isNext ? 'border-red-500 ring-2 ring-red-500/50' : 'border-gray-700' }} transition hover:scale-[1.01]">
+            <a href="{{ route('races.show', $race) }}" class="block relative bg-gray-800 rounded-xl overflow-hidden shadow-lg border {{ $isNext ? 'border-red-500 ring-1 ring-red-500' : 'border-gray-700' }} transition hover:border-gray-500 group">
                 
-                <!-- Fondo con imagen del circuito (oscurecida) -->
+                <!-- Fondo con imagen del circuito -->
                 @if($race->track->layout_image_url)
-                    <div class="absolute inset-0 opacity-10 bg-center bg-cover" 
+                    <div class="absolute inset-0 opacity-10 bg-center bg-cover transition group-hover:opacity-20 duration-500" 
                          style="background-image: url('{{ asset('storage/' . $race->track->layout_image_url) }}');">
                     </div>
                 @endif
 
-                <div class="relative p-6 flex flex-col md:flex-row items-center justify-between z-10">
+                <!-- Contenedor Flex Principal -->
+                <div class="relative p-4 md:p-6 flex flex-col md:flex-row items-center gap-6 z-10">
                     
-                    <!-- Izquierda: Fecha y Ronda -->
-                    <div class="flex items-center space-x-6 w-full md:w-auto">
-                        <div class="text-center bg-gray-900/80 p-3 rounded-lg min-w-[80px]">
-                            <span class="block text-sm text-gray-400 uppercase">Round</span>
-                            <span class="block text-3xl font-bold text-white">{{ $race->round_number }}</span>
+                    <!-- IZQUIERDA: Ronda y Datos (Usa flex-1 para ocupar todo el hueco disponible) -->
+                    <div class="flex items-center gap-6 flex-1 w-full">
+                        
+                        <!-- Caja Número Ronda -->
+                        <div class="text-center bg-gray-900/90 p-4 rounded-lg min-w-[90px] border border-gray-700 shadow-inner">
+                            <span class="block text-xs text-gray-500 uppercase tracking-widest">Round</span>
+                            <span class="block text-4xl font-black text-white">{{ $race->round_number }}</span>
                         </div>
+
+                        <!-- Textos -->
                         <div>
-                            <h2 class="text-2xl font-bold text-white">{{ $race->track->name }}</h2>
-                            <p class="text-gray-400">{{ $race->title ?? $race->track->country_code }}</p>
-                            <p class="text-sm {{ $isCompleted ? 'text-gray-500 line-through' : 'text-red-400 font-bold' }}">
-                                {{ $race->race_date->format('d M Y - H:i') }}
-                            </p>
+                            <h2 class="text-2xl md:text-3xl font-bold text-white leading-tight group-hover:text-red-500 transition">
+                                {{ $race->track->name }}
+                            </h2>
+                            <div class="flex flex-col md:flex-row md:items-center gap-1 md:gap-3 text-gray-400 mt-1">
+                                <span>{{ $race->title ?? $race->track->country_code }}</span>
+                                <span class="hidden md:inline text-gray-600">•</span>
+                                <span class="{{ $isCompleted ? 'text-gray-500' : 'text-red-400 font-bold' }}">
+                                    {{ $race->race_date->format('d M Y - H:i') }}
+                                </span>
+                            </div>
                         </div>
                     </div>
 
-                    <!-- Derecha: Estado o Ganador -->
-                    <div class="mt-4 md:mt-0 w-full md:w-auto text-center md:text-right">
+                    <!-- DERECHA: Ganador o Estado (No se encoge: shrink-0) -->
+                    <div class="w-full md:w-auto shrink-0">
                         @if($isCompleted && $winner)
-                            <div class="inline-block bg-yellow-500/20 border border-yellow-500/50 px-4 py-2 rounded-lg">
-                                <span class="text-xs text-yellow-500 uppercase tracking-widest block">Winner</span>
-                                <span class="text-lg font-bold text-white">🏆 {{ $winner->name }}</span>
+                            <!-- Caja Ganador Grande -->
+                            <div class="bg-gradient-to-r from-yellow-900/40 to-yellow-600/20 border border-yellow-600/50 rounded-lg p-4 flex items-center gap-4 min-w-[250px]">
+                                <div class="bg-yellow-500/20 p-3 rounded-full">
+                                    <span class="text-2xl">🏆</span>
+                                </div>
+                                <div>
+                                    <span class="block text-xs text-yellow-500 uppercase tracking-widest font-bold">Winner</span>
+                                    <span class="block text-xl font-bold text-white">{{ $winner->name }}</span>
+                                </div>
                             </div>
-                        @elseif($isCompleted)
-                            <span class="px-3 py-1 bg-gray-700 text-gray-300 rounded text-sm">Completed</span>
                         @elseif($race->status === 'cancelled')
-                            <span class="px-3 py-1 bg-red-900 text-red-200 rounded text-sm">Cancelled</span>
+                            <div class="bg-red-900/30 border border-red-800 px-6 py-3 rounded-lg text-center w-full md:w-auto">
+                                <span class="text-red-400 font-bold uppercase tracking-widest">Cancelled</span>
+                            </div>
                         @else
-                            <a href="#" class="px-6 py-2 bg-red-600 hover:bg-red-700 text-white font-bold rounded transition shadow-lg shadow-red-600/20">
-                                Race Info
-                            </a>
+                            <!-- Botón View Details -->
+                            <div class="bg-gray-700/50 border border-gray-600 px-6 py-3 rounded-lg text-center w-full md:w-auto group-hover:bg-red-600 group-hover:border-red-500 transition">
+                                <span class="text-gray-300 font-bold uppercase tracking-widest text-sm group-hover:text-white">View Results &rarr;</span>
+                            </div>
                         @endif
                     </div>
 
                 </div>
-            </div>
+            </a>
         @endforeach
     </div>
 </div>

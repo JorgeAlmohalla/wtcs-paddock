@@ -9,24 +9,19 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 *Work in progress for v3.0 Features*
 
 ## [v2.1.0-beta] - 11-12-2025
-### Added (Driver Experience)
-- **Profile Management:** Added dedicated form section to update SimRacing credentials (Steam ID) and Nationality.
-- **Validation Logic:** Custom controller logic to handle specific driver data updates separate from account credentials.
-- **Dashboard Hub:** Transformed the empty dashboard into a control center with "My Team" status, License data card, and quick action buttons (Settings/Logout).
-
-### Added (Analytics & Visuals)
+### Added (Features)
+- **Qualifying System:** Implemented a dedicated parallel structure for Qualifying sessions within Races (`qualifying_results` table).
+- **Public Race View:** Created dynamic Race Detail page (`/races/{id}`) featuring Alpine.js tabs to toggle between Race and Qualifying results.
 - **Performance Chart:** Integrated `Chart.js` into the Driver Dashboard to visualize points progression throughout the season.
-- **Data Calculation:** Backend logic (`DashboardController`) to aggregate historical race results dynamically for the chart dataset.
-- **JS Architecture:** Configured global Chart.js instance via Vite/Alpine integration.
+- **Dashboard Hub:** Enhanced driver dashboard with "My Team" status, License data card, and quick action buttons.
 
-### Changed (Data Structure)
-- **Race Results:** Expanded schema to include `status` (DNF/DNS/DSQ), `race_time` (String format), and `laps_completed`.
-- **Admin UI:** Enhanced Results table with conditional formatting (colors/icons) for Fastest Lap and Penalty status.
-- **Scoring Engine:** Updated logic to assign 0 points for DNF/DNS/DSQ statuses automatically.
-- **Data Cleanup:** Reverted experimental `race_type` field to implement a cleaner dedicated relationship structure for Qualifying sessions.
+### Changed (UI/UX)
+- **Calendar Redesign:** Refactored Race Cards with `flex-1` layout to optimize space usage and improved "Winner" badge visibility.
+- **Race Results Schema:** Expanded results table to include Status (DNF/DNS), Gap/Time, and Laps completed.
+- **Admin UI:** Added visual cues (Purple color) for Fastest Lap and conditional formatting for penalties.
 
 ### Fixed
-- **View Architecture:** Solved conflicts between Breeze components and Blade layouts by standardizing `@yield` usage across all private views.
+- **View Architecture:** Solved conflicts between Breeze components and Blade layouts by standardizing `@yield` usage.
 - **CSRF & Sessions:** Fixed 419 errors during profile updates by segregating route logic.
 
 ## [v2.0.0-alpha] - 10-12-2025
@@ -46,7 +41,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Added (Authentication & Onboarding)
 - **User System:** Integrated Laravel Breeze for secure Login/Registration.
 - **Registration Flow:** Customized sign-up form to require SimRacing specific data (Steam ID & Nationality) with backend validation.
-- **Driver Dashboard:** Created a private area (`/dashboard`) displaying the driver's current Team assignment.
 - **Role Management:** Implemented logic to differentiate Guest vs Logged-in Driver views in the Navbar.
 
 ### Fixed

@@ -3,7 +3,6 @@
 namespace App\Filament\Resources;
 
 use App\Filament\Resources\RaceResource\Pages;
-// --- IMPORTANTE: ESTA ES LA LÍNEA QUE FALTABA O ESTABA MAL ---
 use App\Filament\Resources\RaceResource\RelationManagers\ResultsRelationManager; 
 use App\Models\Race;
 use Filament\Forms;
@@ -11,6 +10,7 @@ use Filament\Forms\Form;
 use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Table;
+use App\Filament\Resources\RaceResource\RelationManagers\QualifyingResultsRelationManager;
 
 class RaceResource extends Resource
 {
@@ -106,7 +106,7 @@ class RaceResource extends Resource
     public static function getRelations(): array
     {
         return [
-            // AHORA SÍ LO VA A ENCONTRAR
+            QualifyingResultsRelationManager::class,
             ResultsRelationManager::class,
         ];
     }
