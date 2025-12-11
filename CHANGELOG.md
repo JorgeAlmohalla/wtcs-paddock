@@ -14,6 +14,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - **Validation Logic:** Custom controller logic to handle specific driver data updates separate from account credentials.
 - **Dashboard Hub:** Transformed the empty dashboard into a control center with "My Team" status, License data card, and quick action buttons (Settings/Logout).
 
+### Added (Analytics & Visuals)
+- **Performance Chart:** Integrated `Chart.js` into the Driver Dashboard to visualize points progression throughout the season.
+- **Data Calculation:** Backend logic (`DashboardController`) to aggregate historical race results dynamically for the chart dataset.
+- **JS Architecture:** Configured global Chart.js instance via Vite/Alpine integration.
+
 ### Fixed
 - **View Architecture:** Solved conflicts between Breeze components and Blade layouts by standardizing `@yield` usage across all private views.
 - **CSRF & Sessions:** Fixed 419 errors during profile updates by segregating route logic.

@@ -75,12 +75,56 @@
             </div>
         </div>
 
-        <!-- Tarjeta de Estadísticas (Falsa por ahora, para V4) -->
-        <div class="bg-gray-800 rounded-xl p-6 border border-gray-700 shadow-lg opacity-50 cursor-not-allowed">
-            <h3 class="text-gray-400 text-sm uppercase tracking-widest font-bold mb-4">Season Stats</h3>
-            <p class="text-center text-gray-500 py-4">Coming soon...</p>
+        <!-- Tarjeta de Estadísticas (GRÁFICA REAL) -->
+        <div class="bg-gray-800 rounded-xl p-6 border border-gray-700 shadow-lg col-span-1 md:col-span-3">
+            <div class="flex justify-between items-center mb-6">
+                <h3 class="text-gray-400 text-sm uppercase tracking-widest font-bold">Points Progression</h3>
+                <span class="text-2xl font-bold text-white">{{ intval($currentPoints) }} <span class="text-sm text-gray-500">PTS</span></span>
+            </div>
+            
+            <div class="relative h-64 w-full">
+                <canvas id="pointsChart"
+                    x-data="{
+                        labels: {{ Js::from($labels) }},
+                        data: {{ Js::from($data) }},
+                        init() {
+                            new Chart(document.getElementById('pointsChart'), {
+                                type: 'line',
+                                data: {
+                                    labels: this.labels,
+                                    datasets: [{
+                                        label: 'Total Points',
+                                        data: this.data,
+                                        borderColor: '#ef4444', // Rojo Tailwind
+                                        backgroundColor: 'rgba(239, 68, 68, 0.2)',
+                                        borderWidth: 3,
+                                        pointBackgroundColor: '#fff',
+                                        tension: 0.3, // Curvatura de la línea
+                                        fill: true
+                                    }]
+                                },
+                                options: {
+                                    responsive: true,
+                                    maintainAspectRatio: false,
+                                    plugins: {
+                                        legend: { display: false }
+                                    },
+                                    scales: {
+                                        y: {
+                                            beginAtZero: true,
+                                            grid: { color: '#374151' }, // Gris oscuro
+                                            ticks: { color: '#9ca3af' }
+                                        },
+                                        x: {
+                                            grid: { display: false },
+                                            ticks: { color: '#9ca3af' }
+                                        }
+                                    }
+                                }
+                            });
+                        }
+                    }"
+                ></canvas>
+            </div>
         </div>
-
-    </div>
-</div>
 @endsection

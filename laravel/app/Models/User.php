@@ -56,4 +56,9 @@ class User extends Authenticatable
     {
         return $this->belongsTo(Team::class);
     }
+
+    public function raceResults()
+    {
+        return $this->hasMany(RaceResult::class);
+    }
 }

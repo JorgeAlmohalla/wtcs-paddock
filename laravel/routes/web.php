@@ -9,6 +9,7 @@ use App\Http\Controllers\StandingsController;
 use App\Http\Controllers\TeamsController;
 use App\Models\Post;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\DashboardController;
 
 /*
 |--------------------------------------------------------------------------
@@ -38,9 +39,9 @@ Route::get('/news/{post:slug}', function (Post $post) {
 */
 
 // Dashboard del Piloto (Solo si está logueado)
-Route::get('/dashboard', function () {
-    return view('dashboard');
-})->middleware(['auth', 'verified'])->name('dashboard');
+Route::get('/dashboard', DashboardController::class)
+    ->middleware(['auth', 'verified'])
+    ->name('dashboard');
 
 // Perfil del Usuario
 Route::middleware('auth')->group(function () {
