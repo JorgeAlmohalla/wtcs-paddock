@@ -16,6 +16,7 @@ class Race extends Model
         'round_number',
         'title',
         'race_date',
+        'total_laps',
         'status',
     ];
 

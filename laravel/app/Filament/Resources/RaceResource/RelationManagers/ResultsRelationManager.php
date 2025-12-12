@@ -97,6 +97,8 @@ class ResultsRelationManager extends RelationManager
                 // 5. VUELTAS
                 Tables\Columns\TextColumn::make('laps_completed')
                     ->label('Laps')
+                     ->numeric()
+                    ->default(fn (RelationManager $livewire) => $livewire->getOwnerRecord()->total_laps)
                     ->alignCenter(),
 
                 // 6. TIEMPO (Si tiene penalización sale aviso abajo)

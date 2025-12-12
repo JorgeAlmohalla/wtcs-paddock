@@ -47,6 +47,11 @@ class RaceResource extends Resource
                             ->required()
                             ->default(1),
 
+                        Forms\Components\TextInput::make('total_laps')
+                            ->label('Total Laps')
+                            ->numeric()
+                            ->required(),
+
                         Forms\Components\DateTimePicker::make('race_date')
                             ->label('Date & Time')
                             ->required(),
