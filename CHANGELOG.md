@@ -8,6 +8,14 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [Unreleased]
 *Work in progress for v3.0 Features*
 
+## [v2.1.1] - 12-12-2025
+### Added (Quality of Life)
+- **Race Configuration:** Added `total_laps` field to Race model to define race distance.
+- **Auto-Fill:** Result entry form now automatically pre-fills `laps_completed` based on the parent Race's total laps configuration.
+
+### Changed
+- **Public UI:** Refined result tables to match Admin panel styling (dark mode, badges, and status colors).
+
 ## [v2.1.0-beta] - 11-12-2025
 ### Added (Features)
 - **Qualifying System:** Implemented a dedicated parallel structure for Qualifying sessions within Races (`qualifying_results` table).

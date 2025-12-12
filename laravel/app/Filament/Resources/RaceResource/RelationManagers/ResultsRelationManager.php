@@ -34,7 +34,7 @@ class ResultsRelationManager extends RelationManager
                     Forms\Components\TextInput::make('grid_position')->label('Grid Start')->numeric(),
                     Forms\Components\TextInput::make('position')->label('Final Pos')->numeric()->required(),
                     Forms\Components\Select::make('status')
-                        ->options(['finished'=>'Finished','dnf'=>'DNF','dns'=>'DNS','dsq'=>'DSQ','+1 lap'=>'+1 Lap'])
+                        ->options(['finished'=>'Finished','dnf'=>'DNF','dns'=>'DNS','dsq'=>'DSQ','+1 lap'=>'+1 Lap','+2 laps'=>'+2 Laps','+3 laps'=>'+3 Laps'])
                         ->default('finished')->required(),
                 ])->columns(3),
 

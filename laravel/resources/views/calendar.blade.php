@@ -1,75 +1,77 @@
 @extends('layouts.app')
 
 @section('content')
-<div class="max-w-4xl mx-auto">
+<div class="max-w-5xl mx-auto">
     <h1 class="text-4xl font-bold mb-10 text-white text-center uppercase tracking-widest">Season Calendar</h1>
 
-    <div class="space-y-6">
-        @foreach($races as $race)
+    <div class="space-y-8">
+        <!-- BUCLE DE RONDAS (Agrupado) -->
+@foreach($rounds as $roundNumber => $roundRaces)
             @php
-                $isCompleted = $race->status === 'completed';
-                $isNext = $race->status === 'scheduled' && $race->race_date >= now();
-                $winner = $race->results->first()?->driver;
+                $mainRace = $roundRaces->first(); 
+                // Comprobamos si la ronda entera ha terminado (si la Feature está completed)
+                $isCompleted = $roundRaces->last()->status === 'completed';
+                $isNext = $roundRaces->where('status', 'scheduled')->where('race_date', '>=', now())->isNotEmpty();
+                
+                // Sacamos los ganadores de Sprint y Feature para mostrarlos resumidos
+                $sprintWinner = $roundRaces->first()->results->first()?->driver;
+                $featureWinner = $roundRaces->last()->results->first()?->driver;
             @endphp
 
-            <!-- Tarjeta de Carrera -->
-            <a href="{{ route('races.show', $race) }}" class="block relative bg-gray-800 rounded-xl overflow-hidden shadow-lg border {{ $isNext ? 'border-red-500 ring-1 ring-red-500' : 'border-gray-700' }} transition hover:border-gray-500 group">
+            <!-- TARJETA UNIFICADA DE RONDA -->
+            <a href="{{ route('rounds.show', $roundNumber) }}" class="block relative bg-gray-800 rounded-xl overflow-hidden shadow-lg border {{ $isNext ? 'border-red-500 ring-2 ring-red-500/50' : 'border-gray-700' }} hover:border-gray-500 transition group h-48 md:h-56">
                 
-                <!-- Fondo con imagen del circuito -->
-                @if($race->track->layout_image_url)
-                    <div class="absolute inset-0 opacity-10 bg-center bg-cover transition group-hover:opacity-20 duration-500" 
-                         style="background-image: url('{{ asset('storage/' . $race->track->layout_image_url) }}');">
+                <!-- Fondo con imagen -->
+                @if($mainRace->track->layout_image_url)
+                    <div class="absolute inset-0 opacity-20 bg-center bg-cover transition group-hover:scale-105 duration-700" 
+                         style="background-image: url('{{ asset('storage/' . $mainRace->track->layout_image_url) }}');">
                     </div>
+                    <div class="absolute inset-0 bg-gradient-to-r from-gray-900 via-gray-900/80 to-transparent"></div>
                 @endif
 
-                <!-- Contenedor Flex Principal -->
-                <div class="relative p-4 md:p-6 flex flex-col md:flex-row items-center gap-6 z-10">
+                <div class="relative h-full flex flex-col md:flex-row p-6 md:p-8 z-10 justify-between items-center">
                     
-                    <!-- IZQUIERDA: Ronda y Datos (Usa flex-1 para ocupar todo el hueco disponible) -->
-                    <div class="flex items-center gap-6 flex-1 w-full">
-                        
-                        <!-- Caja Número Ronda -->
-                        <div class="text-center bg-gray-900/90 p-4 rounded-lg min-w-[90px] border border-gray-700 shadow-inner">
-                            <span class="block text-xs text-gray-500 uppercase tracking-widest">Round</span>
-                            <span class="block text-4xl font-black text-white">{{ $race->round_number }}</span>
+                    <!-- IZQUIERDA: Datos del Evento -->
+                    <div class="flex items-center gap-6 w-full md:w-auto">
+                        <div class="text-center">
+                            <span class="block text-4xl md:text-6xl font-black text-white leading-none">{{ $roundNumber }}</span>
+                            <span class="text-xs text-red-500 font-bold tracking-widest uppercase">Round</span>
                         </div>
-
-                        <!-- Textos -->
-                        <div>
-                            <h2 class="text-2xl md:text-3xl font-bold text-white leading-tight group-hover:text-red-500 transition">
-                                {{ $race->track->name }}
+                        
+                        <div class="border-l border-gray-600 pl-6 h-full flex flex-col justify-center">
+                            <h2 class="text-3xl md:text-4xl font-bold text-white uppercase group-hover:text-red-400 transition mb-1">
+                                {{ $mainRace->track->name }}
                             </h2>
-                            <div class="flex flex-col md:flex-row md:items-center gap-1 md:gap-3 text-gray-400 mt-1">
-                                <span>{{ $race->title ?? $race->track->country_code }}</span>
-                                <span class="hidden md:inline text-gray-600">•</span>
-                                <span class="{{ $isCompleted ? 'text-gray-500' : 'text-red-400 font-bold' }}">
-                                    {{ $race->race_date->format('d M Y - H:i') }}
-                                </span>
+                            <div class="flex items-center gap-3 text-gray-400">
+                                <img src="https://flagcdn.com/24x18/{{ strtolower($mainRace->track->country_code) }}.png" class="h-4 rounded shadow-sm">
+                                <span class="font-mono text-sm">{{ $mainRace->race_date->format('d - M - Y') }}</span>
                             </div>
                         </div>
                     </div>
 
-                    <!-- DERECHA: Ganador o Estado (No se encoge: shrink-0) -->
-                    <div class="w-full md:w-auto shrink-0">
-                        @if($isCompleted && $winner)
-                            <!-- Caja Ganador Grande -->
-                            <div class="bg-gradient-to-r from-yellow-900/40 to-yellow-600/20 border border-yellow-600/50 rounded-lg p-4 flex items-center gap-4 min-w-[250px]">
-                                <div class="bg-yellow-500/20 p-3 rounded-full">
-                                    <span class="text-2xl">🏆</span>
-                                </div>
-                                <div>
-                                    <span class="block text-xs text-yellow-500 uppercase tracking-widest font-bold">Winner</span>
-                                    <span class="block text-xl font-bold text-white">{{ $winner->name }}</span>
-                                </div>
+                    <!-- DERECHA: Estado / Ganadores -->
+                    <div class="mt-4 md:mt-0 w-full md:w-auto flex flex-col items-end gap-2">
+                        @if($isCompleted)
+                            <!-- Resumen de Ganadores -->
+                            <div class="flex flex-col gap-1 text-right">
+                                @if($sprintWinner)
+                                    <div class="text-xs text-gray-400">
+                                        Sprint: <span class="text-white font-bold">{{ $sprintWinner->name }} 🏆</span>
+                                    </div>
+                                @endif
+                                @if($featureWinner)
+                                    <div class="text-sm text-yellow-500 font-bold border border-yellow-500/30 bg-yellow-500/10 px-3 py-1 rounded">
+                                        Feature: {{ $featureWinner->name }} 🏆
+                                    </div>
+                                @endif
                             </div>
-                        @elseif($race->status === 'cancelled')
-                            <div class="bg-red-900/30 border border-red-800 px-6 py-3 rounded-lg text-center w-full md:w-auto">
-                                <span class="text-red-400 font-bold uppercase tracking-widest">Cancelled</span>
+                        @elseif($isNext)
+                            <div class="px-6 py-2 bg-red-600 text-white font-bold uppercase tracking-widest rounded shadow-lg shadow-red-600/20 animate-pulse">
+                                Next Event
                             </div>
                         @else
-                            <!-- Botón View Details -->
-                            <div class="bg-gray-700/50 border border-gray-600 px-6 py-3 rounded-lg text-center w-full md:w-auto group-hover:bg-red-600 group-hover:border-red-500 transition">
-                                <span class="text-gray-300 font-bold uppercase tracking-widest text-sm group-hover:text-white">View Results &rarr;</span>
+                            <div class="px-4 py-2 border border-gray-600 text-gray-400 text-xs font-bold uppercase tracking-widest rounded">
+                                Upcoming
                             </div>
                         @endif
                     </div>

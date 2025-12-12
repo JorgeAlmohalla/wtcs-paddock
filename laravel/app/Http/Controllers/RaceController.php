@@ -12,7 +12,7 @@ class RaceController extends Controller
         // Cargamos la carrera con sus resultados ordenados
         $race->load([
             'track',
-            'results' => fn($q) => $q->orderBy('position'),
+            'results' => fn($q) => $q->orderBy('position', 'asc'),
             'results.driver',
             'results.team',
             'qualifyingResults' => fn($q) => $q->orderBy('position'),

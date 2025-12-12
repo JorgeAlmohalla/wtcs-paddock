@@ -11,6 +11,7 @@ use App\Models\Post;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\RaceController;
+use App\Http\Controllers\RoundController;
 
 /*
 |--------------------------------------------------------------------------
@@ -28,6 +29,7 @@ Route::get('/races/{race}', [RaceController::class, 'show'])->name('races.show')
 Route::get('/drivers', DriversController::class)->name('drivers');
 Route::get('/teams', TeamsController::class)->name('teams');
 Route::get('/news', NewsController::class)->name('news.index');
+Route::get('/rounds/{round}', [RoundController::class, 'show'])->name('rounds.show');
 
 // Noticia individual
 Route::get('/news/{post:slug}', function (Post $post) {

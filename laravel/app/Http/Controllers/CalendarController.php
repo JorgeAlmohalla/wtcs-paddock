@@ -9,16 +9,20 @@ class CalendarController extends Controller
 {
     public function __invoke(): View
     {
-        // Traemos todas las carreras ordenadas por ronda
-        // Cargamos también el circuito (track) y el ganador (si lo hay)
-        $races = Race::orderBy('round_number', 'asc')
+        // 1. Traemos todas las carreras ordenadas
+        // 2. Cargamos el ganador (posición 1) para evitar N+1 queries
+        // 3. AGRUPAMOS por número de ronda
+        $rounds = Race::orderBy('round_number', 'asc')
+            ->orderBy('race_date', 'asc')
             ->with(['track', 'results' => function($query) {
-                $query->where('position', 1)->with('driver'); // Sacamos solo al ganador
+                $query->where('position', 1)->with('driver');
             }])
-            ->get();
+            ->get()
+            ->groupBy('round_number');
 
+        // Pasamos la variable $rounds a la vista (NO $races)
         return view('calendar', [
-            'races' => $races,
+            'rounds' => $rounds,
         ]);
     }
 }
