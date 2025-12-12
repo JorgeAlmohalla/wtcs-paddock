@@ -12,6 +12,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\RaceController;
 use App\Http\Controllers\RoundController;
+use App\Http\Controllers\PdfController;
 
 /*
 |--------------------------------------------------------------------------
@@ -30,6 +31,7 @@ Route::get('/drivers', DriversController::class)->name('drivers');
 Route::get('/teams', TeamsController::class)->name('teams');
 Route::get('/news', NewsController::class)->name('news.index');
 Route::get('/rounds/{round}', [RoundController::class, 'show'])->name('rounds.show');
+Route::get('/rounds/{round}/pdf', [PdfController::class, 'downloadRound'])->name('rounds.pdf');
 
 // Noticia individual
 Route::get('/news/{post:slug}', function (Post $post) {

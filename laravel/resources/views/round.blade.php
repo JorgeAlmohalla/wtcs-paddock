@@ -5,6 +5,13 @@
     
     <!-- Cabecera del Evento -->
     <div class="mb-8 text-center relative">
+        <!-- BOTÓN PDF (Flotando a la derecha o debajo en móvil) -->
+        <div class="md:absolute md:top-0 md:right-0 mt-4 md:mt-0">
+            <a href="{{ route('rounds.pdf', $roundNumber) }}" class="inline-flex items-center gap-2 bg-gray-800 hover:bg-gray-700 text-gray-300 hover:text-white border border-gray-600 px-4 py-2 rounded transition text-sm font-bold">
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path></svg>
+                Export PDF
+            </a>
+        </div>
         <p class="text-red-500 font-bold tracking-widest uppercase text-sm mb-1">Round {{ $roundNumber }}</p>
         <h1 class="text-4xl md:text-6xl font-black text-white mb-2 uppercase">{{ $track->name }}</h1>
         <div class="flex justify-center items-center gap-2">
