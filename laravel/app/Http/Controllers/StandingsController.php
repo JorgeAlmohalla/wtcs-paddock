@@ -11,27 +11,37 @@ class StandingsController extends Controller
 {
     public function __invoke(): View
     {
+        // Obtener temporada seleccionada
+        $seasonId = app()->bound('currentSeason') ? app('currentSeason')->id : null;
+
         // 1. Clasificación de PILOTOS
         $drivers = User::where('role', 'driver')
-            ->with('team') // Cargar equipo para mostrar el logo/nombre
+            ->with('team')
             ->get()
-            ->map(function ($driver) {
-                // Sumar puntos de la tabla race_results para este piloto
-                $driver->total_points = RaceResult::where('user_id', $driver->id)->sum('points');
+            ->map(function ($driver) use ($seasonId) {
+                // Sumar puntos SOLO de carreras de esta temporada
+                $driver->total_points = RaceResult::where('user_id', $driver->id)
+                    ->whereHas('race', function ($query) use ($seasonId) {
+                        $query->where('season_id', $seasonId); // <--- FILTRO MAGISTRAL
+                    })
+                    ->sum('points');
                 return $driver;
             })
-            ->sortByDesc('total_points') // Ordenar del primero al último
-            ->values(); // Resetear índices del array (0, 1, 2...)
+            ->filter(fn ($driver) => $driver->total_points > 0) // Opcional: Ocultar pilotos sin puntos en esta season
+            ->sortByDesc('total_points')
+            ->values();
 
-        // 2. Clasificación de CONSTRUCTORES (Equipos)
-        // Solo cogemos equipos que tengan puntos
+        // 2. Clasificación de CONSTRUCTORES
         $teams = Team::get()
-            ->map(function ($team) {
-                // Sumar puntos de todos los resultados conseguidos con este equipo
-                $team->total_points = RaceResult::where('team_id', $team->id)->sum('points');
+            ->map(function ($team) use ($seasonId) {
+                $team->total_points = RaceResult::where('team_id', $team->id)
+                    ->whereHas('race', function ($query) use ($seasonId) {
+                        $query->where('season_id', $seasonId); // <--- MISMO FILTRO
+                    })
+                    ->sum('points');
                 return $team;
             })
-            ->filter(fn ($team) => $team->total_points > 0) // Opcional: Ocultar equipos con 0 puntos
+            ->filter(fn ($team) => $team->total_points > 0)
             ->sortByDesc('total_points')
             ->values();
 

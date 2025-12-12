@@ -37,6 +37,12 @@ class RaceResource extends Resource
                             ->label('Event Title')
                             ->placeholder('Ex: British Grand Prix')
                             ->maxLength(255),
+
+                        Forms\Components\Select::make('season_id')
+                            ->relationship('season', 'name')
+                            ->required()
+                            ->default(fn() => \App\Models\Season::where('is_active', true)->first()?->id)
+                            ->label('Season'),
                     ]),
 
                 Forms\Components\Group::make()

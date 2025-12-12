@@ -9,10 +9,14 @@ class CalendarController extends Controller
 {
     public function __invoke(): View
     {
-        // 1. Traemos todas las carreras ordenadas
-        // 2. Cargamos el ganador (posición 1) para evitar N+1 queries
-        // 3. AGRUPAMOS por número de ronda
-        $rounds = Race::orderBy('round_number', 'asc')
+        // 1. Obtener la temporada actual (inyectada por el Middleware)
+        // Si por algún motivo fallase el middleware, no rompe, usa null
+        $seasonId = app()->bound('currentSeason') ? app('currentSeason')->id : null;
+
+        // 2. Traer carreras FILTRADAS por temporada
+        $rounds = Race::query()
+            ->where('season_id', $seasonId) // <--- ESTA ES LA CLAVE
+            ->orderBy('round_number', 'asc')
             ->orderBy('race_date', 'asc')
             ->with(['track', 'results' => function($query) {
                 $query->where('position', 1)->with('driver');
@@ -20,7 +24,6 @@ class CalendarController extends Controller
             ->get()
             ->groupBy('round_number');
 
-        // Pasamos la variable $rounds a la vista (NO $races)
         return view('calendar', [
             'rounds' => $rounds,
         ]);

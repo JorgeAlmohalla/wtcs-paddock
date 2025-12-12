@@ -18,6 +18,7 @@ class Race extends Model
         'race_date',
         'total_laps',
         'status',
+        'season_id',
     ];
 
     protected $casts = [
@@ -39,5 +40,10 @@ class Race extends Model
     public function qualifyingResults(): HasMany
     {
         return $this->hasMany(QualifyingResult::class);
+    }
+
+    public function season()
+    {
+        return $this->belongsTo(Season::class); 
     }
 }

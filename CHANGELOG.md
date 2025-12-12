@@ -8,6 +8,30 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [Unreleased]
 *Work in progress for v3.0 Features*
 
+## [v3.0.0-beta] - 12-12-2025
+### Added (Architecture)
+- **Season Archive:** Implemented full multi-season support architecture.
+- **Global Context:** Created `SetSeasonMiddleware` to inject the active season context into all views and controllers.
+- **Season Selector:** Added a dropdown in the Navbar to switch between current and archived seasons.
+- **Admin Management:** Created `SeasonResource` with logic to ensure only one season is active at a time.
+
+### Changed
+- **Data Filtering:** Refactored `HomeController`, `CalendarController`, and `StandingsController` to filter data dynamically based on the selected season ID.
+- **Database Schema:** Migrated `races` table to include a `season_id` foreign key.
+
+### Fixed
+- **Session Persistence:** Resolved issue where Season selection reset on navigation by moving `SetSeasonMiddleware` into the `web` middleware group to ensure access to Laravel's session storage.
+
+## [v2.2.0-beta] - 12-12-2025
+### Added (Reporting & Export)
+- **PDF Generation:** Implemented `dompdf` to generate official "Event Reports" downloadable from the Round details page.
+- **Dynamic Documents:** PDF templates populate automatically with Qualifying, Sprint, and Feature race results.
+- **Professional Styling:** Custom CSS for PDFs to match FIA-style reports (Clean layout, Status colors, Tyre badges).
+
+### Changed
+- **Round Architecture:** Refactored Calendar logic to group races by `round_number`, creating a unified event view with tabs.
+- **Navigation:** Updated Calendar UI to link to the new Round details page instead of individual race sessions.
+
 ## [v2.1.1] - 12-12-2025
 ### Added (Quality of Life)
 - **Race Configuration:** Added `total_laps` field to Race model to define race distance.
