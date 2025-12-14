@@ -28,4 +28,9 @@ class QualifyingResult extends Model
     {
         return $this->belongsTo(Team::class);
     }
+
+    public function race()
+    {
+        return $this->belongsTo(Race::class);
+    }
 }

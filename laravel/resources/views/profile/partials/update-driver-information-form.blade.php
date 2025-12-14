@@ -25,6 +25,25 @@
             <x-input-error class="mt-2" :messages="$errors->get('nationality')" />
         </div>
 
+        <!-- Equipment -->
+        <div>
+            <x-input-label for="equipment" :value="__('Input Method')" class="text-gray-300" />
+            <select id="equipment" name="equipment" class="mt-1 block w-full bg-gray-900 border-gray-600 text-white rounded-md shadow-sm focus:border-red-500 focus:ring-red-500">
+                <option value="wheel" {{ old('equipment', $user->equipment) === 'wheel' ? 'selected' : '' }}>Steering Wheel 🏎️</option>
+                <option value="pad" {{ old('equipment', $user->equipment) === 'pad' ? 'selected' : '' }}>Controller / Gamepad 🎮</option>
+                <option value="keyboard" {{ old('equipment', $user->equipment) === 'keyboard' ? 'selected' : '' }}>Keyboard ⌨️</option>
+            </select>
+            <x-input-error class="mt-2" :messages="$errors->get('equipment')" />
+        </div>
+
+        <!-- Bio / Experience -->
+        <div>
+            <x-input-label for="bio" :value="__('Experience / Bio')" class="text-gray-300" />
+            <textarea id="bio" name="bio" rows="4" class="mt-1 block w-full bg-gray-900 border-gray-600 text-white rounded-md shadow-sm focus:border-red-500 focus:ring-red-500" placeholder="I have 500 hours in ACC and won 2 leagues...">{{ old('bio', $user->bio) }}</textarea>
+            <p class="text-xs text-gray-500 mt-1">Share your SimRacing background with other drivers.</p>
+            <x-input-error class="mt-2" :messages="$errors->get('bio')" />
+        </div>
+
         <div class="flex items-center gap-4">
             <x-primary-button>{{ __('Save') }}</x-primary-button>
 

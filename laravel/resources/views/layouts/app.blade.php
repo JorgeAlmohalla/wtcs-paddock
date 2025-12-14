@@ -44,11 +44,23 @@
                         </div>
                     @endif
 
-                    <!-- LOGIN -->
+                    <!-- LOGIN / USER MENU -->
                     @auth
                         <div class="flex items-center gap-4 border-l border-red-400 pl-4">
-                            <span class="text-xs font-bold text-white">{{ Auth::user()->name }}</span>
-                            <a href="{{ url('/dashboard') }}" class="bg-white text-red-600 px-4 py-2 rounded-full text-xs font-bold uppercase tracking-widest hover:bg-gray-100 transition">Dashboard</a>
+                            <span class="text-xs font-bold text-white hidden lg:inline">{{ Auth::user()->name }}</span>
+                            
+                            <!-- Botón Dashboard -->
+                            <a href="{{ url('/dashboard') }}" class="bg-white text-red-600 px-4 py-2 rounded-full text-xs font-bold uppercase tracking-widest hover:bg-gray-100 transition">
+                                Dashboard
+                            </a>
+
+                            <!-- Botón Logout (Icono) -->
+                            <form method="POST" action="{{ route('logout') }}">
+                                @csrf
+                                <button type="submit" class="text-gray-300 hover:text-white transition" title="Log Out">
+                                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"></path></svg>
+                                </button>
+                            </form>
                         </div>
                     @else
                         <div class="flex items-center gap-2 border-l border-red-400 pl-4">
@@ -89,11 +101,25 @@
                     </div>
                 @endif
 
-                <div class="border-t border-red-500 my-2 pt-2">
+                <div class="border-t border-red-500 my-2 pt-2 space-y-2">
                     @auth
-                        <a href="{{ url('/dashboard') }}" class="block px-3 py-3 rounded-md text-base font-bold text-red-600 bg-white text-center">DASHBOARD</a>
+                        <!-- Botón Dashboard -->
+                        <a href="{{ url('/dashboard') }}" class="block px-3 py-3 rounded-md text-base font-bold text-red-600 bg-white text-center shadow-md">
+                            MY DASHBOARD
+                        </a>
+
+                        <!-- Botón Logout (Formulario) -->
+                        <form method="POST" action="{{ route('logout') }}" class="w-full">
+                            @csrf
+                            <button type="submit" class="w-full block px-3 py-3 rounded-md text-base font-bold text-white bg-red-900/50 hover:bg-red-900 text-center border border-red-800 transition">
+                                LOG OUT
+                            </button>
+                        </form>
                     @else
-                        <a href="{{ route('login') }}" class="block px-3 py-3 rounded-md text-base font-bold text-white bg-black/20 text-center">LOGIN / JOIN</a>
+                        <!-- Botón Login -->
+                        <a href="{{ route('login') }}" class="block px-3 py-3 rounded-md text-base font-bold text-white bg-black/20 text-center hover:bg-black/40 transition">
+                            LOGIN / JOIN
+                        </a>
                     @endauth
                 </div>
             </div>

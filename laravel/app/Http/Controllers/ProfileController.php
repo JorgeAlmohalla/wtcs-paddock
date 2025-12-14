@@ -77,6 +77,20 @@ class ProfileController extends Controller
             'nationality' => strtoupper($validated['nationality']),
         ]);
 
+        $validated = $request->validate([
+            'steam_id' => ['required', 'string', 'max:20', Rule::unique('users')->ignore($request->user()->id)],
+            'nationality' => ['required', 'string', 'size:2'],
+            'bio' => ['nullable', 'string', 'max:1000'],     // <--- NUEVO
+            'equipment' => ['required', 'in:wheel,pad,keyboard'], // <--- NUEVO
+        ]);
+
+        $request->user()->fill([
+            'steam_id' => $validated['steam_id'],
+            'nationality' => strtoupper($validated['nationality']),
+            'bio' => $validated['bio'],           // <--- NUEVO
+            'equipment' => $validated['equipment'], // <--- NUEVO
+        ]);
+
         $request->user()->save();
 
         return Redirect::route('profile.edit')->with('status', 'driver-info-updated');

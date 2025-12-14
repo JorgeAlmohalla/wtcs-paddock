@@ -21,11 +21,12 @@ class User extends Authenticatable
         'name',
         'email',
         'password',
-        // TUS CAMPOS NUEVOS
         'steam_id',
         'nationality',
         'role',
         'team_id',
+        'bio',
+        'equipment',
     ];
 
     /**
@@ -60,5 +61,10 @@ class User extends Authenticatable
     public function raceResults()
     {
         return $this->hasMany(RaceResult::class);
+    }
+
+    public function qualifyingResults()
+    {
+        return $this->hasMany(QualifyingResult::class);
     }
 }
