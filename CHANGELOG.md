@@ -6,36 +6,34 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ## [Unreleased]
-*Work in progress for v3.0 Features*
+*Work in progress for v3.0 (API & Mobile App)*
 
-## [v3.0.0-beta] - 12-12-2025
-### Added (Architecture)
-- **Season Archive:** Implemented full multi-season support architecture.
-- **Global Context:** Created `SetSeasonMiddleware` to inject the active season context into all views and controllers.
-- **Season Selector:** Added a dropdown in the Navbar to switch between current and archived seasons.
-- **Admin Management:** Created `SeasonResource` with logic to ensure only one season is active at a time.
+## [v2.3.0] - 14-12-2025
+### Added (Driver Hub & Analytics)
+- **Advanced Dashboard:** Redesigned the driver landing page to act as a complete career hub, featuring:
+    - **"Big Numbers" Stats:** Total Starts, Wins, Podiums, Poles, and Points.
+    - **Driver Bio:** New field for drivers to write their SimRacing background.
+    - **Equipment Tracker:** Field to display input method (Wheel, Pad, Keyboard).
+- **Qualifying History:** Added a scrollable table in the Dashboard showing personal qualifying results across the season.
+- **Database Schema:** Added `bio` (text) and `equipment` (enum) fields to the `users` table.
 
 ### Changed
-- **Data Filtering:** Refactored `HomeController`, `CalendarController`, and `StandingsController` to filter data dynamically based on the selected season ID.
-- **Database Schema:** Migrated `races` table to include a `season_id` foreign key.
-
-### Fixed
-- **Session Persistence:** Resolved issue where Season selection reset on navigation by moving `SetSeasonMiddleware` into the `web` middleware group to ensure access to Laravel's session storage.
+- **Profile Editing:** Updated the profile form to include the new Bio and Equipment fields.
 
 ## [v2.2.0-beta] - 12-12-2025
-### Added (Reporting & Export)
+### Added (Reporting & Architecture)
 - **PDF Generation:** Implemented `dompdf` to generate official "Event Reports" downloadable from the Round details page.
-- **Dynamic Documents:** PDF templates populate automatically with Qualifying, Sprint, and Feature race results.
-- **Professional Styling:** Custom CSS for PDFs to match FIA-style reports (Clean layout, Status colors, Tyre badges).
+- **Season Archive:** Implemented full multi-season support architecture with a global context switcher (Middleware).
+- **Season Selector:** Added a dropdown in the Navbar to switch between current and archived seasons.
 
 ### Changed
 - **Round Architecture:** Refactored Calendar logic to group races by `round_number`, creating a unified event view with tabs.
-- **Navigation:** Updated Calendar UI to link to the new Round details page instead of individual race sessions.
+- **Data Filtering:** Refactored Controllers to filter data dynamically based on the selected season ID.
 
 ## [v2.1.1] - 12-12-2025
 ### Added (Quality of Life)
-- **Race Configuration:** Added `total_laps` field to Race model to define race distance.
-- **Auto-Fill:** Result entry form now automatically pre-fills `laps_completed` based on the parent Race's total laps configuration.
+- **Race Configuration:** Added `total_laps` field to Race model.
+- **Auto-Fill:** Result entry form now automatically pre-fills `laps_completed`.
 
 ### Changed
 - **Public UI:** Refined result tables to match Admin panel styling (dark mode, badges, and status colors).
@@ -43,69 +41,26 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [v2.1.0-beta] - 11-12-2025
 ### Added (Features)
 - **Qualifying System:** Implemented a dedicated parallel structure for Qualifying sessions within Races (`qualifying_results` table).
-- **Public Race View:** Created dynamic Race Detail page (`/races/{id}`) featuring Alpine.js tabs to toggle between Race and Qualifying results.
-- **Performance Chart:** Integrated `Chart.js` into the Driver Dashboard to visualize points progression throughout the season.
-- **Dashboard Hub:** Enhanced driver dashboard with "My Team" status, License data card, and quick action buttons.
-
-### Changed (UI/UX)
-- **Calendar Redesign:** Refactored Race Cards with `flex-1` layout to optimize space usage and improved "Winner" badge visibility.
-- **Race Results Schema:** Expanded results table to include Status (DNF/DNS), Gap/Time, and Laps completed.
-- **Admin UI:** Added visual cues (Purple color) for Fastest Lap and conditional formatting for penalties.
-
-### Fixed
-- **View Architecture:** Solved conflicts between Breeze components and Blade layouts by standardizing `@yield` usage.
-- **CSRF & Sessions:** Fixed 419 errors during profile updates by segregating route logic.
+- **Public Race View:** Created dynamic Race Detail page (`/races/{id}`) with Alpine.js tabs.
+- **Performance Chart:** Integrated `Chart.js` into the Driver Dashboard.
 
 ## [v2.0.0-alpha] - 10-12-2025
 ### Added (Frontend & Public Web)
-- **Tech Stack:** Installed Tailwind CSS v4 via Vite/PostCSS and Alpine.js for interactivity.
-- **Layout System:** Created main Blade layout (`layouts/app`) with Dark Mode enabled and responsive Navbar using Alpine.js state management.
-- **Home Page:** Implemented dynamic landing page showing:
-    - **Live Countdown:** Real-time JS timer (Days/Hours/Mins/Secs) for the next scheduled race.
-    - **Championship Leader:** Dynamic card linking to standings.
-    - **Latest News:** Featured article preview with background image.
+- **Tech Stack:** Installed Tailwind CSS v4 via Vite/PostCSS and Alpine.js.
+- **Layout System:** Created main Blade layout with Dark Mode and responsive Navbar.
+- **Home Page:** Implemented dynamic landing page with Live Countdown.
 - **Public Controllers:** Implemented logic for `Home`, `Standings`, `Calendar`, `Drivers`, `Teams`, and `News`.
-- **Standings Page:** Full championship table view with dual columns (Drivers & Constructors) and integer point formatting.
-- **Calendar Page:** Season timeline view displaying scheduled races and highlighting winners for completed events.
-- **Drivers & Teams Pages:** Grid views for lineups using dynamic color gradients based on team branding and FlagCDN integration.
-- **News System:** Added full "Read Article" view and a paginated News Archive page (`/news`).
 
-### Added (Authentication & Onboarding)
-- **User System:** Integrated Laravel Breeze for secure Login/Registration.
-- **Registration Flow:** Customized sign-up form to require SimRacing specific data (Steam ID & Nationality) with backend validation.
-- **Role Management:** Implemented logic to differentiate Guest vs Logged-in Driver views in the Navbar.
-
-### Fixed
-- **Styles:** Resolved Tailwind v4 compatibility issues by updating PostCSS configuration.
-- **Controller Architecture:** Resolved namespace conflicts in `HomeController`.
-- **Routing:** Fixed naming conventions for Blade view resolution.
-- **Unified Layout:** Refactored `app.blade.php` to resolve conflicts between Breeze components (`$slot`) and Blade directives (`@yield`).
+### Added (Authentication)
+- **User System:** Integrated Laravel Breeze.
+- **Registration Flow:** Customized sign-up form with SimRacing data (Steam ID).
 
 ## [v1.0.0-alpha] - 09-12-2025
 ### Added (Core Backend)
-- **Admin Panel:** Implemented full Backoffice using FilamentPHP with custom "WTCS Racing Red" branding.
-- **Teams Management:** Complete CRUD for Teams including type (Works/Privateer) and color coding.
-- **Tracks Management:** Catalog system with image upload support for circuit layouts.
-- **Drivers Management:** User system extended with SimRacing data (SteamID, Nationality) and dynamic Team linking.
-- **Race Calendar:** Scheduling system for races linked to tracks.
-- **News Backend:** Created `Post` model and Filament resource with Rich Text Editor and automatic Slug generation.
-
-### Added (Logic Engine)
-- **Results System:** Integrated `RelationManager` to input race results directly within the Race view.
-- **Automated Scoring:** Implemented `RaceResultObserver` to automatically calculate points (25-18-15...) and Fastest Lap bonus upon saving.
-
-### Fixed
-- **Environment:** Corrected database connection from SQLite to MySQL.
-- **Assets:** Solved image 404 errors by configuring `APP_URL` and linking storage.
+- **Admin Panel:** Implemented FilamentPHP Backoffice.
+- **Management:** Complete CRUD for Teams, Tracks, Drivers, Races, and News.
+- **Automated Scoring:** Implemented `RaceResultObserver` to calculate points automatically.
 
 ## [v0.1.0] - 09-12-2025
 ### Added
-- **Project Setup:** Initialized Git repository and Laravel environment structure.
-- **Documentation:** Added project proposal PDF and initial tech stack definition.
-- **Design:** Created initial high-fidelity wireframes for the Dashboard using Figma.
-- **Database:** Designed Entity-Relationship (ER) model covering Users, Teams, Races, and Results.
-
-### Changed
-- **Rebranding:** Pivoted project name from "WTCS Social Hub" to **"WTCS Paddock"** to better reflect its managerial focus.
-- **Scope Definition:** Defined milestones for v1.0 through v5.0.
-- **Environment:** Resolved port conflicts (3306) and successfully configured local XAMPP stack with Composer.
+- **Project Setup:** Initialized Git repository, Laravel environment, and Database Design.
