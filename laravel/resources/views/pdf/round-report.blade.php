@@ -48,6 +48,7 @@
                     <th class="pos">Pos</th>
                     <th>Driver</th>
                     <th>Team</th>
+                    <th>Model</th>
                     <th class="text-right">Time</th>
                     <th class="text-center">Tyre</th>
                 </tr>
@@ -58,6 +59,9 @@
                     <td class="pos">{{ $q->position }}</td>
                     <td class="bold">{{ $q->driver->name }}</td>
                     <td>{{ $q->team->name ?? 'Privateer' }}</td>
+                    <td style="font-size: 10px; color: #555;">
+                        {{ $q->car_name ?? ($q->team->car_model ?? '-') }}
+                    </td>
                     <td class="text-right">{{ $q->best_time }}</td>
                     <td class="text-center">
                         @if($q->tyre_compound)
@@ -90,6 +94,7 @@
                 <th class="pos">Pos</th>
                 <th>Driver</th>
                 <th>Team</th>
+                <th>Car</th> <!-- NUEVA COLUMNA -->
                 <th class="text-center">Laps</th>
                 <th class="text-right">Time/Gap</th>
                 <th class="text-right">PTS</th>
@@ -104,6 +109,10 @@
                     @if($res->fastest_lap) <span style="font-size: 9px; color: purple;">(FL)</span> @endif
                 </td>
                 <td>{{ $res->team->name ?? 'Privateer' }}</td>
+                
+                <!-- COCHE (Usando el histórico car_name si existe, o el actual) -->
+                <td style="font-size: 10px; color: #555;">{{ $res->car_name ?? ($res->team->car_model ?? '-') }}</td>
+
                 <td class="text-center">{{ $res->laps_completed }}</td>
                 <td class="text-right">
                     @if($res->status === 'finished')
@@ -128,15 +137,15 @@
 
     <!-- FEATURE -->
     @if($feature)
-        <div style="page-break-before: always;"></div> <!-- Salto de página para que quede limpio -->
+        <div style="page-break-before: always;"></div> <!-- Salto de página -->
         <div class="session-title">Feature Race</div>
         <table>
-            <!-- (Mismo formato que Sprint) -->
             <thead>
                 <tr>
                     <th class="pos">Pos</th>
                     <th>Driver</th>
                     <th>Team</th>
+                    <th>Car</th> <!-- NUEVA COLUMNA -->
                     <th class="text-center">Laps</th>
                     <th class="text-right">Time/Gap</th>
                     <th class="text-right">PTS</th>
@@ -151,6 +160,10 @@
                         @if($res->fastest_lap) <span style="font-size: 9px; color: purple;">(FL)</span> @endif
                     </td>
                     <td>{{ $res->team->name ?? 'Privateer' }}</td>
+                    
+                    <!-- COCHE -->
+                    <td style="font-size: 10px; color: #555;">{{ $res->car_name ?? ($res->team->car_model ?? '-') }}</td>
+
                     <td class="text-center">{{ $res->laps_completed }}</td>
                     <td class="text-right">
                         @if($res->status === 'finished')

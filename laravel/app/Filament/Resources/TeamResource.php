@@ -16,8 +16,7 @@ class TeamResource extends Resource
 
     protected static ?string $navigationIcon = 'heroicon-o-users';
     
-    // --- TRADUCCIÓN MENÚ ---
-    protected static ?string $navigationLabel = 'Teams'; // Antes "Equipos"
+    protected static ?string $navigationLabel = 'Teams';
     protected static ?string $modelLabel = 'Team';
 
     public static function form(Form $form): Form
@@ -25,7 +24,7 @@ class TeamResource extends Resource
         return $form
             ->schema([
                 Forms\Components\TextInput::make('name')
-                    ->label('Team Name') // Inglés
+                    ->label('Team Name')
                     ->required()
                     ->maxLength(255),
                 
@@ -50,6 +49,10 @@ class TeamResource extends Resource
 
                 Forms\Components\ColorPicker::make('primary_color')
                     ->label('Primary Color'),
+                
+                Forms\Components\TextInput::make('car_brand')->label('Manufacturer'),
+
+                Forms\Components\TextInput::make('car_model')->label('Current Car Model')->required(),
             ]);
     }
 

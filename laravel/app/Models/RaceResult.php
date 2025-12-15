@@ -24,6 +24,7 @@ class RaceResult extends Model
         'laps_completed',
         'fastest_lap',
         'fastest_lap_time',
+        'car_name',
     ];
 
     // Pertenece a una carrera

@@ -14,6 +14,7 @@ class QualifyingResult extends Model
         'race_id',
         'user_id',
         'team_id',
+        'car_name',
         'position',
         'best_time',
         'tyre_compound',

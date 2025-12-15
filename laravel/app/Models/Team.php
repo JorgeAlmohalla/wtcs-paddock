@@ -18,6 +18,7 @@ class Team extends Model
         'car_brand',
         'logo_url',
         'primary_color',
+        'car_model',
     ];
 
     // Relación: Un equipo tiene muchos pilotos

@@ -5,6 +5,7 @@
                 <th class="px-6 py-4 text-center w-16">Pos</th>
                 <th class="px-6 py-4">Driver</th>
                 <th class="px-6 py-4 hidden md:table-cell">Team</th>
+                <th class="px-6 py-4 hidden lg:table-cell">Car</th>
                 <th class="px-6 py-4 text-right">Time</th>
                 <th class="px-6 py-4 text-center w-24">Tyre</th>
             </tr>
@@ -25,6 +26,11 @@
                     <!-- EQUIPO -->
                     <td class="px-6 py-4 hidden md:table-cell text-gray-300 font-medium">
                         {{ $qResult->team->name ?? 'Privateer' }}
+                    </td>
+
+                    <!-- MODELO -->
+                    <td class="px-6 py-4 hidden lg:table-cell text-gray-400 text-xs font-mono uppercase tracking-wide">
+                        {{ $qResult->car_name ?? ($qResult->team->car_model ?? '-') }}
                     </td>
 
                     <!-- TIEMPO -->

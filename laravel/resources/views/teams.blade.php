@@ -23,6 +23,10 @@
                         <div>
                             <p class="text-gray-400 text-sm uppercase tracking-wide">Manufacturer</p>
                             <p class="text-xl text-white font-semibold">{{ $team->car_brand ?? 'Unknown' }}</p>
+
+                            @if($team->car_model)
+                                <p class="text-sm text-gray-500 mt-1 font-mono uppercase">{{ $team->car_model }}</p>
+                            @endif
                         </div>
                         <span class="px-3 py-1 rounded text-xs font-bold uppercase tracking-wider {{ $team->type === 'works' ? 'bg-green-900 text-green-200' : 'bg-yellow-900 text-yellow-200' }}">
                             {{ $team->type }}

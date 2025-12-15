@@ -7,6 +7,7 @@
                 <th class="px-6 py-4 text-center w-16">Pos</th>
                 <th class="px-6 py-4">Driver</th>
                 <th class="px-6 py-4 hidden md:table-cell">Team</th>
+                <th class="px-6 py-4 hidden lg:table-cell">Car</th> <!-- NUEVO -->
                 <th class="px-6 py-4 text-center">Laps</th>
                 <th class="px-6 py-4 text-right">Time/Gap</th>
                 <th class="px-6 py-4 text-center">Best Lap</th>
@@ -20,52 +21,48 @@
             @foreach($results as $result)
                 <tr class="hover:bg-gray-700/50 transition duration-150">
                     
-                    <!-- GRID -->
+                    <!-- 1. GRID -->
                     <td class="px-6 py-4 text-center text-gray-500 font-mono">
                         {{ $result->grid_position ?? '-' }}
                     </td>
 
-                    <!-- POSICIÓN FINAL -->
+                    <!-- 2. POSICIÓN -->
                     <td class="px-6 py-4 text-center">
                         <span class="font-black text-lg text-white block">{{ $result->position }}</span>
                     </td>
 
-                    <!-- PILOTO -->
+                    <!-- 3. PILOTO -->
                     <td class="px-6 py-4">
                         <div class="flex items-center gap-3">
-                            <!-- Color del equipo (barrita) -->
                             <div class="w-1 h-8 rounded-full" style="background-color: {{ $result->team->primary_color ?? '#666' }}"></div>
-                            
                             <div>
                                 <div class="font-bold text-white text-base">{{ $result->driver->name }}</div>
+                                <!-- En móvil mostramos aquí el equipo para ahorrar espacio -->
                                 <div class="text-xs text-gray-500 hidden sm:block md:hidden">{{ $result->team->name ?? 'Privateer' }}</div>
                             </div>
                         </div>
                     </td>
 
-                    <!-- EQUIPO (Desktop) -->
+                    <!-- 4. EQUIPO -->
                     <td class="px-6 py-4 hidden md:table-cell text-gray-300 font-medium">
                         {{ $result->team->name ?? 'Privateer' }}
                     </td>
 
-                    <!-- VUELTAS -->
+                    <!-- 5. COCHE (NUEVO) -->
+                    <td class="px-6 py-4 hidden lg:table-cell text-gray-400 text-xs font-mono uppercase tracking-wide">
+                        {{ $result->car_name ?? ($result->team->car_model ?? '-') }}
+                    </td>
+
+                    <!-- 6. VUELTAS -->
                     <td class="px-6 py-4 text-center text-gray-300">
                         {{ $result->laps_completed ?? '-' }}
                     </td>
 
-                    <!-- TIEMPO / GAP -->
+                    <!-- 7. TIEMPO -->
                     <td class="px-6 py-4 text-right font-mono">
                         <div class="{{ in_array($result->status, ['dnf', 'dns']) ? 'text-red-500 font-bold' : 'text-white' }}">
-                            <!-- MOSTRAR TIEMPO SI EXISTE, AUNQUE SEA +1 LAP -->
-                            @if($result->race_time)
-                                {{ $result->race_time }}
-                            @elseif(in_array($result->status, ['dnf', 'dns', 'dsq']))
-                                - <!-- Si es abandono y no tiene tiempo, guion -->
-                            @else
-                                {{ strtoupper($result->status) }} <!-- Si es +1 Lap y no tiene tiempo, muestra "+1 LAP" -->
-                            @endif
+                            {{ $result->status === 'finished' ? $result->race_time : '-' }}
                         </div>
-                        
                         @if($result->penalty_seconds > 0)
                             <div class="text-xs text-red-400 font-bold mt-1">
                                 +{{ $result->penalty_seconds }}s pen
@@ -73,7 +70,7 @@
                         @endif
                     </td>
 
-                    <!-- BEST LAP (Morado) -->
+                    <!-- 8. BEST LAP -->
                     <td class="px-6 py-4 text-center font-mono">
                         @if($result->fastest_lap)
                             <span class="text-purple-400 font-bold">{{ $result->fastest_lap_time ?? 'Yes' }}</span>
@@ -83,14 +80,14 @@
                         @endif
                     </td>
 
-                    <!-- ESTADO (Badges) -->
+                    <!-- 9. ESTADO -->
                     <td class="px-6 py-4 text-center">
                         @php
                             $statusColor = match($result->status) {
                                 'finished' => 'bg-green-500/10 text-green-400 border-green-500/20',
                                 'dnf', 'dns' => 'bg-red-500/10 text-red-400 border-red-500/20',
                                 'dsq' => 'bg-gray-700 text-gray-300 border-gray-600',
-                                default => 'bg-yellow-500/10 text-yellow-400 border-yellow-500/20', // +1 Lap
+                                default => 'bg-yellow-500/10 text-yellow-400 border-yellow-500/20',
                             };
                         @endphp
                         <span class="px-2 py-1 rounded text-xs font-bold uppercase border {{ $statusColor }}">
@@ -98,7 +95,7 @@
                         </span>
                     </td>
 
-                    <!-- PUNTOS -->
+                    <!-- 10. PUNTOS -->
                     <td class="px-6 py-4 text-right">
                         @if($result->points > 0)
                             <span class="font-black text-white text-lg">{{ intval($result->points) }}</span>

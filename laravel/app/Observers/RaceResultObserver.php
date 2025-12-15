@@ -27,6 +27,17 @@ class RaceResultObserver
             $raceResult->load('race');
         }
 
+        {
+        // 1. Si hay equipo y no hemos guardado el nombre del coche aún...
+        if ($raceResult->team_id && empty($raceResult->car_name)) {
+            // Buscamos el equipo y copiamos su modelo actual
+            $team = \App\Models\Team::find($raceResult->team_id);
+            if ($team) {
+                $raceResult->car_name = $team->car_model;
+                }
+            }
+        }
+
         // 2. Si no terminó (DNF...), 0 puntos.
         if (in_array($raceResult->status, ['dnf', 'dns', 'dsq'])) {
             $raceResult->points = 0;
