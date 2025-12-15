@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Support\Facades\Auth;
 use Illuminate\View\View;
+use Illuminate\Support\Str; // Importar para el Str::limit en la vista
 
 class DashboardController extends Controller
 {
@@ -11,7 +12,7 @@ class DashboardController extends Controller
     {
         $user = Auth::user();
 
-        // --- 1. ESTADÍSTICAS GLOBALES ---
+        // 1. ESTADÍSTICAS
         $stats = [
             'starts' => $user->raceResults()->count(),
             'wins' => $user->raceResults()->where('position', 1)->count(),
@@ -20,15 +21,15 @@ class DashboardController extends Controller
             'points' => $user->raceResults()->sum('points'),
         ];
 
-        // --- 2. TABLA DE QUALY ---
+        // 2. HISTORIAL DE QUALY
         $qualyHistory = $user->qualifyingResults()
-            ->with('race.track') // Cargar carrera y circuito
+            ->with('race.track')
             ->join('races', 'qualifying_results.race_id', '=', 'races.id')
-            ->orderBy('races.race_date', 'desc') // Las más recientes primero
-            ->select('qualifying_results.*') // Evitar conflictos de ID con races
+            ->orderBy('races.race_date', 'desc')
+            ->select('qualifying_results.*')
             ->get();
 
-        // --- 3. GRÁFICA (Ya la tenías) ---
+        // 3. GRÁFICA DE RENDIMIENTO
         $results = $user->raceResults()
             ->join('races', 'race_results.race_id', '=', 'races.id')
             ->orderBy('races.race_date', 'asc')
@@ -45,6 +46,14 @@ class DashboardController extends Controller
             $data[] = $total;
         }
 
+        // 4. REPORTES DE INCIDENTES (Esto faltaba o fallaba)
+        $myReports = \App\Models\IncidentReport::where('reporter_id', $user->id)
+            ->orWhere('reported_id', $user->id)
+            ->with(['race.track', 'reporter', 'reported'])
+            ->orderBy('created_at', 'desc')
+            ->get();
+
+        // 5. PASAR DATOS A LA VISTA
         return view('dashboard', [
             'user' => $user,
             'stats' => $stats,
@@ -52,6 +61,7 @@ class DashboardController extends Controller
             'labels' => $labels,
             'data' => $data,
             'currentPoints' => $total,
+            'myReports' => $myReports,
         ]);
     }
 }

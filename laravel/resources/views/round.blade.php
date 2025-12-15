@@ -5,17 +5,20 @@
     
     <!-- Cabecera del Evento -->
     <div class="mb-8 text-center relative">
-        <!-- BOTÓN PDF (Flotando a la derecha o debajo en móvil) -->
+        <!-- Botón Global de PDF (Opcional, lo dejo por si quieres descargar el pack completo) -->
         <div class="md:absolute md:top-0 md:right-0 mt-4 md:mt-0">
             <a href="{{ route('rounds.pdf', $roundNumber) }}" class="inline-flex items-center gap-2 bg-gray-800 hover:bg-gray-700 text-gray-300 hover:text-white border border-gray-600 px-4 py-2 rounded transition text-sm font-bold">
                 <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path></svg>
-                Export PDF
+                Full Report
             </a>
         </div>
+
         <p class="text-red-500 font-bold tracking-widest uppercase text-sm mb-1">Round {{ $roundNumber }}</p>
         <h1 class="text-4xl md:text-6xl font-black text-white mb-2 uppercase">{{ $track->name }}</h1>
         <div class="flex justify-center items-center gap-2">
-            <img src="https://flagcdn.com/24x18/{{ strtolower($track->country_code) }}.png" class="h-5 rounded shadow">
+            @if($track->country_code)
+                <img src="https://flagcdn.com/24x18/{{ strtolower($track->country_code) }}.png" class="h-5 rounded shadow">
+            @endif
             <p class="text-gray-400 text-xl font-mono">{{ $sprint->race_date->format('d F Y') }}</p>
         </div>
     </div>
@@ -56,7 +59,6 @@
             <div class="bg-gray-900 px-6 py-4 border-b border-gray-700">
                 <h3 class="text-xl font-bold text-white">Qualifying Session</h3>
             </div>
-            <!-- Reutiliza tu tabla de Qualy aquí -->
             @include('partials.results-table-qualy', ['results' => $qualy->sortBy('position')])
         </div>
     </div>
@@ -65,10 +67,22 @@
     <!-- CONTENIDO: SPRINT -->
     <div x-show="tab === 'sprint'" x-transition.opacity>
         <div class="bg-gray-800 rounded-lg shadow-xl overflow-hidden border border-gray-700">
-            <div class="bg-gray-900 px-6 py-4 border-b border-gray-700 flex justify-between items-center">
-                <h3 class="text-xl font-bold text-white">{{ $sprint->title ?? 'Sprint Race' }}</h3>
-                <span class="text-xs font-mono text-gray-400">{{ $sprint->status }}</span>
+            
+            <!-- Cabecera Sprint -->
+            <div class="bg-gray-900 px-6 py-4 border-b border-gray-700 flex flex-col md:flex-row justify-between items-center gap-4">
+                <div>
+                    <h3 class="text-xl font-bold text-white">{{ $sprint->title ?? 'Sprint Race' }}</h3>
+                    <span class="text-xs font-mono text-gray-400 uppercase">{{ $sprint->status }}</span>
+                </div>
+
+                <!-- Botón FIA Doc Sprint -->
+                <a href="{{ route('races.doc', $sprint) }}" target="_blank" 
+                   class="flex items-center gap-2 bg-gray-800 hover:bg-gray-700 text-gray-300 hover:text-white border border-gray-600 px-3 py-1.5 rounded transition text-xs font-bold uppercase tracking-wide">
+                    <svg class="w-4 h-4 text-red-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path></svg>
+                    Steward Decision
+                </a>
             </div>
+
             @include('partials.results-table-race', ['results' => $sprint->results->sortBy('position')])
         </div>
     </div>
@@ -77,10 +91,22 @@
     @if($feature)
     <div x-show="tab === 'feature'" x-transition.opacity style="display: none;">
         <div class="bg-gray-800 rounded-lg shadow-xl overflow-hidden border border-gray-700">
-            <div class="bg-gray-900 px-6 py-4 border-b border-gray-700 flex justify-between items-center">
-                <h3 class="text-xl font-bold text-white">{{ $feature->title ?? 'Feature Race' }}</h3>
-                <span class="text-xs font-mono text-gray-400">{{ $feature->status }}</span>
+            
+            <!-- Cabecera Feature -->
+            <div class="bg-gray-900 px-6 py-4 border-b border-gray-700 flex flex-col md:flex-row justify-between items-center gap-4">
+                <div>
+                    <h3 class="text-xl font-bold text-white">{{ $feature->title ?? 'Feature Race' }}</h3>
+                    <span class="text-xs font-mono text-gray-400 uppercase">{{ $feature->status }}</span>
+                </div>
+
+                <!-- Botón FIA Doc Feature -->
+                <a href="{{ route('races.doc', $feature) }}" target="_blank" 
+                   class="flex items-center gap-2 bg-gray-800 hover:bg-gray-700 text-gray-300 hover:text-white border border-gray-600 px-3 py-1.5 rounded transition text-xs font-bold uppercase tracking-wide">
+                    <svg class="w-4 h-4 text-red-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path></svg>
+                    Steward Decision
+                </a>
             </div>
+
             @include('partials.results-table-race', ['results' => $feature->results->sortBy('position')])
         </div>
     </div>

@@ -4,12 +4,13 @@ namespace App\Http\Controllers;
 
 use App\Models\Race;
 use Barryvdh\DomPDF\Facade\Pdf;
+use Illuminate\View\View; // Importante para el return view
 
 class PdfController extends Controller
 {
+    // MÉTODO 1: Descargar el PDF de la Ronda completa (El botón de arriba)
     public function downloadRound($roundNumber)
     {
-        // 1. Buscar las sesiones de esa ronda
         $sessions = Race::where('round_number', $roundNumber)
             ->with(['track', 'results.driver', 'results.team', 'qualifyingResults.driver'])
             ->orderBy('race_date', 'asc')
@@ -19,12 +20,10 @@ class PdfController extends Controller
             abort(404);
         }
 
-        // 2. Identificar sesiones (Igual que en RoundController)
         $sprintRace = $sessions->first();
         $featureRace = $sessions->skip(1)->first();
         $qualySession = $sprintRace->qualifyingResults->sortBy('position');
 
-        // 3. Generar PDF (Hoja horizontal 'landscape' para que quepan las tablas)
         $pdf = Pdf::loadView('pdf.round-report', [
             'roundNumber' => $roundNumber,
             'track' => $sprintRace->track,
@@ -32,9 +31,29 @@ class PdfController extends Controller
             'feature' => $featureRace,
             'qualy' => $qualySession,
             'date' => now()->format('d M Y'),
-        ])->setPaper('a4', 'landscape'); // A4 Horizontal
+        ])->setPaper('a4', 'landscape');
 
-        // 4. Descargar
         return $pdf->download("WTCS_Round{$roundNumber}_Report.pdf");
+    }
+
+    // MÉTODO 2: Ver el Documento de Sanciones (El botón de Steward)
+    public function showPenaltyDoc($raceId)
+    {
+        $race = \App\Models\Race::with(['track', 'season'])->findOrFail($raceId);
+        
+        $penalties = \App\Models\IncidentReport::where('race_id', $raceId)
+            ->where('status', 'resolved')
+            ->whereNotNull('penalty_applied')
+            ->with(['reported', 'reported.team'])
+            ->get();
+
+        // Devolvemos una VISTA HTML, no un PDF descargable
+        return view('pdf.penalty-document', [
+            'race' => $race,
+            'penalties' => $penalties,
+            'docNumber' => 28, 
+            'date' => now()->subYears(26)->format('F jS Y'),
+            'time' => now()->format('H:i'),
+        ]);
     }
 }

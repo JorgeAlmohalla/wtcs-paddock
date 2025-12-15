@@ -34,6 +34,7 @@ Route::get('/teams', TeamsController::class)->name('teams');
 Route::get('/news', NewsController::class)->name('news.index');
 Route::get('/rounds/{round}', [RoundController::class, 'show'])->name('rounds.show');
 Route::get('/rounds/{round}/pdf', [PdfController::class, 'downloadRound'])->name('rounds.pdf');
+Route::get('/races/{race}/doc', [PdfController::class, 'showPenaltyDoc'])->name('races.doc');
 
 // Noticia individual
 Route::get('/news/{post:slug}', function (Post $post) {
