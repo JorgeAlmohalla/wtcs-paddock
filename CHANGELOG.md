@@ -8,6 +8,23 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [Unreleased]
 *Work in progress for v3.0 (API & Mobile App)*
 
+## [v2.4.0] - 15-12-2025
+### Added (Historical Data)
+- **Car Model Snapshot:** Implemented data snapshotting logic to store the vehicle model name (`car_name`) directly in `race_results` and `qualifying_results` tables upon creation. This prevents historical data corruption if a team changes cars in future seasons.
+- **Car Model Display:** Added "Car" column to all public result tables (Race & Qualy) and PDF reports.
+
+### Changed
+- **Database Schema:** Migrated `teams` table to include `car_model` and updated results tables to store the snapshot.
+- **Observers:** Created `QualifyingResultObserver` to mirror the snapshot logic used in Race Results.
+
+### Added (Automation)
+- **CSV Import System:** Integrated `maatwebsite/excel` to allow bulk import of race results directly from the Admin Panel.
+- **Smart Parsing Logic:** Custom import algorithm that:
+    - Auto-detects driver by name (fuzzy matching).
+    - Parses complex time strings ("44:03 +5") into separate Time and Penalty fields.
+    - Identifies status codes (DNF, DNS, DSQ) from text descriptions.
+    - Detects "Fastest Lap" metadata from the CSV footer row and assigns it to the correct driver.
+
 ## [v2.3.0] - 14-12-2025
 ### Added (Driver Hub & Analytics)
 - **Advanced Dashboard:** Redesigned the driver landing page to act as a complete career hub, featuring:

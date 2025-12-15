@@ -142,6 +142,32 @@ class ResultsRelationManager extends RelationManager
             ])
             ->defaultSort('position', 'asc')
             ->headerActions([
+                // --- BOTÓN IMPORTAR CSV ---
+                Tables\Actions\Action::make('importCsv')
+                    ->label('Import CSV')
+                    ->icon('heroicon-o-arrow-up-tray')
+                    ->color('success')
+                    ->form([
+                        Forms\Components\FileUpload::make('csv_file')
+                            ->label('Upload Result File')
+                            ->acceptedFileTypes(['text/csv', 'application/vnd.ms-excel'])
+                            ->required(),
+                    ])
+                    ->action(function (array $data, \App\Filament\Resources\RaceResource\RelationManagers\ResultsRelationManager $livewire) {
+                        // Obtener ID de la carrera actual
+                        $raceId = $livewire->getOwnerRecord()->id;
+                        
+                        // Ejecutar importación
+                        $file = storage_path('app/public/' . $data['csv_file']);
+                        \Maatwebsite\Excel\Facades\Excel::import(new \App\Imports\RaceResultsImport($raceId), $file);
+                        
+                        // Notificación de éxito
+                        \Filament\Notifications\Notification::make()
+                            ->title('Results Imported Successfully')
+                            ->success()
+                            ->send();
+                    }),
+                
                 Tables\Actions\CreateAction::make()
                     ->label('Add Result')
                     ->modalHeading('Register Race Result')
