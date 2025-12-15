@@ -13,6 +13,8 @@ use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\RaceController;
 use App\Http\Controllers\RoundController;
 use App\Http\Controllers\PdfController;
+use App\Http\Controllers\ReportController;
+
 
 /*
 |--------------------------------------------------------------------------
@@ -56,6 +58,12 @@ Route::middleware('auth')->group(function () {
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
     
+});
+
+// Página de reportes
+Route::middleware(['auth', 'verified'])->group(function () {
+    Route::get('/report/new', [ReportController::class, 'create'])->name('report.create');
+    Route::post('/report', [ReportController::class, 'store'])->name('report.store');
 });
 
 // Carga las rutas de login/registro (NO BORRAR)

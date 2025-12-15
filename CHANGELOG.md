@@ -8,6 +8,16 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [Unreleased]
 *Work in progress for v3.0 (API & Mobile App)*
 
+## [v3.1.0-beta] - 15-12-2025
+### Added (Stewarding System)
+- **Incident Reporting:** Implemented a public form for drivers to submit incident reports with video evidence.
+- **Admin Review Panel:** Created `IncidentReportResource` in Filament for stewards to review, investigate, and penalize incidents.
+- **Dashboard Integration:** Added "Report Incident" button to the driver dashboard.
+- **Database Schema:** Created `incident_reports` table linking reporters, accused drivers, and races.
+
+### Changed
+- **Driver Profile:** Expanded `users` table with `bio` and `equipment` fields.
+
 ## [v2.4.0] - 15-12-2025
 ### Added (Historical Data)
 - **Car Model Snapshot:** Implemented data snapshotting logic to store the vehicle model name (`car_name`) directly in `race_results` and `qualifying_results` tables upon creation. This prevents historical data corruption if a team changes cars in future seasons.

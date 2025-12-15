@@ -38,10 +38,19 @@
                 <div class="flex gap-2">
                     <a href="{{ route('profile.edit') }}" class="bg-gray-700 hover:bg-gray-600 text-white px-3 py-2 rounded text-xs font-bold transition">⚙️ Edit</a>
                     
-                    <!-- Botón de Reporte (Futuro) -->
-                    <button class="bg-red-600 hover:bg-red-700 text-white px-3 py-2 rounded text-xs font-bold transition flex items-center gap-1 opacity-50 cursor-not-allowed" title="Coming soon">
-                        ⚠️ Report Incident
-                    </button>
+        <!-- Botón de Reporte ACTIVO -->
+            <a href="{{ route('report.create') }}" 
+                class="bg-red-600 hover:bg-red-700 text-white px-3 py-2 rounded text-xs font-bold transition flex items-center gap-1 shadow-md hover:shadow-lg transform hover:scale-105">
+                ⚠️ Report Incident
+            </a>
+
+        <!-- BOTÓN SOLO PARA ADMINS -->
+            @if(Auth::user()->role === 'admin' || Auth::user()->role === 'steward')
+            <a href="/admin" 
+                class="bg-yellow-600 hover:bg-yellow-500 text-white px-4 py-2 rounded-lg font-semibold transition border border-yellow-500 flex items-center gap-2">
+                <span>🛡️ Admin Panel</span>
+            </a>
+            @endif
                 </div>
             </div>
 
