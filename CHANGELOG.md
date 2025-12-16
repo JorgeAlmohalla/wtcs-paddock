@@ -8,6 +8,16 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [Unreleased]
 *Work in progress for v3.0 (API & Mobile App)*
 
+## [v3.1.1-beta] - 16-12-2025
+### Added (Stewarding & Docs)
+- **Official Documentation:** Created an HTML-based "Decision Document" viewer mimicking FIA official reports (Logos, Styling, Signatures).
+- **Incident Feedback:** Added a "Stewarding Reports" section to the Driver Dashboard, allowing users to track the status (Pending/Resolved) and outcome of their reports.
+- **Round Integration:** Embedded "Steward Decision" buttons directly within Sprint/Feature race headers for easy access.
+
+### Changed
+- **Document Generation:** Switched from PDF download to a responsive HTML view for better mobile compatibility and faster loading.
+- **Historical Logic:** Implemented year simulation logic in documents based on the Season name (e.g., "Season 1999" -> displays 1999 date).
+
 ## [v3.1.0-beta] - 15-12-2025
 ### Added (Stewarding System)
 - **Incident Reporting:** Implemented a public form for drivers to submit incident reports with video evidence.

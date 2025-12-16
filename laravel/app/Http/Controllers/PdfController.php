@@ -39,20 +39,33 @@ class PdfController extends Controller
     // MÉTODO 2: Ver el Documento de Sanciones (El botón de Steward)
     public function showPenaltyDoc($raceId)
     {
+        // 1. Buscamos la carrera
         $race = \App\Models\Race::with(['track', 'season'])->findOrFail($raceId);
         
+        // 2. Buscamos reportes resueltos
         $penalties = \App\Models\IncidentReport::where('race_id', $raceId)
             ->where('status', 'resolved')
             ->whereNotNull('penalty_applied')
             ->with(['reported', 'reported.team'])
             ->get();
 
-        // Devolvemos una VISTA HTML, no un PDF descargable
+        // 3. Calculamos la fecha simulada
+        $seasonName = $race->season->name;
+        $simulatedYear = null;
+        if (preg_match('/\((\d{4})\)/', $seasonName, $matches)) {
+            $simulatedYear = $matches[1];
+        }
+        $dateObj = now();
+        if ($simulatedYear) {
+            $dateObj = $dateObj->setYear((int)$simulatedYear);
+        }
+
+        // 4. Enviamos a la vista
         return view('pdf.penalty-document', [
             'race' => $race,
             'penalties' => $penalties,
-            'docNumber' => 28, 
-            'date' => now()->subYears(26)->format('F jS Y'),
+            'docNumber' => rand(10, 99),
+            'date' => $dateObj->format('F jS Y'),
             'time' => now()->format('H:i'),
         ]);
     }

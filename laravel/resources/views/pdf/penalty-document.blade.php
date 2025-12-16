@@ -157,7 +157,7 @@
                 <div class="penalty-block">
                     <!-- Formato: NOMBRE - 5 second penalty for reason. explanation. -->
                     <span class="driver-name">{{ $penalty->reported->name }}</span> 
-                    - {{ $penalty->penalty_applied }} penalty for {{ Str::lower($penalty->description) }}.
+                    - {{ $penalty->penalty_applied }} penalty for {{ strtolower($penalty->description) }}
                     <br>
                     {{ $penalty->steward_notes }}
                 </div>
