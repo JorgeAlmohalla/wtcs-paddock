@@ -14,6 +14,7 @@ use App\Http\Controllers\RaceController;
 use App\Http\Controllers\RoundController;
 use App\Http\Controllers\PdfController;
 use App\Http\Controllers\ReportController;
+use App\Http\Controllers\TeamManagementController;
 
 
 /*
@@ -35,6 +36,12 @@ Route::get('/news', NewsController::class)->name('news.index');
 Route::get('/rounds/{round}', [RoundController::class, 'show'])->name('rounds.show');
 Route::get('/rounds/{round}/pdf', [PdfController::class, 'downloadRound'])->name('rounds.pdf');
 Route::get('/races/{race}/doc', [PdfController::class, 'showPenaltyDoc'])->name('races.doc');
+Route::get('/my-team', [TeamManagementController::class, 'edit'])->name('team.manage');
+Route::patch('/my-team', [TeamManagementController::class, 'update'])->name('team.update');
+
+//Fichar / Despedir piloto
+Route::post('/my-team/add', [TeamManagementController::class, 'addDriver'])->name('team.addDriver');
+Route::delete('/my-team/remove/{driver}', [TeamManagementController::class, 'removeDriver'])->name('team.removeDriver');
 
 // Noticia individual
 Route::get('/news/{post:slug}', function (Post $post) {

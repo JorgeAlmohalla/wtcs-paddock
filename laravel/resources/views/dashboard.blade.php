@@ -61,6 +61,14 @@
                 </p>
             </div>
         </div>
+
+        <!-- BOTON GESTION EQUIPO -->
+            @if(Auth::user()->isTeamPrincipal())
+            <a href="{{ route('team.manage') }}" 
+                class="bg-blue-600 hover:bg-blue-500 text-white px-4 py-2 rounded-lg font-semibold transition border border-blue-500 flex items-center gap-2">
+                <span>🏢 Manage Team</span>
+            </a>
+            @endif
     </div>
 
     <!-- FILA DE ESTADÍSTICAS (BIG NUMBERS) -->

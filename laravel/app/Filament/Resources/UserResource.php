@@ -56,16 +56,26 @@ class UserResource extends Resource
                     ->label('Country Code')
                     ->default('ES')
                     ->maxLength(2),
-                
-                Forms\Components\Select::make('role')
-                    ->label('Role')
+
+                Forms\Components\CheckboxList::make('roles')
+                    ->label('Roles')
                     ->options([
-                        'driver' => 'Driver',
-                        'admin' => 'Admin',
-                        'steward' => 'Steward',
+                        'admin' => 'Admin (Superuser)',
+                        'steward' => 'Steward (Comisario)',
+                        'team_principal' => 'Team Principal (Jefe Equipo)',
+                        'driver' => 'Driver (Piloto)',
                     ])
-                    ->default('driver')
+                    ->columns(2)
                     ->required(),
+
+                Forms\Components\Select::make('contract_type')
+                    ->options([
+                        'primary' => 'Primary Driver',
+                        'reserve' => 'Reserve Driver',
+                    ])
+                    ->default('primary')
+                    ->required(),
+                    
             ]);
     }
 

@@ -33,18 +33,48 @@
                         </span>
                     </div>
 
-                    <!-- Lista de Pilotos del equipo -->
+                    <!-- Lista de Pilotos -->
                     <div class="border-t border-gray-700 pt-4">
-                        <p class="text-gray-500 text-sm mb-3">Active Drivers</p>
+                        <div class="flex justify-between items-end mb-3">
+                            <p class="text-gray-500 text-sm">Roster</p>
+                        </div>
+
                         @if($team->drivers->count() > 0)
-                            <div class="space-y-2">
-                                @foreach($team->drivers as $driver)
-                                    <div class="flex items-center gap-3">
-                                        <div class="h-2 w-2 rounded-full" style="background-color: {{ $team->primary_color }}"></div>
-                                        <span class="text-white font-medium">{{ $driver->name }}</span>
-                                        @if($driver->nationality)
-                                            <img src="https://flagcdn.com/16x12/{{ strtolower($driver->nationality) }}.png" class="opacity-70">
+                            <div class="space-y-3">
+                                @foreach($team->drivers->sortBy('contract_type') as $driver)
+                                    <div class="flex items-center justify-between bg-black/20 p-2 rounded border border-transparent hover:border-gray-600 transition">
+                                        
+                                        <!-- Izquierda: Nombre y Bandera -->
+                                        <div class="flex items-center gap-3">
+                                            <!-- Indicador de color -->
+                                            <div class="h-8 w-1 rounded-full {{ $driver->contract_type === 'reserve' ? 'bg-gray-600' : '' }}" 
+                                                 style="{{ $driver->contract_type === 'primary' ? 'background-color: '.$team->primary_color : '' }}">
+                                            </div>
+                                            
+                                            <div>
+                                                <div class="flex items-center gap-2">
+                                                    <span class="text-white font-bold {{ $driver->contract_type === 'reserve' ? 'text-gray-400' : '' }}">
+                                                        {{ $driver->name }}
+                                                    </span>
+                                                    @if($driver->nationality)
+                                                        <img src="https://flagcdn.com/16x12/{{ strtolower($driver->nationality) }}.png" class="opacity-80">
+                                                    @endif
+                                                </div>
+                                                
+                                                <!-- Etiqueta de Reserva -->
+                                                @if($driver->contract_type === 'reserve')
+                                                    <span class="text-[10px] uppercase font-bold text-gray-500 tracking-wide">Reserve Driver</span>
+                                                @endif
+                                            </div>
+                                        </div>
+
+                                        <!-- Derecha: Etiqueta Team Principal -->
+                                        @if($driver->isTeamPrincipal())
+                                            <span class="bg-yellow-500/20 text-yellow-500 text-[10px] font-bold px-2 py-1 rounded border border-yellow-500/30 uppercase tracking-wider">
+                                                Team Principal
+                                            </span>
                                         @endif
+
                                     </div>
                                 @endforeach
                             </div>

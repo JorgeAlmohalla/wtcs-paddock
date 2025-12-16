@@ -8,6 +8,17 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [Unreleased]
 *Work in progress for v3.0 (API & Mobile App)*
 
+## [v2.5.0] - 16-12-2025
+### Added (Team Management)
+- **Role System:** Refactored user roles to a JSON-based array system allowing multi-role assignment (e.g., Driver + Team Principal).
+- **Team Principal Portal:** Created a dedicated management dashboard for team owners (`/my-team`).
+- **Roster Management:** Implemented tools for Team Principals to sign Free Agents and release drivers from their contracts.
+- **Contract Types:** Added distinction between 'Primary' and 'Reserve' drivers, with visual indicators in the roster list.
+
+### Changed
+- **Database Schema:** Migrated `users.role` (string) to `users.roles` (json) and added `contract_type` enum.
+- **Auth Logic:** Updated User model with helper methods (`hasRole`, `isTeamPrincipal`) to handle the new permission structure.
+
 ## [v3.1.1-beta] - 16-12-2025
 ### Added (Stewarding & Docs)
 - **Official Documentation:** Created an HTML-based "Decision Document" viewer mimicking FIA official reports (Logos, Styling, Signatures).
