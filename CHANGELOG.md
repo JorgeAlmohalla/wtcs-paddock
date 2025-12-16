@@ -14,6 +14,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - **Team Principal Portal:** Created a dedicated management dashboard for team owners (`/my-team`).
 - **Roster Management:** Implemented tools for Team Principals to sign Free Agents and release drivers from their contracts.
 - **Contract Types:** Added distinction between 'Primary' and 'Reserve' drivers, with visual indicators in the roster list.
+- **Roster Controls:** Added "Sign Driver" form (using Free Agents pool) and "Remove Driver" actions to the Team Management portal.
+- **Role Visibility:** Visual indicators for "Team Principal" and "Reserve Driver" roles in public team pages and management dashboard.
+- **Contract Logic:** Backend logic to prevent duplicate signings and handle contract termination gracefully.
 
 ### Changed
 - **Database Schema:** Migrated `users.role` (string) to `users.roles` (json) and added `contract_type` enum.

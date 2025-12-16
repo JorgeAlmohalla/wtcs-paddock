@@ -16,6 +16,7 @@ use App\Http\Controllers\PdfController;
 use App\Http\Controllers\ReportController;
 use App\Http\Controllers\TeamManagementController;
 use App\Http\Controllers\PublicProfileController;
+use App\Http\Controllers\PublicTeamController;
 
 
 /*
@@ -40,6 +41,7 @@ Route::get('/races/{race}/doc', [PdfController::class, 'showPenaltyDoc'])->name(
 Route::get('/my-team', [TeamManagementController::class, 'edit'])->name('team.manage');
 Route::patch('/my-team', [TeamManagementController::class, 'update'])->name('team.update');
 Route::get('/driver/{user}', [PublicProfileController::class, 'show'])->name('driver.show');
+Route::get('/team/{team}', [PublicTeamController::class, 'show'])->name('team.show');
 
 //Fichar / Despedir piloto
 Route::post('/my-team/add', [TeamManagementController::class, 'addDriver'])->name('team.addDriver');

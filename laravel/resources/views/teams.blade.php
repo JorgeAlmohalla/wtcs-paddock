@@ -12,7 +12,9 @@
                 <div class="h-24 flex items-center px-6 relative overflow-hidden" 
                      style="background: linear-gradient(135deg, {{ $team->primary_color ?? '#333' }} 0%, #1f2937 100%);">
                     
-                    <h2 class="text-3xl font-bold text-white relative z-10">{{ $team->name }}</h2>
+                    <a href="{{ route('team.show', $team) }}" class="text-3xl font-bold text-white relative z-10 hover:underline decoration-white/50 underline-offset-4 transition">
+                        {{ $team->name }}
+                    </a>
                     <span class="text-6xl font-black text-white opacity-5 absolute -right-4 -bottom-8 select-none">
                         {{ $team->short_name }}
                     </span>
