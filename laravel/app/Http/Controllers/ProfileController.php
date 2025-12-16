@@ -75,6 +75,7 @@ class ProfileController extends Controller
         $request->user()->fill([
             'steam_id' => $validated['steam_id'],
             'nationality' => strtoupper($validated['nationality']),
+            'driver_number' => ['nullable', 'integer', 'min:0', 'max:999'],
         ]);
 
         $validated = $request->validate([
@@ -87,8 +88,9 @@ class ProfileController extends Controller
         $request->user()->fill([
             'steam_id' => $validated['steam_id'],
             'nationality' => strtoupper($validated['nationality']),
-            'bio' => $validated['bio'],           // <--- NUEVO
-            'equipment' => $validated['equipment'], // <--- NUEVO
+            'bio' => $validated['bio'],
+            'equipment' => $validated['equipment'],
+            'driver_number' => $validated['driver_number'] ?? null, 
         ]);
 
         $request->user()->save();

@@ -20,43 +20,78 @@ class ResultsRelationManager extends RelationManager
     {
         return $form
             ->schema([
-                // ... (Selección de Piloto y Equipo igual que antes) ...
+                // GRUPO 1: PILOTO, NÚMERO Y EQUIPO
                 Forms\Components\Group::make()->schema([
+                    
+                    // Piloto (Rellena equipo y número al cambiar)
                     Forms\Components\Select::make('user_id')
                         ->relationship('driver', 'name')
-                        ->searchable()->preload()->required()->reactive()
-                        ->afterStateUpdated(fn ($state, Forms\Set $set) => $set('team_id', \App\Models\User::find($state)?->team_id)),
-                    Forms\Components\Select::make('team_id')
-                        ->relationship('team', 'name')->required(),
-                ])->columns(2),
+                        ->label('Driver')
+                        ->searchable()
+                        ->preload()
+                        ->required()
+                        ->reactive()
+                        ->afterStateUpdated(function ($state, Forms\Set $set) {
+                            $user = \App\Models\User::find($state);
+                            if ($user) {
+                                $set('team_id', $user->team_id);
+                                $set('driver_number', $user->driver_number);
+                            }
+                        })
+                        ->columnSpan(4), // Ancho grande
 
+                    // Número (Dorsal)
+                    Forms\Components\TextInput::make('driver_number')
+                        ->label('#')
+                        ->numeric()
+                        ->columnSpan(2), // Ancho pequeño
+
+                    // Equipo
+                    Forms\Components\Select::make('team_id')
+                        ->relationship('team', 'name')
+                        ->label('Team')
+                        ->required()
+                        ->columnSpanFull(), // Ocupa toda la fila de abajo
+
+                ])->columns(6)->columnSpanFull(),
+
+                // GRUPO 2: POSICIONES
                 Forms\Components\Group::make()->schema([
                     Forms\Components\TextInput::make('grid_position')->label('Grid Start')->numeric(),
                     Forms\Components\TextInput::make('position')->label('Final Pos')->numeric()->required(),
                     Forms\Components\Select::make('status')
-                        ->options(['finished'=>'Finished','dnf'=>'DNF','dns'=>'DNS','dsq'=>'DSQ','+1 lap'=>'+1 Lap','+2 laps'=>'+2 Laps','+3 laps'=>'+3 Laps'])
+                        ->options([
+                            'finished' => 'Finished',
+                            'dnf' => 'DNF',
+                            'dns' => 'DNS',
+                            'dsq' => 'DSQ',
+                            '+1 lap' => '+1 Lap',
+                            '+2 laps' => '+2 Laps',
+                            '+3 laps' => '+3 Laps'
+                        ])
                         ->default('finished')->required(),
                 ])->columns(3),
 
+                // GRUPO 3: TIEMPOS
                 Forms\Components\Group::make()->schema([
                     Forms\Components\TextInput::make('race_time')->label('Total Time')->mask('99:99.999'),
                     Forms\Components\TextInput::make('laps_completed')->label('Laps')->numeric(),
                     Forms\Components\TextInput::make('penalty_seconds')->label('Penalty')->numeric()->suffix('s')->default(0),
                 ])->columns(3),
 
-                // --- SECCIÓN VUELTA RÁPIDA ---
+                // GRUPO 4: VUELTA RÁPIDA
                 Forms\Components\Section::make('Fastest Lap Data')
                     ->schema([
                         Forms\Components\Toggle::make('fastest_lap')
                             ->label('Is Fastest Lap?')
                             ->onColor('purple')
-                            ->reactive(), // Para mostrar/ocultar el tiempo
+                            ->reactive(),
                         
                         Forms\Components\TextInput::make('fastest_lap_time')
                             ->label('Lap Time')
                             ->placeholder('1:32.450')
                             ->mask('9:99.999')
-                            ->hidden(fn (Forms\Get $get) => !$get('fastest_lap')), // Solo sale si marcas el toggle
+                            ->hidden(fn (Forms\Get $get) => !$get('fastest_lap')),
                     ])->columns(2),
             ]);
     }

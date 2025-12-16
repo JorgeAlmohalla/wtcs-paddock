@@ -36,7 +36,11 @@
                         <div class="flex items-center gap-3">
                             <div class="w-1 h-8 rounded-full" style="background-color: {{ $result->team->primary_color ?? '#666' }}"></div>
                             <div>
-                                <div class="font-bold text-white text-base">{{ $result->driver_number ?? $result->driver->driver_number }}</div>
+                                <!-- Mostrar numero de piloto -->
+                                 <div class="flex items-center gap-2">
+                                    <span class="text-gray-500 font-mono text-xs">#{{ $result->driver_number ?? $result->driver->driver_number }}</span>
+                                    <span class="font-bold text-white text-base">{{ $result->driver->name }}</span>
+                                </div>
                                 <!-- En móvil mostramos aquí el equipo para ahorrar espacio -->
                                 <div class="text-xs text-gray-500 hidden sm:block md:hidden">{{ $result->team->name ?? 'Privateer' }}</div>
                             </div>
