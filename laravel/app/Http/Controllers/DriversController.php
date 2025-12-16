@@ -9,10 +9,10 @@ class DriversController extends Controller
 {
     public function __invoke(): View
     {
-        // Sacamos solo los pilotos, ordenados primero por Equipo y luego por Nombre
-        $drivers = User::where('role', 'driver')
+        // Buscamos usuarios que tengan "driver" dentro del array JSON de roles
+        $drivers = User::whereJsonContains('roles', 'driver')
             ->with('team')
-            ->orderBy('team_id', 'desc') // Agrupa equipos primero
+            ->orderBy('team_id', 'desc')
             ->orderBy('name', 'asc')
             ->get();
 

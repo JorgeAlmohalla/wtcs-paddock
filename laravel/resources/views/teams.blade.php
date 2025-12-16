@@ -6,7 +6,7 @@
 
     <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
         @foreach($teams as $team)
-            <div class="bg-gray-800 rounded-xl overflow-hidden shadow-lg border border-gray-700">
+            <div class="bg-gray-800 rounded-xl overflow-hidden shadow-lg border border-gray-700 flex flex-col">
                 
                 <!-- Cabecera con el color del equipo -->
                 <div class="h-24 flex items-center px-6 relative overflow-hidden" 
@@ -33,7 +33,7 @@
                         </span>
                     </div>
 
-                    <!-- Lista de Pilotos -->
+                    <!-- Lista de Pilotos del equipo -->
                     <div class="border-t border-gray-700 pt-4">
                         <div class="flex justify-between items-end mb-3">
                             <p class="text-gray-500 text-sm">Roster</p>
@@ -42,7 +42,7 @@
                         @if($team->drivers->count() > 0)
                             <div class="space-y-3">
                                 @foreach($team->drivers->sortBy('contract_type') as $driver)
-                                    <div class="flex items-center justify-between bg-black/20 p-2 rounded border border-transparent hover:border-gray-600 transition">
+                                    <a href="{{ route('driver.show', $driver) }}" class="block flex items-center justify-between bg-black/20 p-2 rounded border border-transparent hover:border-gray-500 hover:bg-black/40 transition group">
                                         
                                         <!-- Izquierda: Nombre y Bandera -->
                                         <div class="flex items-center gap-3">
@@ -53,7 +53,7 @@
                                             
                                             <div>
                                                 <div class="flex items-center gap-2">
-                                                    <span class="text-white font-bold {{ $driver->contract_type === 'reserve' ? 'text-gray-400' : '' }}">
+                                                    <span class="text-white font-bold group-hover:text-red-400 transition {{ $driver->contract_type === 'reserve' ? 'text-gray-400' : '' }}">
                                                         {{ $driver->name }}
                                                     </span>
                                                     @if($driver->nationality)
@@ -75,7 +75,7 @@
                                             </span>
                                         @endif
 
-                                    </div>
+                                    </a>
                                 @endforeach
                             </div>
                         @else

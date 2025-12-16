@@ -19,6 +19,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - **Database Schema:** Migrated `users.role` (string) to `users.roles` (json) and added `contract_type` enum.
 - **Auth Logic:** Updated User model with helper methods (`hasRole`, `isTeamPrincipal`) to handle the new permission structure.
 
+### Changed (UI)
+- **Team Cards:** Redesigned constructor cards to include "Car Model" field and improved layout alignment.
+- **Roster Links:** Made the entire driver row clickable in the Team view, linking to the public driver profile.
+
 ## [v3.1.1-beta] - 16-12-2025
 ### Added (Stewarding & Docs)
 - **Official Documentation:** Created an HTML-based "Decision Document" viewer mimicking FIA official reports (Logos, Styling, Signatures).
