@@ -1,7 +1,7 @@
 @extends('layouts.app')
 
 @section('content')
-<div class="max-w-6xl mx-auto" x-data="{ tab: 'sprint' }"> <!-- Por defecto Sprint -->
+<div class="max-w-6xl mx-auto" x-data="{ tab: '{{ $qualy && $qualy->count() > 0 ? 'qualy' : 'sprint' }}' }">
     
     <!-- Cabecera del Evento -->
     <div class="mb-8 text-center relative">

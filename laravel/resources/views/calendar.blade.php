@@ -43,8 +43,28 @@
                                 {{ $mainRace->track->name }}
                             </h2>
                             <div class="flex items-center gap-3 text-gray-400">
-                                <img src="https://flagcdn.com/24x18/{{ strtolower($mainRace->track->country_code) }}.png" class="h-4 rounded shadow-sm">
-                                <span class="font-mono text-sm">{{ $mainRace->race_date->format('d - M - Y') }}</span>
+                                @if($mainRace->track->country_code)
+                                    <img src="https://flagcdn.com/24x18/{{ strtolower($mainRace->track->country_code) }}.png" class="h-4 rounded shadow-sm">
+                                @endif
+                                
+                                <span class="font-mono text-sm uppercase tracking-wide">
+                                    @php
+                                        // Calcular rango de fechas
+                                        $startDate = $roundRaces->min('race_date');
+                                        $endDate = $roundRaces->max('race_date');
+                                    @endphp
+
+                                    @if($startDate->isSameDay($endDate))
+                                        <!-- Mismo día: 11 Oct 2025 -->
+                                        {{ $startDate->format('d M Y') }}
+                                    @elseif($startDate->isSameMonth($endDate))
+                                        <!-- Mismo mes: 11-12 Oct 2025 -->
+                                        {{ $startDate->format('d') }}-{{ $endDate->format('d M Y') }}
+                                    @else
+                                        <!-- Distinto mes: 30 Sep - 02 Oct 2025 -->
+                                        {{ $startDate->format('d M') }} - {{ $endDate->format('d M Y') }}
+                                    @endif
+                                </span>
                             </div>
                         </div>
                     </div>

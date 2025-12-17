@@ -65,7 +65,33 @@ class QualifyingResultsRelationManager extends RelationManager
                     }),
             ])
             ->defaultSort('position', 'asc')
-            ->headerActions([Tables\Actions\CreateAction::make()->label('Add Time')])
+            ->headerActions([
+                // BOTÓN IMPORTAR QUALY
+                Tables\Actions\Action::make('importCsv')
+                    ->label('Import CSV')
+                    ->icon('heroicon-o-arrow-up-tray')
+                    ->color('info') // Azul para diferenciar
+                    ->form([
+                        Forms\Components\FileUpload::make('csv_file')
+                            ->label('Upload Qualifying CSV')
+                            ->acceptedFileTypes(['text/csv', 'application/vnd.ms-excel'])
+                            ->required(),
+                    ])
+                    ->action(function (array $data, \App\Filament\Resources\RaceResource\RelationManagers\QualifyingResultsRelationManager $livewire) {
+                        $raceId = $livewire->getOwnerRecord()->id;
+                        $file = storage_path('app/public/' . $data['csv_file']);
+                        
+                        \Maatwebsite\Excel\Facades\Excel::import(new \App\Imports\QualifyingResultsImport($raceId), $file);
+                        
+                        \Filament\Notifications\Notification::make()
+                            ->title('Qualifying Imported Successfully')
+                            ->success()
+                            ->send();
+                    }),
+
+                Tables\Actions\CreateAction::make()
+                    ->label('Add Time'),
+            ])
             ->actions([Tables\Actions\EditAction::make(), Tables\Actions\DeleteAction::make()]);
     }
 }

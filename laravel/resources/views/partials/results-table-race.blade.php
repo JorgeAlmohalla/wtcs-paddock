@@ -74,11 +74,15 @@
                         @endif
                     </td>
 
-                    <!-- 8. BEST LAP -->
+                    <!-- BEST LAP -->
                     <td class="px-6 py-4 text-center font-mono">
                         @if($result->fastest_lap)
-                            <span class="text-purple-400 font-bold">{{ $result->fastest_lap_time ?? 'Yes' }}</span>
-                            <span class="block text-[10px] text-purple-500/80 uppercase tracking-widest font-bold">Fastest</span>
+                            <!-- Si hay tiempo guardado, lo muestra. Si no, muestra el icono o nada -->
+                            @if($result->fastest_lap_time)
+                                <span class="text-purple-400 font-bold">{{ $result->fastest_lap_time }}</span>
+                            @endif
+                            
+                            <span class="block text-[10px] text-purple-500/80 uppercase tracking-widest font-bold">Fastest lap</span>
                         @else
                             <span class="text-gray-600">-</span>
                         @endif
