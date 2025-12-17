@@ -28,27 +28,43 @@ The league was previously managed using static Excel spreadsheets shared via Dis
 - **Laravel Sanctum**: API Authentication for secure mobile access.
 
 ### Client 1: Web Portal
-- **Blade Templates**: Server-side rendering.
-- **Tailwind CSS v4**: Modern utility-first CSS framework.
-- **Alpine.js & Chart.js**: Interactivity and data visualization.
+- **Blade Templates**: Server-side rendering with component-based architecture.
+- **Tailwind CSS v4**: Modern utility-first CSS framework configured via Vite/PostCSS.
+- **Alpine.js**: Lightweight JavaScript for interactive UI (Tabs, Mobile Menu, Countdowns).
+- **Chart.js**: Data visualization for driver performance analytics.
+- **DomPDF**: Engine for generating official printable reports.
+- **Maatwebsite Excel**: Bulk data import handler.
 
 ### Client 2: Mobile App (Android)
 - **Java (Android Native):** Development using Android Studio with Retrofit for API consumption.
 - **Material Design:** Native UI components for optimal mobile experience.
 - **Firebase:** Push notifications service.
 
-## 🚀 Features Roadmap
+## 🚀 Features Roadmap & Version History
 
-- [x] **v0.1 (Architecture):** Project Setup, Database Design (ER Model), & Git Workflow.
-- [x] **v1.0 (Foundation):** User Authentication, Basic Admin Panel & Database Infrastructure.
-- [x] **v2.0 (Web Management):** Calendar, Results Logic, Public Frontend & PDF Reports.
-- [x] **v2.3 (Driver Experience):** Advanced Dashboard with Stats, Charts, and Profile Management.
-- [ ] **v3.0 (API & Mobile):**
-    - **REST API:** Expose endpoints for Races, Standings, and Auth (Sanctum).
-    - **Android App:** Native Java application implementation.
-    - **Notifications:** Push alerts for upcoming races.
-- [ ] **v4.0 (Advanced):**
-    - **Stewarding System:** Incident reporting and resolution workflow.
+### Phase 1: Core Foundation
+- [x] **v1.0:** Project Architecture, Git Workflow & Database Schema Design.
+- [x] **v2.0:** Authentication System (Breeze), Security & User Profiles.
+- [x] **v3.0:** Administration Backoffice (FilamentPHP) & Data CRUDs.
+
+### Phase 2: Race Logic & Public Web
+- [x] **v4.0:** Competition Engine (Results, Qualifying, & Scoring Observer).
+- [x] **v5.0:** Public Frontend Launch (Home, Standings, News).
+- [x] **v6.0:** Advanced Calendar & Round Event Hub (Tabs System).
+
+### Phase 3: Driver & Team Ecosystem
+- [x] **v7.0:** Driver Dashboard & Analytics (Chart.js Integration).
+- [x] **v8.0:** Team Management Portal (Principals, Roster, Contracts).
+- [x] **v9.0:** Automation Suite (CSV Bulk Import & Smart Parsing).
+
+### Phase 4: Professional Management
+- [x] **v10.0:** Stewarding System (Incident Reports & Resolution).
+- [x] **v11.0:** Documentation Engine (Official Decision Docs & PDF).
+- [x] **v12.0:** Multi-Season Architecture (Historical Archive).
+
+### Phase 5: Mobile & API (Future Scope)
+- [ ] **v13.0:** REST API Development (Sanctum Auth & Endpoints).
+- [ ] **v14.0:** Native Android App (Java).
 
 ## 📝 License
 This project is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
