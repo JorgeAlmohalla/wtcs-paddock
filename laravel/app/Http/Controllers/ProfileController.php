@@ -34,6 +34,21 @@ class ProfileController extends Controller
             $request->user()->email_verified_at = null;
         }
 
+        // --- LÓGICA DE AVATAR NUEVA ---
+        if ($request->hasFile('avatar')) {
+            // Validar que sea imagen
+            $request->validate([
+                'avatar' => 'image|mimes:jpeg,png,jpg,gif|max:2048',
+            ]);
+
+            // Guardar en storage/app/public/avatars
+            $path = $request->file('avatar')->store('avatars', 'public');
+            
+            // Guardar ruta en base de datos
+            $request->user()->avatar_url = $path;
+        }
+        // -----------------------------
+
         $request->user()->save();
 
         return Redirect::route('profile.edit')->with('status', 'profile-updated');

@@ -28,6 +28,7 @@ class User extends Authenticatable
         'contract_type',
         'bio',
         'equipment',
+        'avatar_url',
     ];
 
     /**
