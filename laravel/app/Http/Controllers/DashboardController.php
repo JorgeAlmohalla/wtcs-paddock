@@ -4,63 +4,94 @@ namespace App\Http\Controllers;
 
 use Illuminate\Support\Facades\Auth;
 use Illuminate\View\View;
-use Illuminate\Support\Str; // Importar para el Str::limit en la vista
+use Illuminate\Support\Str;
 
 class DashboardController extends Controller
 {
     public function __invoke(): View
     {
         $user = Auth::user();
+        $seasonId = app()->bound('currentSeason') ? app('currentSeason')->id : null;
 
-        // 1. ESTADÍSTICAS
+        // 1. ESTADÍSTICAS (Filtradas por Season)
         $stats = [
-            'starts' => $user->raceResults()->count(),
-            'wins' => $user->raceResults()->where('position', 1)->count(),
-            'podiums' => $user->raceResults()->where('position', '<=', 3)->count(),
-            'poles' => $user->qualifyingResults()->where('position', 1)->count(),
-            'points' => $user->raceResults()->sum('points'),
+            'starts' => $user->raceResults()
+                ->whereHas('race', fn($q) => $q->where('season_id', $seasonId))
+                ->count(),
+            'wins' => $user->raceResults()
+                ->whereHas('race', fn($q) => $q->where('season_id', $seasonId))
+                ->where('position', 1)->count(),
+            'podiums' => $user->raceResults()
+                ->whereHas('race', fn($q) => $q->where('season_id', $seasonId))
+                ->where('position', '<=', 3)->count(),
+            'poles' => $user->qualifyingResults()
+                ->whereHas('race', fn($q) => $q->where('season_id', $seasonId))
+                ->where('position', 1)->count(),
+            'points' => $user->raceResults()
+                ->whereHas('race', fn($q) => $q->where('season_id', $seasonId))
+                ->sum('points'),
         ];
 
-        // 2. HISTORIAL DE QUALY
+        // 2. HISTORIAL DE QUALY (TABLA) - ¡ESTO ES LO QUE FALTABA!
         $qualyHistory = $user->qualifyingResults()
+            ->whereHas('race', fn($q) => $q->where('season_id', $seasonId))
             ->with('race.track')
             ->join('races', 'qualifying_results.race_id', '=', 'races.id')
             ->orderBy('races.race_date', 'desc')
             ->select('qualifying_results.*')
             ->get();
 
-        // 3. GRÁFICA DE RENDIMIENTO
-        $results = $user->raceResults()
+        // 3. GRÁFICAS
+        $raceResults = $user->raceResults()
+            ->whereHas('race', fn($q) => $q->where('season_id', $seasonId))
             ->join('races', 'race_results.race_id', '=', 'races.id')
             ->orderBy('races.race_date', 'asc')
-            ->select('race_results.*', 'races.title as race_title', 'races.round_number')
+            ->select('race_results.id', 'race_results.position', 'race_results.points', 'races.round_number') // <--- AÑADIDO 'points' e 'id'
             ->get();
 
-        $labels = [];
-        $data = [];
+        $raceLabels = $raceResults->map(fn($r) => 'R'.$r->round_number)->toArray();
+        $racePositionData = $raceResults->pluck('position')->toArray();
+        
+        // Calcular acumulado
+        $racePointsData = [];
         $total = 0;
-
-        foreach ($results as $result) {
-            $total += $result->points;
-            $labels[] = 'R' . $result->round_number;
-            $data[] = $total;
+        foreach ($raceResults as $r) {
+            $total += $r->points;
+            $racePointsData[] = $total;
         }
 
-        // 4. REPORTES DE INCIDENTES (Esto faltaba o fallaba)
-        $myReports = \App\Models\IncidentReport::where('reporter_id', $user->id)
-            ->orWhere('reported_id', $user->id)
+        // Qualy (Igual)
+        $qualyResults = $user->qualifyingResults()
+            ->whereHas('race', fn($q) => $q->where('season_id', $seasonId))
+            ->join('races', 'qualifying_results.race_id', '=', 'races.id')
+            ->orderBy('races.race_date', 'asc')
+            ->select('qualifying_results.position', 'races.round_number')
+            ->get();
+        $qualyLabels = $qualyResults->map(fn($q) => 'R'.$q->round_number)->toArray();
+        $qualyPositionData = $qualyResults->pluck('position')->toArray();
+
+        // 4. REPORTES
+        $myReports = \App\Models\IncidentReport::where(function($q) use ($user) {
+                $q->where('reporter_id', $user->id)
+                  ->orWhere('reported_id', $user->id);
+            })
             ->with(['race.track', 'reporter', 'reported'])
             ->orderBy('created_at', 'desc')
             ->get();
 
-        // 5. PASAR DATOS A LA VISTA
         return view('dashboard', [
             'user' => $user,
             'stats' => $stats,
             'qualyHistory' => $qualyHistory,
-            'labels' => $labels,
-            'data' => $data,
-            'currentPoints' => $total,
+            'raceLabels' => $raceLabels,
+            // CORRECCIÓN AQUÍ:
+            'raceData' => $racePositionData, // Usamos la variable que SÍ existe ($racePositionData)
+            'racePointsData' => $racePointsData,
+            
+            'qualyLabels' => $qualyLabels,
+            // CORRECCIÓN AQUÍ:
+            'qualyData' => $qualyPositionData, // Usamos la variable que SÍ existe
+            
             'myReports' => $myReports,
         ]);
     }

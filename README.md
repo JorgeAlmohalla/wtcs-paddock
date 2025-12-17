@@ -4,8 +4,9 @@
 
 **WTCS Paddock** is a comprehensive Multi-Platform ecosystem designed to professionalize the management of the **World Touring Car Series (WTCS)** SimRacing league. It replaces legacy spreadsheet workflows with a centralized API-driven architecture serving both Web and Mobile clients.
 
-![Project Status](https://img.shields.io/badge/Status-In%20Development-orange?style=flat-square)
-![License](https://img.shields.io/badge/License-MIT-blue?style=flat-square)
+![Project Status](https://img.shields.io/badge/Status-Active%20Development-success?style=flat-square)
+![Version](https://img.shields.io/badge/Version-v1.3.0-blue?style=flat-square)
+![License](https://img.shields.io/badge/License-MIT-gray?style=flat-square)
 
 ## 🧐 The Problem
 The league was previously managed using static Excel spreadsheets shared via Discord images. This led to:
@@ -40,31 +41,23 @@ The league was previously managed using static Excel spreadsheets shared via Dis
 - **Material Design:** Native UI components for optimal mobile experience.
 - **Firebase:** Push notifications service.
 
-## 🚀 Features Roadmap & Version History
+## 🚀 Release History & Roadmap
 
-### Phase 1: Core Foundation
-- [x] **v1.0:** Project Architecture, Git Workflow & Database Schema Design.
-- [x] **v2.0:** Authentication System (Breeze), Security & User Profiles.
-- [x] **v3.0:** Administration Backoffice (FilamentPHP) & Data CRUDs.
+### Phase 1: Foundation (v0.x)
+- [x] **v0.1 - Genesis:** Project Architecture, Git Workflow, Database Schema & Migrations.
+- [x] **v0.5 - Admin Core:** Implementation of FilamentPHP Backoffice, Authentication (Breeze), and CRUDs for Users/Teams.
 
-### Phase 2: Race Logic & Public Web
-- [x] **v4.0:** Competition Engine (Results, Qualifying, & Scoring Observer).
-- [x] **v5.0:** Public Frontend Launch (Home, Standings, News).
-- [x] **v6.0:** Advanced Calendar & Round Event Hub (Tabs System).
+### Phase 2: Public Launch (v1.0)
+- [x] **v1.0 - The Platform:** Full Frontend Launch (Home, Standings, Calendar), Scoring Engine & Qualifying Logic.
 
-### Phase 3: Driver & Team Ecosystem
-- [x] **v7.0:** Driver Dashboard & Analytics (Chart.js Integration).
-- [x] **v8.0:** Team Management Portal (Principals, Roster, Contracts).
-- [x] **v9.0:** Automation Suite (CSV Bulk Import & Smart Parsing).
+### Phase 3: Ecosystem Expansion (Current)
+- [x] **v1.1 - Driver Experience:** Advanced Driver Dashboard, Career Stats, Round-based Events & Visual Charts.
+- [x] **v1.2 - Management Suite:** Stewarding System (Incident Reports), Team Principal Portal & CSV Automation.
+- [x] **v1.3 - Professionalization:** Multi-Season Architecture, Official FIA-style Docs (PDF), and Advanced Analytics.
 
-### Phase 4: Professional Management
-- [x] **v10.0:** Stewarding System (Incident Reports & Resolution).
-- [x] **v11.0:** Documentation Engine (Official Decision Docs & PDF).
-- [x] **v12.0:** Multi-Season Architecture (Historical Archive).
-
-### Phase 5: Mobile & API (Future Scope)
-- [ ] **v13.0:** REST API Development (Sanctum Auth & Endpoints).
-- [ ] **v14.0:** Native Android App (Java).
+### Phase 4: Mobile & API (Future Scope)
+- [ ] **v2.0 - API First:** REST API Development (Sanctum Auth & Endpoints).
+- [ ] **v2.x - Mobile Client:** Native Android App Release.
 
 ## 📝 License
 This project is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
