@@ -19,6 +19,7 @@ class QualifyingResult extends Model
         'best_time',
         'tyre_compound',
         'driver_number',
+        'points',
     ];
 
     public function driver(): BelongsTo

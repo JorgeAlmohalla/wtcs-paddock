@@ -15,5 +15,11 @@ class QualifyingResultObserver
                 $result->car_name = $team->car_model;
             }
         }
+
+        if ($result->position == 1) {
+            $result->points = 1; // 1 Punto por Pole
+        } else {
+            $result->points = 0;
+        }
     }
 }

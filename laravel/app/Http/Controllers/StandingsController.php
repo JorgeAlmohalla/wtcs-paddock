@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\RaceResult;
+use App\Models\QualifyingResult; // Importante
 use App\Models\Team;
 use App\Models\User;
 use Illuminate\View\View;
@@ -13,55 +14,66 @@ class StandingsController extends Controller
     {
         $seasonId = app()->bound('currentSeason') ? app('currentSeason')->id : null;
 
-        // 1. Clasificación de PILOTOS
+        // 1. Clasificación de PILOTOS (Suma Race + Qualy)
         $drivers = User::whereJsonContains('roles', 'driver')
             ->with('team')
             ->get()
             ->map(function ($driver) use ($seasonId) {
-                $driver->total_points = RaceResult::where('user_id', $driver->id)
+                // Puntos Carrera
+                $racePoints = RaceResult::where('user_id', $driver->id)
                     ->whereHas('race', fn($q) => $q->where('season_id', $seasonId))
                     ->sum('points');
+                
+                // Puntos Qualy
+                $qualyPoints = QualifyingResult::where('user_id', $driver->id)
+                    ->whereHas('race', fn($q) => $q->where('season_id', $seasonId))
+                    ->sum('points');
+
+                $driver->total_points = $racePoints + $qualyPoints;
                 return $driver;
             })
             ->filter(fn ($driver) => $driver->total_points > 0)
             ->sortByDesc('total_points')
             ->values();
 
-        // 2. Clasificación de CONSTRUCTORES (Equipos)
+        // 2. Clasificación de CONSTRUCTORES (Suma Race + Qualy de sus pilotos)
         $teams = Team::get()
             ->map(function ($team) use ($seasonId) {
-                $team->total_points = RaceResult::where('team_id', $team->id)
+                // Puntos Carrera del equipo
+                $racePoints = RaceResult::where('team_id', $team->id)
                     ->whereHas('race', fn($q) => $q->where('season_id', $seasonId))
                     ->sum('points');
+                
+                // Puntos Qualy del equipo
+                $qualyPoints = QualifyingResult::where('team_id', $team->id)
+                    ->whereHas('race', fn($q) => $q->where('season_id', $seasonId))
+                    ->sum('points');
+
+                $team->total_points = $racePoints + $qualyPoints;
                 return $team;
             })
             ->filter(fn ($team) => $team->total_points > 0)
             ->sortByDesc('total_points')
             ->values();
 
-        // 3. Clasificación de MANUFACTURERS (Marcas)
-        // Regla: Solo cuenta el mejor resultado de la marca en cada carrera
-        
-        // Primero obtenemos todas las carreras de la temporada para iterar sobre ellas
+        // 3. Clasificación de MANUFACTURERS (Solo mejor resultado de carrera)
+        // (Si quieres sumar Qualy aquí también, avísame, pero por ahora lo dejo como estaba para no romperlo)
         $seasonRaces = \App\Models\Race::where('season_id', $seasonId)->pluck('id');
 
         $manufacturers = Team::select('car_brand')
             ->distinct()
             ->get()
-            ->map(function ($brandEntry) use ($seasonRaces, $seasonId) {
+            ->map(function ($brandEntry) use ($seasonRaces) {
                 $brand = $brandEntry->car_brand;
-                
-                // Buscar equipos de esta marca
                 $brandTeams = Team::where('car_brand', $brand)->pluck('id');
 
                 $totalPoints = 0;
 
-                // Para cada carrera de la temporada...
                 foreach ($seasonRaces as $raceId) {
-                    // Buscamos el MEJOR resultado de cualquier coche de esta marca en esa carrera
+                    // Mejor resultado en carrera
                     $bestResultPoints = RaceResult::where('race_id', $raceId)
                         ->whereIn('team_id', $brandTeams)
-                        ->max('points'); // Cogemos solo el máximo (ej: 25 si ganó uno)
+                        ->max('points');
                     
                     if ($bestResultPoints) {
                         $totalPoints += $bestResultPoints;
@@ -79,7 +91,6 @@ class StandingsController extends Controller
             ->sortByDesc('total_points')
             ->values();
 
-        // 4. RETORNO ÚNICO
         return view('standings', [
             'drivers' => $drivers,
             'teams' => $teams,

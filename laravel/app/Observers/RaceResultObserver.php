@@ -46,11 +46,6 @@ class RaceResultObserver
 
         // 3. Calcular puntos normales
         $points = $this->pointsSystem[$raceResult->position] ?? 0;
-
-        if ($raceResult->fastest_lap) {
-            $points += 1;
-        }
-
         $raceResult->points = $points;
     }
 }
