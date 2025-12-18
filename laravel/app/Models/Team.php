@@ -20,6 +20,11 @@ class Team extends Model
         'primary_color',
         'car_model',
         'car_image_url',
+        'tech_chassis',
+        'tech_engine',
+        'tech_power',
+        'tech_drivetrain',
+        'tech_gearbox',
     ];
 
     // Relación: Un equipo tiene muchos pilotos

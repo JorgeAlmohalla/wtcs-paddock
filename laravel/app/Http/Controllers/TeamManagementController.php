@@ -34,6 +34,11 @@ class TeamManagementController extends Controller
             'car_model' => 'required|string|max:255',
             'primary_color' => 'required|string|size:7',
             'car_image' => 'nullable|image|max:5120', // Max 5MB
+            'tech_chassis' => 'nullable|string|max:100',
+            'tech_engine' => 'nullable|string|max:100',
+            'tech_power' => 'nullable|string|max:50',
+            'tech_drivetrain' => 'nullable|string|in:FF,FR,MR,RR,4WD', // Validamos que sea uno de la lista
+            'tech_gearbox' => 'nullable|string|max:100',
         ]);
 
         $data = $request->except('car_image');

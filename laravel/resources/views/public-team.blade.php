@@ -99,9 +99,32 @@
                 </div>
             </div>
 
-            <!-- Columna Derecha: Espacio para Specs (Vacío por ahora) -->
-            <div class="hidden md:flex items-center justify-center text-gray-600 border-2 border-dashed border-gray-700 rounded-xl">
-                <p class="text-sm uppercase tracking-widest font-bold">Tech Specs Coming Soon</p>
+            <!-- Columna Derecha: Specs -->
+            <div class="bg-gray-800 rounded-xl overflow-hidden border border-gray-700 shadow-lg flex flex-col justify-center p-6">
+                <h3 class="text-sm font-bold text-gray-400 uppercase tracking-widest mb-6 border-b border-gray-600 pb-2">Homologation Data</h3>
+                
+                <div class="space-y-4">
+                    <div class="flex justify-between items-center border-b border-gray-700 pb-2">
+                        <span class="text-gray-500 text-sm font-bold uppercase">Chassis</span>
+                        <span class="text-white font-mono">{{ $team->tech_chassis ?? '-' }}</span>
+                    </div>
+                    <div class="flex justify-between items-center border-b border-gray-700 pb-2">
+                        <span class="text-gray-500 text-sm font-bold uppercase">Engine</span>
+                        <span class="text-white font-mono">{{ $team->tech_engine ?? '-' }}</span>
+                    </div>
+                    <div class="flex justify-between items-center border-b border-gray-700 pb-2">
+                        <span class="text-gray-500 text-sm font-bold uppercase">Power</span>
+                        <span class="text-red-400 font-black font-mono text-lg">{{ $team->tech_power ?? '-' }}</span>
+                    </div>
+                    <div class="flex justify-between items-center border-b border-gray-700 pb-2">
+                        <span class="text-gray-500 text-sm font-bold uppercase">Layout</span>
+                        <span class="bg-gray-700 text-white px-2 py-0.5 rounded text-xs font-bold">{{ $team->tech_drivetrain ?? '-' }}</span>
+                    </div>
+                    <div class="flex justify-between items-center">
+                        <span class="text-gray-500 text-sm font-bold uppercase">Gearbox</span>
+                        <span class="text-white font-mono">{{ $team->tech_gearbox ?? '-' }}</span>
+                    </div>
+                </div>
             </div>
 
         </div>

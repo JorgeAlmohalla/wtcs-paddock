@@ -29,6 +29,38 @@
                 @endif
                 <input type="file" name="car_image" class="w-full bg-gray-900 border border-gray-600 rounded p-2 text-white">
             </div>
+                <!-- TECH SPECS -->
+            <div class="mt-6 border-t border-gray-700 pt-6">
+                <h3 class="text-gray-400 font-bold uppercase text-sm mb-4">Technical Homologation</h3>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div>
+                        <label class="block text-gray-500 text-xs font-bold uppercase mb-1">Chassis / Years</label>
+                        <input type="text" name="tech_chassis" value="{{ $team->tech_chassis }}" placeholder="e.g. Sedan (1998-2002)" class="w-full bg-gray-900 border border-gray-600 rounded p-2 text-white">
+                    </div>
+                    <div>
+                        <label class="block text-gray-500 text-xs font-bold uppercase mb-1">Engine Type</label>
+                        <input type="text" name="tech_engine" value="{{ $team->tech_engine }}" placeholder="e.g. 2.0L I4 NA" class="w-full bg-gray-900 border border-gray-600 rounded p-2 text-white">
+                    </div>
+                    <div>
+                        <label class="block text-gray-500 text-xs font-bold uppercase mb-1">Power Output</label>
+                        <input type="text" name="tech_power" value="{{ $team->tech_power }}" placeholder="e.g. 310 bhp" class="w-full bg-gray-900 border border-gray-600 rounded p-2 text-white">
+                    </div>
+                    <div>
+                        <label class="block text-gray-500 text-xs font-bold uppercase mb-1">Drivetrain</label>
+                        <select name="tech_drivetrain" class="w-full bg-gray-900 border border-gray-600 rounded p-2 text-white">
+                            <option value="FF" {{ $team->tech_drivetrain == 'FF' ? 'selected' : '' }}>FF (Front-Front)</option>
+                            <option value="FR" {{ $team->tech_drivetrain == 'FR' ? 'selected' : '' }}>FR (Front-Rear)</option>
+                            <option value="MR" {{ $team->tech_drivetrain == 'MR' ? 'selected' : '' }}>MR (Mid-Rear)</option>
+                            <option value="RR" {{ $team->tech_drivetrain == 'RR' ? 'selected' : '' }}>RR (Rear-Rear)</option>
+                            <option value="4WD" {{ $team->tech_drivetrain == '4WD' ? 'selected' : '' }}>4WD</option>
+                        </select>
+                    </div>
+                     <div>
+                        <label class="block text-gray-500 text-xs font-bold uppercase mb-1">Gearbox</label>
+                        <input type="text" name="tech_gearbox" value="{{ $team->tech_gearbox }}" placeholder="e.g. 6-Speed Sequential" class="w-full bg-gray-900 border border-gray-600 rounded p-2 text-white">
+                    </div>
+                </div>
+            </div>
 
             <div class="grid grid-cols-2 gap-4">
                 <div>
@@ -136,6 +168,8 @@
             @endforeach
         </div>
     </div>
+
+
 
 </div>
 @endsection

@@ -20,6 +20,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Added
 - **PDF standings** Implemented button to download current standings in PDF format with a template.
 - **Team car image** Added the option for team principals to add their current year livery to the public team page.
+- **Team car specs** Added a field to add the specs of the current year car to show next to it.
 
 ## [v2.6.0] - 17-12-2025
 ### Changed (Scoring Engine)
