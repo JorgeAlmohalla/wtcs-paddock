@@ -8,6 +8,14 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [Unreleased]
 *Work in progress for v3.0 (API & Mobile App)*
 
+## [v2.7.0] - 18-12-2025
+### Added (Analytics Visualization)
+- **Advanced Charts:** Implemented reversed-axis charts for Race and Qualifying positions (P1 on top) using Chart.js to better represent racing performance.
+- **Visual Consistency:** Standardized chart colors (Red for Race/Points, Purple for Qualy) and added `fill: start` effects for better readability.
+- **Dashboard Layout:** Restructured driver hub into a 5-block grid system to accommodate the new charts alongside the "Big Numbers".
+- **Public Profile Sync:** Ported the advanced Dashboard layout and charts to the Public Profile page (`/driver/{id}`), ensuring consistency between private and public views.
+- **Driver card profiles** Enhanced driver cards desing to show profile picture, nationality and linked to public profile.
+
 ## [v2.6.0] - 17-12-2025
 ### Changed (Scoring Engine)
 - **Points System:** Refactored `RaceResultObserver` to remove the "Fastest Lap" point from races.
