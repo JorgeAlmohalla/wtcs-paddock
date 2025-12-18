@@ -12,6 +12,7 @@
         td { padding: 5px; border-bottom: 1px solid #ddd; font-size: 12px; }
         .pos { width: 30px; text-align: center; font-weight: bold; }
         .points { text-align: right; font-weight: bold; }
+        .privateer-row { background-color: #bfdeffff; }
     </style>
 </head>
 <body>
@@ -41,10 +42,17 @@
     <table>
         <thead><tr><th>Pos</th><th>Team</th><th>Car</th><th class="points">PTS</th></tr></thead>
         <tbody>
-            @foreach($teams as $i => $t)
-            <tr>
+           <tbody>
+            <!-- Si aquí usas $t -->
+            @foreach($teams as $i => $t) 
+            <tr class="{{ $t->type === 'privateer' ? 'privateer-row' : '' }}">
                 <td class="pos">{{ $i + 1 }}</td>
-                <td>{{ $t->name }}</td>
+                <td>
+                    {{ $t->name }} <!-- AQUÍ TAMBIÉN $t -->
+                    @if($t->type === 'privateer')
+                        <span style="font-size: 10px; color: #666; font-style: italic;">(P)</span>
+                    @endif
+                </td>
                 <td>{{ $t->car_model }}</td>
                 <td class="points">{{ intval($t->total_points) }}</td>
             </tr>

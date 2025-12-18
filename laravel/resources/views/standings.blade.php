@@ -43,19 +43,25 @@
                 </thead>
                 <tbody class="divide-y divide-gray-700 text-sm">
                     @foreach($drivers as $index => $driver)
-                    <tr class="hover:bg-gray-700/50 transition">
+                    <tr class="hover:bg-gray-700/50 transition group cursor-pointer" onclick="window.location='{{ route('driver.show', $driver) }}'">
+                        
+                        <!-- Posición -->
                         <td class="px-6 py-4 font-black text-white text-center text-lg">{{ $index + 1 }}</td>
+                        
+                        <!-- Piloto (Todo esto es clicable por el onclick del TR) -->
                         <td class="px-6 py-4">
                             <div class="flex items-center gap-4">
                                 @if($driver->nationality)
                                     <img src="https://flagcdn.com/20x15/{{ strtolower($driver->nationality) }}.png" class="shadow-sm">
                                 @endif
                                 <div>
-                                    <p class="font-bold text-white text-base">{{ $driver->name }}</p>
+                                    <p class="font-bold text-white text-base group-hover:text-red-400 transition">{{ $driver->name }}</p>
                                     <p class="text-xs text-gray-400 font-mono uppercase">{{ $driver->team->name ?? 'Privateer' }}</p>
                                 </div>
                             </div>
                         </td>
+                        
+                        <!-- Puntos -->
                         <td class="px-6 py-4 text-right font-mono font-black text-red-500 text-xl">
                             {{ intval($driver->total_points) }}
                         </td>
@@ -79,12 +85,28 @@
                 </thead>
                 <tbody class="divide-y divide-gray-700 text-sm">
                     @foreach($teams as $index => $team)
-                    <tr class="hover:bg-gray-700/50 transition border-l-4" style="border-left-color: {{ $team->primary_color ?? '#333' }}">
+                    <!-- FILA CLICABLE -->
+                    <tr class="hover:bg-gray-700/50 transition border-l-4 group cursor-pointer" 
+                        style="border-left-color: {{ $team->primary_color ?? '#333' }}"
+                        onclick="window.location='{{ route('team.show', $team) }}'">
+                        
+                        <!-- Posición -->
                         <td class="px-6 py-4 font-black text-white text-center text-lg">{{ $index + 1 }}</td>
+                        
+                        <!-- Equipo -->
                         <td class="px-6 py-4">
-                            <p class="font-bold text-white text-lg">{{ $team->name }}</p>
-                            <p class="text-xs text-gray-400 font-mono uppercase">{{ $team->car_model }}</p>
+                            <div class="flex items-center gap-2">
+                                <span class="font-bold text-white text-lg group-hover:text-blue-400 transition">{{ $team->name }}</span>
+                                
+                                <!-- Etiqueta Privateer (sutil) -->
+                                @if($team->type === 'privateer')
+                                    <span class="text-[10px] bg-blue-500/10 text-blue-300 px-2 py-0.5 rounded border border-blue-500/20 uppercase font-bold tracking-wider">PRIV</span>
+                                @endif
+                            </div>
+                            <p class="text-xs text-gray-400 font-mono uppercase mt-1">{{ $team->car_model }}</p>
                         </td>
+                        
+                        <!-- Puntos -->
                         <td class="px-6 py-4 text-right font-mono font-black text-blue-500 text-xl">
                             {{ intval($team->total_points) }}
                         </td>
