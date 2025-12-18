@@ -15,9 +15,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - **Dashboard Layout:** Restructured driver hub into a 5-block grid system to accommodate the new charts alongside the "Big Numbers".
 - **Public Profile Sync:** Ported the advanced Dashboard layout and charts to the Public Profile page (`/driver/{id}`), ensuring consistency between private and public views.
 - **Driver card profiles** Enhanced driver cards desing to show profile picture, nationality and linked to public profile.
+- **Homogenic visualization** Applied the same style to highlight in light cyan to all privateer drivers and team result in the webpage and in the downloadable pdf."
 
 ### Added
 - **PDF standings** Implemented button to download current standings in PDF format with a template.
+- **Team car image** Added the option for team principals to add their current year livery to the public team page.
 
 ## [v2.6.0] - 17-12-2025
 ### Changed (Scoring Engine)

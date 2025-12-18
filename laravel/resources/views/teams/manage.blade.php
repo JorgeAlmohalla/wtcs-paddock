@@ -12,13 +12,22 @@
     <div class="bg-gray-800 rounded-xl p-6 border border-gray-700 shadow-lg mb-8">
         <h2 class="text-xl font-bold text-white mb-4 border-b border-gray-600 pb-2">Team Details</h2>
         
-        <form method="POST" action="{{ route('team.update') }}" class="space-y-4">
+        <form method="POST" action="{{ route('team.update') }}" class="space-y-4" enctype="multipart/form-data">
             @csrf
             @method('PATCH')
 
             <div>
                 <label class="block text-gray-400 text-xs font-bold uppercase mb-1">Team Name</label>
                 <input type="text" name="name" value="{{ $team->name }}" class="w-full bg-gray-900 border border-gray-600 rounded p-2 text-white focus:border-blue-500 focus:ring-blue-500">
+            </div>
+
+             <!-- SUBIDA DE COCHE -->
+            <div>
+                <label class="block text-gray-400 text-xs font-bold uppercase mb-1">Car Livery Photo</label>
+                @if($team->car_image_url)
+                    <img src="{{ asset('storage/' . $team->car_image_url) }}" class="h-32 w-auto rounded mb-2 border border-gray-600">
+                @endif
+                <input type="file" name="car_image" class="w-full bg-gray-900 border border-gray-600 rounded p-2 text-white">
             </div>
 
             <div class="grid grid-cols-2 gap-4">

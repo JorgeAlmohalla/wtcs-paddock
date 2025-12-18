@@ -41,7 +41,7 @@ class TeamResource extends Resource
                         'privateer' => 'Privateer (Independent)',
                     ])
                     ->required()
-                    ->default('privateer'),
+                    ->default('Works'),
 
                 Forms\Components\TextInput::make('car_brand')
                     ->label('Car Manufacturer')
@@ -50,7 +50,6 @@ class TeamResource extends Resource
                 Forms\Components\ColorPicker::make('primary_color')
                     ->label('Primary Color'),
                 
-                Forms\Components\TextInput::make('car_brand')->label('Manufacturer'),
 
                 Forms\Components\TextInput::make('car_model')->label('Current Car Model')->required(),
             ]);

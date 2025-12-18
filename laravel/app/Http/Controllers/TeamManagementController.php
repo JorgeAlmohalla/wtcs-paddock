@@ -27,19 +27,27 @@ class TeamManagementController extends Controller
     public function update(Request $request)
     {
         $user = Auth::user();
-        
-        if (!$user->isTeamPrincipal() || !$user->team) {
-            abort(403);
-        }
+        if (!$user->isTeamPrincipal() || !$user->team) abort(403);
 
         $validated = $request->validate([
             'name' => 'required|string|max:255',
             'car_model' => 'required|string|max:255',
-            'primary_color' => 'required|string|size:7', // #RRGGBB
-            // logo_url iría aquí si implementas subida
+            'primary_color' => 'required|string|size:7',
+            'car_image' => 'nullable|image|max:5120', // Max 5MB
         ]);
 
-        $user->team->update($validated);
+        $data = $request->except('car_image');
+
+        // SUBIDA DE IMAGEN
+        if ($request->hasFile('car_image')) {
+            // Borrar antigua si existe (Opcional, pero recomendado)
+            // if ($user->team->car_image_url) Storage::disk('public')->delete($user->team->car_image_url);
+            
+            $path = $request->file('car_image')->store('team-cars', 'public');
+            $data['car_image_url'] = $path;
+        }
+
+        $user->team->update($data);
 
         return back()->with('status', 'Team updated successfully.');
     }

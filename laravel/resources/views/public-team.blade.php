@@ -84,5 +84,28 @@
         </div>
     </div>
 
+    <!-- FOTO DEL COCHE (Contenida) -->
+    @if($team->car_image_url)
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-8 mt-8"> <!-- Grid de 2 columnas -->
+            
+            <!-- Columna Izquierda: Foto -->
+            <div class="bg-gray-800 rounded-xl overflow-hidden border border-gray-700 shadow-lg">
+                <div class="bg-gray-900 px-6 py-4 border-b border-gray-700">
+                    <h3 class="text-sm font-bold text-gray-400 uppercase tracking-widest">Official Livery</h3>
+                </div>
+                <!-- Aspect Ratio 16:9 y object-contain para que se vea entera sin recortar -->
+                <div class="aspect-video w-full bg-black flex items-center justify-center">
+                    <img src="{{ asset('storage/' . $team->car_image_url) }}" class="max-w-full max-h-full object-contain">
+                </div>
+            </div>
+
+            <!-- Columna Derecha: Espacio para Specs (Vacío por ahora) -->
+            <div class="hidden md:flex items-center justify-center text-gray-600 border-2 border-dashed border-gray-700 rounded-xl">
+                <p class="text-sm uppercase tracking-widest font-bold">Tech Specs Coming Soon</p>
+            </div>
+
+        </div>
+    @endif
+
 </div>
 @endsection
