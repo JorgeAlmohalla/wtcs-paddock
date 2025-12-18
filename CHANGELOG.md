@@ -16,6 +16,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - **Public Profile Sync:** Ported the advanced Dashboard layout and charts to the Public Profile page (`/driver/{id}`), ensuring consistency between private and public views.
 - **Driver card profiles** Enhanced driver cards desing to show profile picture, nationality and linked to public profile.
 
+### Added
+- **PDF standings** Implemented button to download current standings in PDF format with a template.
+
 ## [v2.6.0] - 17-12-2025
 ### Changed (Scoring Engine)
 - **Points System:** Refactored `RaceResultObserver` to remove the "Fastest Lap" point from races.

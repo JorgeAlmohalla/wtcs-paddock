@@ -76,7 +76,7 @@
 
                     @if($driver->isTeamPrincipal())
                         <div class="bg-yellow-500/20 p-2 rounded text-yellow-500 border border-yellow-500/30" title="Team Principal">
-                            👑
+                            Team Principal
                         </div>
                     @endif
                 </a>
