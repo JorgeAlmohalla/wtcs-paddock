@@ -12,7 +12,7 @@
         </thead>
         <tbody class="divide-y divide-gray-700 text-sm bg-gray-800">
             @foreach($results as $qResult)
-                <tr class="hover:bg-gray-700/50 transition duration-150">
+                <tr class="hover:bg-gray-700/50 transition duration-150 {{ ($qResult->team->type ?? '') === 'privateer' ? 'bg-cyan-400/25' : '' }}">
                     
                     <!-- POSICIÓN -->
                     <td class="px-6 py-4 text-center font-black text-white text-lg">

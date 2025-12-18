@@ -25,7 +25,7 @@
         <thead><tr><th>Pos</th><th>Driver</th><th>Team</th><th class="points">PTS</th></tr></thead>
         <tbody>
             @foreach($drivers as $i => $d)
-            <tr>
+            <tr class="{{ ($d->team->type ?? '') === 'privateer' ? 'privateer-row' : '' }}">
                 <td class="pos">{{ $i + 1 }}</td>
                 <td>{{ $d->name }}</td>
                 <td>{{ $d->team->name ?? 'Privateer' }}</td>

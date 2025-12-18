@@ -17,6 +17,7 @@
         .text-center { text-align: center; }
         .bold { font-weight: bold; }
         .red { color: #cc0000; }
+        .privateer-row { background-color: #bfdeffff; } 
 
         /* Colores de Neumáticos */
         .badge { padding: 2px 6px; border-radius: 4px; font-weight: bold; color: white; font-size: 10px; text-transform: uppercase; }
@@ -55,7 +56,7 @@
             </thead>
             <tbody>
                 @foreach($qualy as $q)
-                <tr>
+                <tr class="{{ ($q->team->type ?? '') === 'privateer' ? 'privateer-row' : '' }}">
                     <td class="pos">{{ $q->position }}</td>
                     <td class="bold">{{ $q->driver->name }}</td>
                     <td>{{ $q->team->name ?? 'Privateer' }}</td>
@@ -102,7 +103,7 @@
         </thead>
         <tbody>
             @foreach($sprint->results->sortBy('position') as $res)
-            <tr>
+            <tr class="{{ ($res->team->type ?? '') === 'privateer' ? 'privateer-row' : '' }}">
                 <td class="pos">{{ $res->position }}</td>
                 <td class="bold">
                     {{ $res->driver->name }}
@@ -153,7 +154,7 @@
             </thead>
             <tbody>
                 @foreach($feature->results->sortBy('position') as $res)
-                <tr>
+                <tr class="{{ ($res->team->type ?? '') === 'privateer' ? 'privateer-row' : '' }}">
                     <td class="pos">{{ $res->position }}</td>
                     <td class="bold">
                         {{ $res->driver->name }}

@@ -43,7 +43,9 @@
                 </thead>
                 <tbody class="divide-y divide-gray-700 text-sm">
                     @foreach($drivers as $index => $driver)
-                    <tr class="hover:bg-gray-700/50 transition group cursor-pointer" onclick="window.location='{{ route('driver.show', $driver) }}'">
+                    <tr class="hover:bg-gray-700/50 transition group cursor-pointer {{ ($driver->team->type ?? '') === 'privateer' ? 'bg-cyan-400/25' :
+                     '' }}" 
+                        onclick="window.location='{{ route('driver.show', $driver) }}'">
                         
                         <!-- Posición -->
                         <td class="px-6 py-4 font-black text-white text-center text-lg">{{ $index + 1 }}</td>
@@ -86,7 +88,8 @@
                 <tbody class="divide-y divide-gray-700 text-sm">
                     @foreach($teams as $index => $team)
                     <!-- FILA CLICABLE -->
-                    <tr class="hover:bg-gray-700/50 transition border-l-4 group cursor-pointer" 
+                    <tr class="hover:bg-gray-700/50 transition border-l-4 group cursor-pointer {{ $team->type === 'privateer' ? 'bg-cyan-400/25' :
+                     '' }}" 
                         style="border-left-color: {{ $team->primary_color ?? '#333' }}"
                         onclick="window.location='{{ route('team.show', $team) }}'">
                         
@@ -97,11 +100,6 @@
                         <td class="px-6 py-4">
                             <div class="flex items-center gap-2">
                                 <span class="font-bold text-white text-lg group-hover:text-blue-400 transition">{{ $team->name }}</span>
-                                
-                                <!-- Etiqueta Privateer (sutil) -->
-                                @if($team->type === 'privateer')
-                                    <span class="text-[10px] bg-blue-500/10 text-blue-300 px-2 py-0.5 rounded border border-blue-500/20 uppercase font-bold tracking-wider">PRIV</span>
-                                @endif
                             </div>
                             <p class="text-xs text-gray-400 font-mono uppercase mt-1">{{ $team->car_model }}</p>
                         </td>

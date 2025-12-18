@@ -19,7 +19,7 @@
         <!-- CUERPO -->
         <tbody class="divide-y divide-gray-700 text-sm bg-gray-800">
             @foreach($results as $result)
-                <tr class="hover:bg-gray-700/50 transition duration-150">
+                <tr class="hover:bg-gray-700/50 transition duration-150 {{ ($result->team->type ?? '') === 'privateer' ? 'bg-cyan-400/25' : '' }}">
                     
                     <!-- 1. GRID -->
                     <td class="px-6 py-4 text-center text-gray-500 font-mono">
