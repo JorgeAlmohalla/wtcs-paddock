@@ -8,9 +8,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [Unreleased]
 *Work in progress for v3.0 (API & Mobile App)*
 
-## - 19-12-2025
+## [v2.8.0] - 19-12-2025
 ### Added
-- **season race filter** Implemented a filter in the Laravel administrator to show races by individual season so info doesn´t get overwhelmed.
+- **season race filter** Implemented a filter in the Laravel administrator to show races by individual season so the user doesn´t get overwhelmed.
+- **Driver performance comparison** Implemented login and a button to compare your performance graphics with a selected driver.
 
 ### Fixed
 - **homepage error** Fixed championship leader name not being centered in its own div.
