@@ -78,6 +78,13 @@ class RaceResource extends Resource
     {
         return $table
             ->columns([
+                // Columna para ver la temporada
+                Tables\Columns\TextColumn::make('season.name')
+                    ->label('Season')
+                    ->sortable()
+                    ->badge()
+                    ->color('gray'),
+
                 Tables\Columns\TextColumn::make('round_number')
                     ->label('Round')
                     ->sortable(),
@@ -90,10 +97,6 @@ class RaceResource extends Resource
                 Tables\Columns\TextColumn::make('track.name')
                     ->label('Circuit')
                     ->sortable(),
-
-                Tables\Columns\TextColumn::make('track.country_code')
-                    ->label('Country')
-                    ->badge(),
 
                 Tables\Columns\TextColumn::make('race_date')
                     ->label('Date')
@@ -109,6 +112,17 @@ class RaceResource extends Resource
                     }),
             ])
             ->defaultSort('race_date', 'asc')
+            
+            // --- FILTRO DE TEMPORADA ---
+            ->filters([
+                Tables\Filters\SelectFilter::make('season_id')
+                    ->relationship('season', 'name')
+                    ->label('Filter by Season')
+                    // Por defecto: Selecciona la temporada activa
+                    ->default(fn() => \App\Models\Season::where('is_active', true)->first()?->id),
+            ])
+            // ---------------------------
+
             ->actions([
                 Tables\Actions\EditAction::make(),
             ]);

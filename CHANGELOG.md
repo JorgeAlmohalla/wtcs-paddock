@@ -8,6 +8,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [Unreleased]
 *Work in progress for v3.0 (API & Mobile App)*
 
+## - 19-12-2025
+### Added
+- **season race filter** Implemented a filter in the Laravel administrator to show races by individual season so info doesn´t get overwhelmed.
+
+### Fixed
+- **homepage error** Fixed championship leader name not being centered in its own div.
+
 ## [v2.7.0] - 18-12-2025
 ### Added (Analytics Visualization)
 - **Advanced Charts:** Implemented reversed-axis charts for Race and Qualifying positions (P1 on top) using Chart.js to better represent racing performance.

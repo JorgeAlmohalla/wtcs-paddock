@@ -75,29 +75,38 @@
                 @endif
             </div>
 
-            <!-- Tarjeta 2: LÍDER DEL MUNDIAL (Ahora con enlace) -->
+            <!-- Tarjeta 2: LÍDER DEL MUNDIAL -->
             <a href="{{ route('standings') }}" 
-               class="bg-gray-800 p-6 rounded-lg shadow-md border border-gray-700 hover:border-red-500 hover:shadow-red-900/20 transition duration-300 group block">
+               class="bg-gray-800 p-6 rounded-lg shadow-md border border-gray-700 hover:border-red-500 hover:shadow-red-900/20 transition duration-300 group flex flex-col items-center justify-center text-center h-full">
                 
-                <div class="flex justify-between items-start">
-                    <h3 class="text-xl font-bold text-red-500 mb-2 uppercase tracking-widest group-hover:text-red-400">Championship Leader</h3>
-                    <!-- Icono de flecha que aparece al pasar el ratón -->
-                    <span class="text-gray-500 group-hover:text-white transition">&rarr;</span>
+                <div class="flex items-center justify-center gap-2 mb-4 w-full relative">
+                    <h3 class="text-xl font-bold text-red-500 uppercase tracking-widest group-hover:text-red-400">Championship Leader</h3>
+                    <!-- Flecha absoluta a la derecha -->
+                    <span class="text-gray-500 group-hover:text-white transition absolute right-0 top-0">&rarr;</span>
                 </div>
                 
                 @if($leader)
-                    <p class="text-4xl font-bold text-white group-hover:scale-105 transition origin-left">{{ $leader->name }}</p>
-                    <p class="text-red-400 text-lg mt-1 font-bold">{{ intval($leaderPoints) }} PTS</p>
-                    
-                    @if($leader->team)
-                        <div class="mt-4 inline-block px-3 py-1 rounded border border-gray-600 text-sm text-gray-300 group-hover:border-gray-400">
-                            {{ $leader->team->name }}
-                        </div>
-                    @else
-                        <p class="text-gray-500 text-sm mt-2">Privateer</p>
-                    @endif
+                    <div class="flex flex-col items-center justify-center flex-grow">
+                        <p class="text-3xl md:text-4xl font-black text-white group-hover:scale-105 transition duration-300 leading-tight">
+                            {{ $leader->name }}
+                        </p>
+                        
+                        <p class="text-red-400 text-xl mt-2 font-mono font-bold tracking-wide">
+                            {{ intval($leaderPoints) }} PTS
+                        </p>
+                        
+                        @if($leader->team)
+                            <div class="mt-4 px-4 py-1.5 rounded border border-gray-600 text-sm font-bold text-gray-300 group-hover:border-gray-400 group-hover:text-white transition uppercase tracking-wide bg-black/20">
+                                {{ $leader->team->name }}
+                            </div>
+                        @else
+                            <p class="text-gray-500 text-sm mt-4 uppercase tracking-widest">Privateer</p>
+                        @endif
+                    </div>
                 @else
-                    <p class="text-gray-500 italic mt-4">Season hasn't started.</p>
+                    <div class="flex flex-col items-center justify-center flex-grow">
+                        <p class="text-gray-500 italic">Season hasn't started.</p>
+                    </div>
                 @endif
             </a>
 
