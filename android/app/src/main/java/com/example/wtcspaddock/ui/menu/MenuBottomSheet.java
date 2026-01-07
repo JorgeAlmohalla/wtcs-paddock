@@ -24,27 +24,44 @@ public class MenuBottomSheet extends BottomSheetDialogFragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        // Referencia al Activity principal para poder navegar
-        MainActivity mainActivity = (MainActivity) getActivity();
+        // Obtenemos referencia al MainActivity para poder llamar a sus métodos
+        MainActivity main = (MainActivity) getActivity();
+        if (main == null) return;
 
-        // 1. CALENDAR
+        // 1. DASHBOARD (HOME) - ¡IMPORTANTE!
+        view.findViewById(R.id.btnNavHome).setOnClickListener(v -> {
+            main.navigateToHome(); // Llama al método que carga HomeFragment
+            dismiss();
+        });
+
+        // 2. CALENDAR
         view.findViewById(R.id.btnNavCalendar).setOnClickListener(v -> {
-            if (mainActivity != null) mainActivity.navigateToCalendar();
+            main.navigateToCalendar();
             dismiss();
         });
 
-        // 2. STANDINGS
+        // 3. STANDINGS
         view.findViewById(R.id.btnNavStandings).setOnClickListener(v -> {
-            if (mainActivity != null) mainActivity.navigateToStandings();
+            main.navigateToStandings();
             dismiss();
         });
 
-        // 3. Otros botones (Drivers, Teams...) - Solo Toast por ahora
+        // 4. DRIVERS
         view.findViewById(R.id.btnNavDrivers).setOnClickListener(v -> {
-            Toast.makeText(getContext(), "Drivers Section - WIP", Toast.LENGTH_SHORT).show();
+            main.navigateToDrivers();
             dismiss();
         });
 
-        // ... Repite para Teams y News ...
+        // 5. TEAMS
+        view.findViewById(R.id.btnNavTeams).setOnClickListener(v -> {
+            main.navigateToTeams();
+            dismiss();
+        });
+
+        // 6. NEWS
+        view.findViewById(R.id.btnNavNews).setOnClickListener(v -> {
+            main.navigateToNews();
+            dismiss();
+        });
     }
 }

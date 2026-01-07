@@ -13,6 +13,7 @@ import com.example.wtcspaddock.ui.standings.StandingsFragment;
 import com.example.wtcspaddock.ui.login.LoginActivity;
 import com.example.wtcspaddock.utils.SessionManager;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.example.wtcspaddock.ui.home.HomeFragment;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -57,7 +58,7 @@ public class MainActivity extends AppCompatActivity {
 
         // Cargar Calendario al inicio
         if (savedInstanceState == null) {
-            loadFragment(new CalendarFragment());
+            loadFragment(new HomeFragment());
         }
     }
 
@@ -84,6 +85,48 @@ public class MainActivity extends AppCompatActivity {
         bottomNav.getMenu().setGroupCheckable(0, true, false);
         for (int i=0; i<bottomNav.getMenu().size(); i++) {
             bottomNav.getMenu().getItem(i).setChecked(false);
+        }
+    }
+
+    public void navigateToHome() {
+        loadFragment(new HomeFragment());
+
+        if (bottomNav != null) {
+            bottomNav.getMenu().setGroupCheckable(0, true, false);
+            for (int i = 0; i < bottomNav.getMenu().size(); i++) {
+                bottomNav.getMenu().getItem(i).setChecked(false);
+            }
+            bottomNav.getMenu().setGroupCheckable(0, true, true);
+        }
+    }
+
+    // ... tus otros métodos navigateToHome, navigateToCalendar, etc. ...
+
+    public void navigateToDrivers() {
+        loadFragment(new com.example.wtcspaddock.ui.drivers.DriversFragment());
+        // Opcional: Desmarcar botones de la barra inferior
+        resetBottomNavSelection();
+    }
+
+    public void navigateToTeams() {
+        loadFragment(new com.example.wtcspaddock.ui.teams.TeamsFragment());
+        resetBottomNavSelection();
+    }
+
+    public void navigateToNews() {
+        loadFragment(new com.example.wtcspaddock.ui.news.NewsFragment());
+        resetBottomNavSelection();
+    }
+
+    // Método auxiliar para limpiar la selección de la barra inferior
+    // (Añade esto para no repetir código en cada método)
+    private void resetBottomNavSelection() {
+        if (bottomNav != null) {
+            bottomNav.getMenu().setGroupCheckable(0, true, false);
+            for (int i = 0; i < bottomNav.getMenu().size(); i++) {
+                bottomNav.getMenu().getItem(i).setChecked(false);
+            }
+            bottomNav.getMenu().setGroupCheckable(0, true, true);
         }
     }
 

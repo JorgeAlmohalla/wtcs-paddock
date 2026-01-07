@@ -26,91 +26,116 @@
         android:textStyle="bold"
         android:layout_marginBottom="16dp"/>
 
-    <!-- GRILLA 2 COLUMNAS -->
     <GridLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:columnCount="2"
-        android:rowCount="3">
+        android:rowCount="3"
+        android:useDefaultMargins="true"
+        android:alignmentMode="alignBounds">
 
-        <!-- 1. CALENDAR (Principal) -->
+        <!-- 1. DASHBOARD -->
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btnNavHome"
+            style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+            android:layout_width="0dp"
+            android:layout_height="60dp"
+            android:layout_columnWeight="1"
+            android:layout_marginEnd="6dp"
+            android:layout_marginBottom="12dp"
+            android:padding="0dp"
+            android:text="DASHBOARD"
+            android:textSize="12sp"
+            android:textColor="@color/white"
+            app:icon="@android:drawable/ic_menu_my_calendar"
+            app:iconTint="@color/white"
+            app:iconPadding="8dp"
+            app:iconGravity="textStart"
+            app:strokeColor="@color/wtcs_red"/>
+
+        <!-- 2. CALENDAR -->
         <com.google.android.material.button.MaterialButton
             android:id="@+id/btnNavCalendar"
             style="@style/Widget.MaterialComponents.Button.OutlinedButton"
             android:layout_width="0dp"
-            android:layout_height="wrap_content"
+            android:layout_height="60dp"
             android:layout_columnWeight="1"
-            android:layout_marginEnd="8dp"
+            android:layout_marginStart="6dp"
             android:layout_marginBottom="12dp"
-            android:padding="16dp"
+            android:padding="0dp"
             android:text="CALENDAR"
+            android:textSize="12sp"
             android:textColor="@color/white"
-            app:strokeColor="@color/wtcs_red"
             app:icon="@drawable/baseline_calendar_month_24"
-            app:iconTint="@color/white"/>
+            app:iconTint="@color/white"
+            app:iconPadding="8dp"
+            app:iconGravity="textStart"
+            app:strokeColor="@color/wtcs_red"/>
 
-        <!-- 2. STANDINGS (Principal) -->
+        <!-- 3. STANDINGS -->
         <com.google.android.material.button.MaterialButton
             android:id="@+id/btnNavStandings"
             style="@style/Widget.MaterialComponents.Button.OutlinedButton"
             android:layout_width="0dp"
-            android:layout_height="wrap_content"
+            android:layout_height="60dp"
             android:layout_columnWeight="1"
-            android:layout_marginStart="8dp"
+            android:layout_marginEnd="6dp"
             android:layout_marginBottom="12dp"
-            android:padding="16dp"
+            android:padding="0dp"
             android:text="STANDINGS"
+            android:textSize="12sp"
             android:textColor="@color/white"
-            app:strokeColor="@color/wtcs_red"
             app:icon="@drawable/baseline_format_list_numbered_24"
-            app:iconTint="@color/white"/>
+            app:iconTint="@color/white"
+            app:iconPadding="8dp"
+            app:iconGravity="textStart"
+            app:strokeColor="@color/wtcs_red"/>
 
-        <!-- 3. DRIVERS -->
+        <!-- 4. DRIVERS -->
         <com.google.android.material.button.MaterialButton
             android:id="@+id/btnNavDrivers"
             style="@style/Widget.MaterialComponents.Button.OutlinedButton"
             android:layout_width="0dp"
-            android:layout_height="wrap_content"
+            android:layout_height="60dp"
             android:layout_columnWeight="1"
-            android:layout_marginEnd="8dp"
+            android:layout_marginStart="6dp"
             android:layout_marginBottom="12dp"
-            android:padding="16dp"
+            android:padding="0dp"
             android:text="DRIVERS"
+            android:textSize="12sp"
             android:textColor="@color/text_secondary"
-            app:strokeColor="@color/text_secondary"/>
+            app:strokeColor="@color/text_secondary"
+            app:iconGravity="textStart"/>
 
-        <!-- 4. TEAMS -->
+        <!-- 5. TEAMS -->
         <com.google.android.material.button.MaterialButton
             android:id="@+id/btnNavTeams"
             style="@style/Widget.MaterialComponents.Button.OutlinedButton"
             android:layout_width="0dp"
-            android:layout_height="wrap_content"
+            android:layout_height="60dp"
             android:layout_columnWeight="1"
-            android:layout_marginStart="8dp"
-            android:layout_marginBottom="12dp"
-            android:padding="16dp"
+            android:layout_marginEnd="6dp"
+            android:padding="0dp"
             android:text="TEAMS"
+            android:textSize="12sp"
             android:textColor="@color/text_secondary"
-            app:strokeColor="@color/text_secondary"/>
+            app:strokeColor="@color/text_secondary"
+            app:iconGravity="textStart"/>
 
-        <!-- 5. NEWS -->
+        <!-- 6. NEWS -->
         <com.google.android.material.button.MaterialButton
             android:id="@+id/btnNavNews"
             style="@style/Widget.MaterialComponents.Button.OutlinedButton"
             android:layout_width="0dp"
-            android:layout_height="wrap_content"
+            android:layout_height="60dp"
             android:layout_columnWeight="1"
-            android:layout_marginEnd="8dp"
-            android:padding="16dp"
+            android:layout_marginStart="6dp"
+            android:padding="0dp"
             android:text="NEWS"
+            android:textSize="12sp"
             android:textColor="@color/text_secondary"
-            app:strokeColor="@color/text_secondary"/>
-
-        <!-- Espacio vacío o futuro botón -->
-        <Space
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_columnWeight="1"/>
+            app:strokeColor="@color/text_secondary"
+            app:iconGravity="textStart"/>
 
     </GridLayout>
 </LinearLayout>

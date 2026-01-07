@@ -1,4 +1,4 @@
-package com.example.wtcspaddock.ui.calendar;
+package com.example.wtcspaddock.ui.news;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -9,12 +9,11 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import com.example.wtcspaddock.R;
 
-public class CalendarFragment extends Fragment {
+public class NewsFragment extends Fragment {
 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        // Usa el layout de lista, no el del dashboard
-        return inflater.inflate(R.layout.fragment_calendar_list, container, false);
+        return inflater.inflate(R.layout.fragment_news, container, false);
     }
 }
