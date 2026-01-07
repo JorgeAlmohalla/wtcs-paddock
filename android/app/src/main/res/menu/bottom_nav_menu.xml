@@ -1,17 +1,21 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
-    <item
-        android:id="@+id/nav_calendar"
-        android:icon="@drawable/baseline_calendar_month_24"
-        android:title="Calendar" />
 
-    <item
-        android:id="@+id/nav_standings"
-        android:icon="@drawable/baseline_format_list_numbered_24"
-        android:title="Standings" />
-
+    <!-- IZQUIERDA: Perfil -->
     <item
         android:id="@+id/nav_profile"
         android:icon="@drawable/baseline_person_24"
         android:title="Profile" />
+
+    <!-- CENTRO: Menú Desplegable (El Hub) -->
+    <item
+        android:id="@+id/nav_menu_hub"
+        android:icon="@drawable/baseline_arrow_circle_up_24"
+        android:title="Paddock" />
+
+    <!-- DERECHA: Cerrar Sesión -->
+    <item
+        android:id="@+id/nav_logout"
+        android:icon="@drawable/baseline_smoke_free_24"
+        android:title="Logout" />
 </menu>

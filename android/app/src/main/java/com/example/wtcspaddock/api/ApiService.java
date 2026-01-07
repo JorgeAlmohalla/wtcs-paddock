@@ -4,6 +4,7 @@ import com.example.wtcspaddock.models.LoginResponse;
 import com.example.wtcspaddock.models.Race;
 import com.example.wtcspaddock.models.User;
 import com.example.wtcspaddock.models.LoginRequest;
+import com.example.wtcspaddock.models.CalendarResponse;
 
 import java.util.List;
 import retrofit2.Call;
@@ -20,7 +21,7 @@ public interface ApiService {
 
     // 2. Obtener Calendario
     @GET("calendar")
-    Call<List<Race>> getCalendar();
+    Call<CalendarResponse> getCalendar();
 
     // 3. Obtener Clasificación (Standings)
     @GET("standings")

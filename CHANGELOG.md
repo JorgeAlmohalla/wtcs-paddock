@@ -5,162 +5,103 @@ All notable changes to the **WTCS Paddock** project will be documented in this f
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [v4.1.0-android-alpha] - 07-01-2026
+### 📱 Added (Mobile Client)
+- **Project Setup:** Initialized Android Studio project with Java & Gradle (Kotlin DSL) inside the monorepo structure.
+- **Network Security:** Configured `network_security_config.xml` to allow cleartext traffic from Android Emulator to local Laravel backend (`10.0.2.2`).
+- **Authentication:**
+    - Implemented `LoginActivity` with JWT handling.
+    - Created `SessionManager` for secure Token storage in `SharedPreferences`.
+- **UI/UX Design:**
+    - Applied "WTCS Dark Theme" (Slate 900/800 + Racing Red).
+    - Designed `MainActivity` with `BottomNavigationView`.
+    - Created high-fidelity `CalendarFragment` (Home) with card-based layout and gradient overlays.
+- **Architecture:** Implemented basic MVVM-like package structure (`api`, `models`, `ui`, `utils`).
+
 ## [v4.0.0-api] - 07-01-2026
-### Added (REST API)
-- **Endpoints:**
-    - `POST /login`: Returns Auth Token and User Profile.
-    - `GET /calendar`: Returns race schedule for active season.
-    - `GET /standings`: Returns simplified JSON list of drivers ordered by points.
-    - `GET /user`: Returns authenticated user details (Protected route).
-- **Server Configuration:** Updated `.htaccess` to allow Authorization headers in Apache/XAMPP.
+### 🚀 Added (REST API Architecture)
+- **API Endpoints:**
+    - `POST /login`: Secure authentication returning Sanctum Bearer Token and User Profile.
+    - `GET /calendar`: Retrieves the full race schedule for the active season.
+    - `GET /standings`: Returns a simplified JSON list of drivers ordered by championship points.
+    - `GET /user`: Returns authenticated user details (Protected route via Authorization Header).
+- **Server Configuration:** Updated `.htaccess` configuration to correctly handle `Authorization` headers in local Apache/XAMPP environments.
 
 ## [v2.8.0] - 19-12-2025
-### Added
-- **season race filter** Implemented a filter in the Laravel administrator to show races by individual season so the user doesn´t get overwhelmed.
-- **Driver performance comparison** Implemented login and a button to compare your performance graphics with a selected driver.
-- **API integration** Installed Laravel Sanctum to create the API´s, created endpoints for each part
-- **Token login** Currently working on login into the user by generated toke WIP.
-
-### Fixed
-- **homepage error** Fixed championship leader name not being centered in its own div.
+### 🚀 Added
+- **Season Filtering:** Implemented a filter in the Laravel Admin Panel to segment races by season, reducing information overload for administrators.
+- **Driver Comparison Tool:** Added functionality to compare performance metrics (graphs and stats) between the logged-in user and a selected rival driver.
+- **API Foundation:** Installed and configured **Laravel Sanctum** to manage stateful and token-based authentication.
+- **Token Logic:** Initial implementation of token generation logic for mobile client authentication (Work in Progress).
 
 ## [v2.7.0] - 18-12-2025
-### Added (Analytics Visualization)
-- **Advanced Charts:** Implemented reversed-axis charts for Race and Qualifying positions (P1 on top) using Chart.js to better represent racing performance.
-- **Visual Consistency:** Standardized chart colors (Red for Race/Points, Purple for Qualy) and added `fill: start` effects for better readability.
-- **Dashboard Layout:** Restructured driver hub into a 5-block grid system to accommodate the new charts alongside the "Big Numbers".
-- **Public Profile Sync:** Ported the advanced Dashboard layout and charts to the Public Profile page (`/driver/{id}`), ensuring consistency between private and public views.
-- **Driver card profiles** Enhanced driver cards desing to show profile picture, nationality and linked to public profile.
-- **Homogenic visualization** Applied the same style to highlight in light cyan to all privateer drivers and team result in the webpage and in the downloadable pdf."
+### 📊 Added (Analytics & Visualization)
+- **Advanced Telemetry Charts:** Implemented reversed-axis charts for Race and Qualifying positions (P1 on top) using `Chart.js` to accurately represent racing tiers.
+- **Visual Consistency:** Standardized chart color palette (Red for Race, Purple for Qualifying) and added gradient fill effects for improved readability.
+- **Dashboard Grid:** Restructured the Driver Hub into a responsive 5-block grid system to accommodate new telemetry charts alongside "Big Numbers".
+- **Public Profile Sync:** Ported the advanced Dashboard layout to the Public Profile view (`/driver/{id}`), ensuring UX consistency between private and public views.
+- **Driver Cards:** Enhanced UI design for driver cards, now displaying avatar, nationality flag, and direct links to public profiles.
+- **Visual Highlighting:** Applied uniform styling (light cyan highlight) to identify "Privateer" drivers and team results across the web portal and PDF reports.
 
-### Added
-- **PDF standings** Implemented button to download current standings in PDF format with a template.
-- **Team car image** Added the option for team principals to add their current year livery to the public team page.
-- **Team car specs** Added a field to add the specs of the current year car to show next to it.
+### 📄 Added (Export & Specs)
+- **PDF Standings:** Implemented a feature to generate and download current championship standings in a branded PDF format.
+- **Team Livery Showcase:** Added functionality for Team Principals to upload and display the current season's car livery on the public team page.
+- **Car Specifications:** Added metadata fields to display technical specifications next to the car model in the team view.
 
 ## [v2.6.0] - 17-12-2025
-### Changed (Scoring Engine)
-- **Points System:** Refactored `RaceResultObserver` to remove the "Fastest Lap" point from races.
-- **Qualifying Points:** Added scoring logic to `QualifyingResultObserver` (1 point for Pole Position).
-- **Standings Calculation:** Updated `StandingsController` to aggregate points from both Race and Qualifying sessions.
+### 🔄 Changed (Scoring Engine)
+- **Points System Refactor:** Updated `RaceResultObserver` to exclude "Fastest Lap" points following rule changes.
+- **Qualifying Logic:** Updated `QualifyingResultObserver` to award points for Pole Position.
+- **Standings Calculation:** Optimized `StandingsController` to aggregate points dynamically from both Race and Qualifying sessions.
 
-### Added (Manufacturer Championship)
-- **Manufacturer Standings:** Implemented complex calculation logic to determine Manufacturer points based on the *best single result* per race.
-- **Standings UI:** Added a third tab "Manufacturers" to the standings page.
+### 🚀 Added (Manufacturer Championship)
+- **Constructors Logic:** Implemented complex calculation logic to determine Manufacturer points based on the *best single result* per race rule.
+- **Standings Tab:** Added a dedicated "Manufacturers" tab to the public standings page.
 
-### Changed (UI/UX)
-- **Results Tables:** Redesigned public result tables (Race & Qualy) with Team Colors, Status Badges, and Penalty Notices.
-- **Qualifying UI:** Added color-coded badges for Tyre Compounds and integrated "Car Model" column.
-- **Driver Names:** Fixed bug where driver names were missing in public results.
+### 🎨 Changed (UI/UX)
+- **Result Tables:** Redesigned public result tables (Race & Qualy) incorporating Team Colors, Status Badges, and Penalty Notices.
+- **Qualifying Details:** Added color-coded badges for Tyre Compounds and a new "Car Model" column.
+- **Bug Fix:** Resolved an issue where driver names failed to render in specific public result views.
 
 ## [v2.5.0] - 16-12-2025
-### Added (Team Management)
-- **Role System:** Refactored user roles to a JSON-based array system allowing multi-role assignment (e.g., Driver + Team Principal).
-- **Team Principal Portal:** Created a dedicated management dashboard for team owners (`/my-team`).
-- **Roster Management:** Implemented tools for Team Principals to sign Free Agents and release drivers from their contracts.
-- **Contract Types:** Added distinction between 'Primary' and 'Reserve' drivers, with visual indicators in the roster list.
-- **Roster Controls:** Added "Sign Driver" form (using Free Agents pool) and "Remove Driver" actions to the Team Management portal.
-- **Role Visibility:** Visual indicators for "Team Principal" and "Reserve Driver" roles in public team pages and management dashboard.
-- **Contract Logic:** Backend logic to prevent duplicate signings and handle contract termination gracefully.
+### 👥 Added (Team Management)
+- **Role Management System:** Refactored user roles to a JSON-based array system, enabling multi-role assignment (e.g., Driver + Team Principal).
+- **Team Principal Portal:** Launched a dedicated management dashboard (`/my-team`) for team owners.
+- **Roster Controls:** Implemented tools for Team Principals to sign Free Agents and release drivers, with logic to prevent duplicate contracts.
+- **Contract Tiers:** Introduced distinction between 'Primary' and 'Reserve' drivers with visual indicators.
+- **Public Visibility:** Added badges for "Team Principal" and "Reserve Driver" roles on public team pages.
 
-### Changed
-- **Database Schema:** Migrated `users.role` (string) to `users.roles` (json) and added `contract_type` enum.
-- **Auth Logic:** Updated User model with helper methods (`hasRole`, `isTeamPrincipal`) to handle the new permission structure.
-
-### Changed (UI)
-- **Team Cards:** Redesigned constructor cards to include "Car Model" field and improved layout alignment.
-- **Roster Links:** Made the entire driver row clickable in the Team view, linking to the public driver profile.
-
-## [v3.1.1-beta] - 16-12-2025
-### Added (Stewarding & Docs)
-- **Official Documentation:** Created an HTML-based "Decision Document" viewer mimicking FIA official reports (Logos, Styling, Signatures).
-- **Incident Feedback:** Added a "Stewarding Reports" section to the Driver Dashboard, allowing users to track the status (Pending/Resolved) and outcome of their reports.
-- **Round Integration:** Embedded "Steward Decision" buttons directly within Sprint/Feature race headers for easy access.
-
-### Changed
-- **Document Generation:** Switched from PDF download to a responsive HTML view for better mobile compatibility and faster loading.
-- **Historical Logic:** Implemented year simulation logic in documents based on the Season name (e.g., "Season 1999" -> displays 1999 date).
-
-## [v3.1.0-beta] - 15-12-2025
-### Added (Stewarding System)
-- **Incident Reporting:** Implemented a public form for drivers to submit incident reports with video evidence.
-- **Admin Review Panel:** Created `IncidentReportResource` in Filament for stewards to review, investigate, and penalize incidents.
-- **Dashboard Integration:** Added "Report Incident" button to the driver dashboard.
-- **Database Schema:** Created `incident_reports` table linking reporters, accused drivers, and races.
-
-### Changed
-- **Driver Profile:** Expanded `users` table with `bio` and `equipment` fields.
+### 🔄 Changed
+- **Database Schema:** Migrated `users.role` column to `json` type and added `contract_type` enum.
+- **Auth Helpers:** Updated User model with `hasRole()` and `isTeamPrincipal()` methods to handle the new permission structure.
+- **UI UX:** Redesigned constructor cards to include "Car Model" and made driver rows clickable in the Team view.
 
 ## [v2.4.0] - 15-12-2025
-### Added (Historical Data)
-- **Car Model Snapshot:** Implemented data snapshotting logic to store the vehicle model name (`car_name`) directly in `race_results` and `qualifying_results` tables upon creation. This prevents historical data corruption if a team changes cars in future seasons.
-- **Car Model Display:** Added "Car" column to all public result tables (Race & Qualy) and PDF reports.
-
-### Changed
-- **Database Schema:** Migrated `teams` table to include `car_model` and updated results tables to store the snapshot.
-- **Observers:** Created `QualifyingResultObserver` to mirror the snapshot logic used in Race Results.
-
-### Added (Automation)
-- **CSV Import System:** Integrated `maatwebsite/excel` to allow bulk import of race results directly from the Admin Panel.
-- **Smart Parsing Logic:** Custom import algorithm that:
-    - Auto-detects driver by name (fuzzy matching).
-    - Parses complex time strings ("44:03 +5") into separate Time and Penalty fields.
-    - Identifies status codes (DNF, DNS, DSQ) from text descriptions.
-    - Detects "Fastest Lap" metadata from the CSV footer row and assigns it to the correct driver.
+### 🏛️ Added (Stewarding System & Historical Data)
+- **Incident Reporting:** Implemented a public form for drivers to submit incident reports with video evidence links.
+- **Steward Panel:** Created `IncidentReportResource` in Filament for admin review, investigation, and penalty assignment.
+- **Data Snapshotting:** Implemented logic to store `car_name` in `race_results` at the time of creation, preventing historical data corruption if teams change cars.
+- **CSV Import System:** Integrated `maatwebsite/excel` for bulk import of race results with smart parsing (auto-detection of DNF, DNS, and Penalties).
 
 ## [v2.3.0] - 14-12-2025
-### Added (Driver Hub & Analytics)
-- **Advanced Dashboard:** Redesigned the driver landing page to act as a complete career hub, featuring:
-    - **"Big Numbers" Stats:** Total Starts, Wins, Podiums, Poles, and Points.
-    - **Driver Bio:** New field for drivers to write their SimRacing background.
-    - **Equipment Tracker:** Field to display input method (Wheel, Pad, Keyboard).
-- **Qualifying History:** Added a scrollable table in the Dashboard showing personal qualifying results across the season.
-- **Database Schema:** Added `bio` (text) and `equipment` (enum) fields to the `users` table.
+### 👤 Added (Driver Hub)
+- **Career Dashboard:** Redesigned the driver landing page featuring "Big Numbers" stats (Starts, Wins, Podiums).
+- **Profile Fields:** Added `bio` (SimRacing background) and `equipment` (Wheel/Pad) fields to the User model.
+- **Qualifying History:** Added a scrollable historical view of qualifying results.
 
-### Changed
-- **Profile Editing:** Updated the profile form to include the new Bio and Equipment fields.
-
-## [v2.2.0-beta] - 12-12-2025
-### Added (Reporting & Architecture)
-- **PDF Generation:** Implemented `dompdf` to generate official "Event Reports" downloadable from the Round details page.
-- **Season Archive:** Implemented full multi-season support architecture with a global context switcher (Middleware).
-- **Season Selector:** Added a dropdown in the Navbar to switch between current and archived seasons.
-
-### Changed
-- **Round Architecture:** Refactored Calendar logic to group races by `round_number`, creating a unified event view with tabs.
-- **Data Filtering:** Refactored Controllers to filter data dynamically based on the selected season ID.
-
-## [v2.1.1] - 12-12-2025
-### Added (Quality of Life)
-- **Race Configuration:** Added `total_laps` field to Race model.
-- **Auto-Fill:** Result entry form now automatically pre-fills `laps_completed`.
-
-### Changed
-- **Public UI:** Refined result tables to match Admin panel styling (dark mode, badges, and status colors).
-
-## [v2.1.0-beta] - 11-12-2025
-### Added (Features)
-- **Qualifying System:** Implemented a dedicated parallel structure for Qualifying sessions within Races (`qualifying_results` table).
-- **Public Race View:** Created dynamic Race Detail page (`/races/{id}`) with Alpine.js tabs.
-- **Performance Chart:** Integrated `Chart.js` into the Driver Dashboard.
+## [v2.2.0] - 12-12-2025
+### 📄 Added (Reporting & Architecture)
+- **PDF Generation:** Implemented `dompdf` for generating official "Event Reports".
+- **Multi-Season Architecture:** Implemented global context switcher and middleware to handle historical data from previous seasons.
 
 ## [v2.0.0-alpha] - 10-12-2025
-### Added (Frontend & Public Web)
-- **Tech Stack:** Installed Tailwind CSS v4 via Vite/PostCSS and Alpine.js.
-- **Layout System:** Created main Blade layout with Dark Mode and responsive Navbar.
-- **Home Page:** Implemented dynamic landing page with Live Countdown.
-- **Public Controllers:** Implemented logic for `Home`, `Standings`, `Calendar`, `Drivers`, `Teams`, and `News`.
-
-### Added (Authentication)
-- **User System:** Integrated Laravel Breeze.
-- **Registration Flow:** Customized sign-up form with SimRacing data (Steam ID).
+### 🚀 Added (Frontend & Public Web)
+- **Tech Stack Upgrade:** Migrated to Tailwind CSS v4 and Alpine.js.
+- **Public Core:** Implemented Home, Standings, Calendar, and Drivers pages.
+- **Authentication:** Integrated Laravel Breeze with custom fields (Steam ID).
 
 ## [v1.0.0-alpha] - 09-12-2025
-### Added (Core Backend)
+### 🛠 Added (Core Backend)
 - **Admin Panel:** Implemented FilamentPHP Backoffice.
-- **Management:** Complete CRUD for Teams, Tracks, Drivers, Races, and News.
-- **Automated Scoring:** Implemented `RaceResultObserver` to calculate points automatically.
-
-## [v0.1.0] - 09-12-2025
-### Added
-- **Project Setup:** Initialized Git repository, Laravel environment, and Database Design.
+- **CRUD Operations:** Complete management for Teams, Tracks, Drivers, and Races.
+- **Automated Scoring:** Implemented initial Observer pattern for points calculation.

@@ -2,9 +2,11 @@ package com.example.wtcspaddock;
 
 import android.content.Intent;
 import android.os.Bundle;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 
+import com.example.wtcspaddock.ui.MenuBottomSheet;
 import com.example.wtcspaddock.ui.calendar.CalendarFragment;
 import com.example.wtcspaddock.ui.profile.ProfileFragment;
 import com.example.wtcspaddock.ui.standings.StandingsFragment;
@@ -14,12 +16,13 @@ import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 public class MainActivity extends AppCompatActivity {
 
+    private BottomNavigationView bottomNav;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        // 1. Comprobar si hay login
         SessionManager session = new SessionManager(this);
         if (!session.isLoggedIn()) {
             startActivity(new Intent(this, LoginActivity.class));
@@ -27,34 +30,75 @@ public class MainActivity extends AppCompatActivity {
             return;
         }
 
-        // 2. Configurar Menú
-        BottomNavigationView bottomNav = findViewById(R.id.bottom_navigation);
+        bottomNav = findViewById(R.id.bottom_navigation);
 
+        // Listener de los 3 botones
         bottomNav.setOnItemSelectedListener(item -> {
-            Fragment selectedFragment = null;
             int itemId = item.getItemId();
 
-            if (itemId == R.id.nav_calendar) {
-                selectedFragment = new CalendarFragment();
-            } else if (itemId == R.id.nav_standings) {
-                selectedFragment = new StandingsFragment();
-            } else if (itemId == R.id.nav_profile) {
-                selectedFragment = new ProfileFragment();
-            }
+            if (itemId == R.id.nav_profile) {
+                // IZQUIERDA: Perfil
+                loadFragment(new ProfileFragment());
+                return true;
 
-            if (selectedFragment != null) {
-                getSupportFragmentManager().beginTransaction()
-                        .replace(R.id.fragment_container, selectedFragment)
-                        .commit();
+            } else if (itemId == R.id.nav_menu_hub) {
+                // CENTRO: Abrir BottomSheet
+                MenuBottomSheet bottomSheet = new MenuBottomSheet();
+                bottomSheet.show(getSupportFragmentManager(), "WtcsMenu");
+                return false; // False para que no se quede "seleccionado" visualmente
+
+            } else if (itemId == R.id.nav_logout) {
+                // DERECHA: Logout con confirmación
+                showLogoutDialog();
+                return false; // No queremos navegar, solo ejecutar la acción
             }
-            return true;
+            return false;
         });
 
-        // 3. Cargar el Calendario (Home) al arrancar
+        // Cargar Calendario al inicio
         if (savedInstanceState == null) {
-            getSupportFragmentManager().beginTransaction()
-                    .replace(R.id.fragment_container, new CalendarFragment())
-                    .commit();
+            loadFragment(new CalendarFragment());
         }
+    }
+
+    private void loadFragment(Fragment fragment) {
+        getSupportFragmentManager().beginTransaction()
+                .replace(R.id.fragment_container, fragment)
+                .commit();
+    }
+
+    // --- MÉTODOS PÚBLICOS PARA EL BOTTOM SHEET ---
+
+    public void navigateToCalendar() {
+        loadFragment(new CalendarFragment());
+        // Desmarcamos botones de la barra porque Calendar ya no está ahí
+        bottomNav.getMenu().setGroupCheckable(0, true, false);
+        for (int i=0; i<bottomNav.getMenu().size(); i++) {
+            bottomNav.getMenu().getItem(i).setChecked(false);
+        }
+    }
+
+    public void navigateToStandings() {
+        loadFragment(new StandingsFragment());
+        // Desmarcamos botones igual que arriba
+        bottomNav.getMenu().setGroupCheckable(0, true, false);
+        for (int i=0; i<bottomNav.getMenu().size(); i++) {
+            bottomNav.getMenu().getItem(i).setChecked(false);
+        }
+    }
+
+    private void showLogoutDialog() {
+        new AlertDialog.Builder(this)
+                .setTitle("Logout")
+                .setMessage("Are you sure you want to exit?")
+                .setPositiveButton("Yes", (dialog, which) -> {
+                    SessionManager session = new SessionManager(this);
+                    session.logout();
+                    Intent intent = new Intent(this, LoginActivity.class);
+                    intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                    startActivity(intent);
+                })
+                .setNegativeButton("Cancel", null)
+                .show();
     }
 }

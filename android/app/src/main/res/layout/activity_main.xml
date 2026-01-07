@@ -2,19 +2,69 @@
 <androidx.constraintlayout.widget.ConstraintLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/wtcs_background">
 
-    <!-- ESTE ES EL CONTENEDOR (ID: fragment_container) -->
-    <FrameLayout
-        android:id="@+id/fragment_container"
+    <!-- 1. CABECERA ROJA (Fixed Top) -->
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/headerContainer"
         android:layout_width="match_parent"
-        android:layout_height="0dp"
-        app:layout_constraintBottom_toTopOf="@+id/bottom_navigation"
-        app:layout_constraintTop_toTopOf="parent" />
+        android:layout_height="60dp"
+        android:background="@color/wtcs_red"
+        android:paddingStart="16dp"
+        android:paddingEnd="16dp"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent">
 
-    <!-- ESTA ES LA BARRA DE NAVEGACIÓN (ID: bottom_navigation) -->
+        <!-- Logo WTCS -->
+        <TextView
+            android:id="@+id/logoPart1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="WTCS"
+            android:textSize="24sp"
+            android:textStyle="bold"
+            android:textColor="@color/white"
+            android:letterSpacing="0.05"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"/>
+
+        <!-- Logo PADDOCK (Cajita negra) -->
+        <TextView
+            android:id="@+id/logoPart2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="PADDOCK"
+            android:textSize="10sp"
+            android:textStyle="bold"
+            android:textColor="@color/white"
+            android:background="@color/black"
+            android:paddingStart="4dp"
+            android:paddingEnd="4dp"
+            android:paddingTop="1dp"
+            android:paddingBottom="1dp"
+            android:layout_marginStart="4dp"
+            app:layout_constraintStart_toEndOf="@+id/logoPart1"
+            app:layout_constraintBaseline_toBaselineOf="@+id/logoPart1"/>
+
+        <!-- Icono de Menú Hamburguesa (Para el futuro menú lateral) -->
+        <ImageView
+            android:id="@+id/btnMenu"
+            android:layout_width="24dp"
+            android:layout_height="24dp"
+            android:src="@android:drawable/ic_menu_sort_by_size"
+            app:tint="@color/white"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"/>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <!-- 2. BARRA DE NAVEGACIÓN INFERIOR (Fixed Bottom) -->
     <com.google.android.material.bottomnavigation.BottomNavigationView
         android:id="@+id/bottom_navigation"
         android:layout_width="match_parent"
@@ -22,7 +72,18 @@
         android:background="@color/wtcs_surface"
         app:itemIconTint="@color/white"
         app:itemTextColor="@color/white"
+        app:labelVisibilityMode="labeled"
         app:menu="@menu/bottom_nav_menu"
         app:layout_constraintBottom_toBottomOf="parent" />
+
+    <!-- 3. CONTENEDOR DE PANTALLAS (Ocupa el espacio restante) -->
+    <FrameLayout
+        android:id="@+id/fragment_container"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        app:layout_constraintTop_toBottomOf="@+id/headerContainer"
+        app:layout_constraintBottom_toTopOf="@+id/bottom_navigation"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

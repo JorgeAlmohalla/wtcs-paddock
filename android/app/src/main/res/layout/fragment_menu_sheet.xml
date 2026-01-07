@@ -1,0 +1,116 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@color/wtcs_surface"
+    android:orientation="vertical"
+    android:padding="24dp">
+
+    <!-- Tirador visual -->
+    <View
+        android:layout_width="40dp"
+        android:layout_height="4dp"
+        android:background="@android:color/darker_gray"
+        android:layout_gravity="center"
+        android:layout_marginBottom="24dp"
+        android:alpha="0.5"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="PADDOCK NAVIGATION"
+        android:textColor="@color/wtcs_red"
+        android:textSize="14sp"
+        android:letterSpacing="0.1"
+        android:textStyle="bold"
+        android:layout_marginBottom="16dp"/>
+
+    <!-- GRILLA 2 COLUMNAS -->
+    <GridLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:columnCount="2"
+        android:rowCount="3">
+
+        <!-- 1. CALENDAR (Principal) -->
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btnNavCalendar"
+            style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_columnWeight="1"
+            android:layout_marginEnd="8dp"
+            android:layout_marginBottom="12dp"
+            android:padding="16dp"
+            android:text="CALENDAR"
+            android:textColor="@color/white"
+            app:strokeColor="@color/wtcs_red"
+            app:icon="@drawable/baseline_calendar_month_24"
+            app:iconTint="@color/white"/>
+
+        <!-- 2. STANDINGS (Principal) -->
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btnNavStandings"
+            style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_columnWeight="1"
+            android:layout_marginStart="8dp"
+            android:layout_marginBottom="12dp"
+            android:padding="16dp"
+            android:text="STANDINGS"
+            android:textColor="@color/white"
+            app:strokeColor="@color/wtcs_red"
+            app:icon="@drawable/baseline_format_list_numbered_24"
+            app:iconTint="@color/white"/>
+
+        <!-- 3. DRIVERS -->
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btnNavDrivers"
+            style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_columnWeight="1"
+            android:layout_marginEnd="8dp"
+            android:layout_marginBottom="12dp"
+            android:padding="16dp"
+            android:text="DRIVERS"
+            android:textColor="@color/text_secondary"
+            app:strokeColor="@color/text_secondary"/>
+
+        <!-- 4. TEAMS -->
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btnNavTeams"
+            style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_columnWeight="1"
+            android:layout_marginStart="8dp"
+            android:layout_marginBottom="12dp"
+            android:padding="16dp"
+            android:text="TEAMS"
+            android:textColor="@color/text_secondary"
+            app:strokeColor="@color/text_secondary"/>
+
+        <!-- 5. NEWS -->
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btnNavNews"
+            style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_columnWeight="1"
+            android:layout_marginEnd="8dp"
+            android:padding="16dp"
+            android:text="NEWS"
+            android:textColor="@color/text_secondary"
+            app:strokeColor="@color/text_secondary"/>
+
+        <!-- Espacio vacío o futuro botón -->
+        <Space
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_columnWeight="1"/>
+
+    </GridLayout>
+</LinearLayout>
