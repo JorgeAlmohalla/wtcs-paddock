@@ -5,13 +5,21 @@ All notable changes to the **WTCS Paddock** project will be documented in this f
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## [Unreleased]
-*Work in progress for v3.0 (API & Mobile App)*
+## [v4.0.0-api] - 07-01-2026
+### Added (REST API)
+- **Endpoints:**
+    - `POST /login`: Returns Auth Token and User Profile.
+    - `GET /calendar`: Returns race schedule for active season.
+    - `GET /standings`: Returns simplified JSON list of drivers ordered by points.
+    - `GET /user`: Returns authenticated user details (Protected route).
+- **Server Configuration:** Updated `.htaccess` to allow Authorization headers in Apache/XAMPP.
 
 ## [v2.8.0] - 19-12-2025
 ### Added
 - **season race filter** Implemented a filter in the Laravel administrator to show races by individual season so the user doesn´t get overwhelmed.
 - **Driver performance comparison** Implemented login and a button to compare your performance graphics with a selected driver.
+- **API integration** Installed Laravel Sanctum to create the API´s, created endpoints for each part
+- **Token login** Currently working on login into the user by generated toke WIP.
 
 ### Fixed
 - **homepage error** Fixed championship leader name not being centered in its own div.

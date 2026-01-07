@@ -67,20 +67,30 @@ Route::get('/calendar', function () {
 Route::get('/standings', function () {
     $activeSeasonId = \App\Models\Season::where('is_active', true)->value('id');
 
-    // Pilotos
     $drivers = User::whereJsonContains('roles', 'driver')
         ->with('team')
         ->get()
         ->map(function ($driver) use ($activeSeasonId) {
+            // Calcular puntos
             $p1 = RaceResult::where('user_id', $driver->id)
                 ->whereHas('race', fn($q) => $q->where('season_id', $activeSeasonId))->sum('points');
             $p2 = QualifyingResult::where('user_id', $driver->id)
                 ->whereHas('race', fn($q) => $q->where('season_id', $activeSeasonId))->sum('points');
-            $driver->total_points = $p1 + $p2;
-            return $driver;
+            
+            // Devolver ARRAY LIMPIO (JSON Structure)
+            return [
+                'id' => $driver->id,
+                'name' => $driver->name,
+                'team' => $driver->team ? $driver->team->name : 'Privateer',
+                'team_color' => $driver->team->primary_color ?? '#666666',
+                'points' => (int) ($p1 + $p2),
+                'avatar_url' => $driver->avatar_url ? asset('storage/' . $driver->avatar_url) : null,
+                'nationality' => $driver->nationality,
+            ];
         })
-        ->sortByDesc('total_points')
-        ->values();
+        ->filter(fn ($d) => $d['points'] > 0) // Filtrar los que tienen 0 puntos
+        ->sortByDesc('points')
+        ->values(); // Reindexar el array para JSON
 
     return response()->json($drivers);
 });
