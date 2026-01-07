@@ -1,9 +1,27 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
-    <!-- Base application theme. -->
-    <style name="Base.Theme.WTCSPaddock" parent="Theme.Material3.DayNight.NoActionBar">
-        <!-- Customize your light theme here. -->
-        <!-- <item name="colorPrimary">@color/my_light_primary</item> -->
+    <!-- FÍJATE AQUÍ: "Theme.WTCSPaddock" coincidiendo con el Manifest -->
+    <style name="Theme.WTCSPaddock" parent="Theme.MaterialComponents.DayNight.NoActionBar">
+
+        <!-- Tus colores personalizados -->
+        <item name="colorPrimary">@color/wtcs_red</item>
+        <item name="colorPrimaryVariant">@color/wtcs_red_dark</item>
+        <item name="colorOnPrimary">@color/white</item>
+
+        <item name="android:windowBackground">@color/wtcs_background</item>
+        <item name="colorSurface">@color/wtcs_surface</item>
+        <item name="colorOnSurface">@color/white</item>
+
+        <item name="android:statusBarColor">@color/wtcs_background</item>
+        <item name="android:windowLightStatusBar">false</item>
     </style>
 
-    <style name="Theme.WTCSPaddock" parent="Base.Theme.WTCSPaddock" />
+    <!-- Estilo de los inputs -->
+    <style name="WtcsInputStyle" parent="Widget.MaterialComponents.TextInputLayout.OutlinedBox">
+        <item name="boxBackgroundColor">@color/wtcs_surface</item>
+        <item name="boxStrokeColor">@color/wtcs_red</item>
+        <item name="boxStrokeWidth">0dp</item>
+        <item name="android:textColorHint">@color/text_secondary</item>
+        <item name="hintTextColor">@color/wtcs_red</item>
+        <item name="shapeAppearanceOverlay">@style/ShapeAppearance.MaterialComponents.SmallComponent</item>
+    </style>
 </resources>
