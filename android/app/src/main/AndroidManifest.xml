@@ -2,10 +2,8 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools">
 
-    <!-- Permiso de Internet -->
     <uses-permission android:name="android.permission.INTERNET" />
 
-    <!-- Fíjate que aquí empieza la etiqueta application pero NO se cierra con ">" todavía -->
     <application
         android:allowBackup="true"
         android:dataExtractionRules="@xml/data_extraction_rules"
@@ -18,9 +16,8 @@
         android:usesCleartextTraffic="true"
         android:networkSecurityConfig="@xml/network_security_config"
         tools:targetApi="31">
-        <!-- AQUÍ es donde se cierra la configuración de la app con ">" -->
-        <!-- Y ahora empiezan las activities DENTRO de la app -->
 
+        <!-- 1. LOGIN (Launcher) -->
         <activity
             android:name=".ui.login.LoginActivity"
             android:exported="true">
@@ -30,11 +27,18 @@
             </intent-filter>
         </activity>
 
+        <!-- 2. MAIN ACTIVITY -->
         <activity
             android:name=".MainActivity"
             android:exported="false" />
 
+        <!-- 3. RACE DETAIL (¡FALTABA ESTA!) -->
+        <activity
+            android:name=".ui.calendar.RaceDetailActivity"
+            android:exported="false"
+            android:parentActivityName=".MainActivity" />
+        <!-- parentActivityName añade la flecha "Atrás" automáticamente en la barra superior -->
+
     </application>
-    <!-- Aquí termina la app -->
 
 </manifest>

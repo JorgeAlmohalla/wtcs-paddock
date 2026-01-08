@@ -61,9 +61,13 @@ public class CalendarAdapter extends RecyclerView.Adapter<CalendarAdapter.EventV
                 .placeholder(android.R.drawable.ic_menu_gallery)
                 .into(holder.imgRaceTrack);
 
-        // --- 5. CLICK LISTENER ---
+        // 5. CLICK LISTENER
         holder.itemView.setOnClickListener(v -> {
-            Toast.makeText(context, "Ir a detalles de Ronda " + event.getRound(), Toast.LENGTH_SHORT).show();
+            android.content.Intent intent = new android.content.Intent(context, RaceDetailActivity.class);
+            intent.putExtra("TRACK_NAME", event.getTrackName());
+            intent.putExtra("ROUND_NUM", event.getRound());
+            // intent.putExtra("ROUND_ID", event.getId()); // Si tienes el ID, pásalo también
+            context.startActivity(intent);
         });
     }
 

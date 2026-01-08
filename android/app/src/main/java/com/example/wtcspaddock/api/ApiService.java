@@ -4,6 +4,7 @@ import com.example.wtcspaddock.models.CalendarResponse;
 import com.example.wtcspaddock.models.DriverStanding;
 import com.example.wtcspaddock.models.LoginRequest;
 import com.example.wtcspaddock.models.LoginResponse;
+import com.example.wtcspaddock.models.RoundDetailResponse;
 import com.example.wtcspaddock.models.StandingsResponse;
 import com.example.wtcspaddock.models.User;
 
@@ -32,4 +33,8 @@ public interface ApiService {
     // 4. Perfil de Usuario (Protegido)
     @GET("user")
     Call<User> getUserProfile(@Header("Authorization") String token);
+
+    // Detalle de Ronda (Resultados)
+    @GET("rounds/{id}")
+    Call<RoundDetailResponse> getRoundDetails(@retrofit2.http.Path("id") int roundId);
 }

@@ -101,3 +101,117 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     // Devolvemos el usuario con su equipo cargado
     return $request->user()->load('team');
 });
+
+// Endpoint: Detalle de una Ronda (Qualy + Sprint + Feature)
+Route::get('/rounds/{round}', function ($roundNumber) {
+    $seasonId = \App\Models\Season::where('is_active', true)->value('id');
+
+    // 1. Buscar las carreras de esa ronda
+    $sessions = \App\Models\Race::where('season_id', $seasonId)
+        ->where('round_number', $roundNumber)
+        ->with(['track', 'results.driver', 'results.team', 'qualifyingResults.driver', 'qualifyingResults.team'])
+        ->orderBy('race_date', 'asc')
+        ->get();
+
+    if ($sessions->isEmpty()) {
+        return response()->json(['message' => 'Round not found'], 404);
+    }
+
+    // 2. Identificar Sesiones (Misma lógica que en Web)
+    $sprint = $sessions->first(fn($r) => str_contains(strtolower($r->title ?? ''), 'sprint')) ?? $sessions->first();
+    $feature = $sessions->first(fn($r) => str_contains(strtolower($r->title ?? ''), 'feature')) ?? $sessions->last();
+    
+    // Evitar duplicados si solo hay una carrera
+    if ($sessions->count() === 1) $feature = null;
+    elseif ($sprint->id === $feature->id) $feature = $sessions->last();
+
+    // 3. Helper para formatear resultados de carrera
+    $formatResults = function ($race) {
+        if (!$race) return null;
+        return [
+            'id' => $race->id,
+            'title' => $race->title,
+            'date' => $race->race_date->format('d M Y - H:i'),
+            'status' => $race->status,
+            'results' => $race->results->sortBy('position')->values()->map(fn($r) => [
+                'pos' => $r->position,
+                'driver' => $r->driver->name,
+                'driver_number' => $r->driver_number ?? $r->driver->driver_number,
+                'team' => $r->team->name ?? 'Privateer',
+                'team_color' => $r->team->primary_color ?? '#666',
+                'time' => $r->status === 'finished' ? $r->race_time : strtoupper($r->status),
+                'points' => (int)$r->points,
+                'fastest_lap' => (bool)$r->fastest_lap,
+                'car' => $r->car_name ?? $r->team->car_model,
+            ])
+        ];
+    };
+
+    // 4. Helper para formatear Qualy
+    $qualyData = $sprint->qualifyingResults->sortBy('position')->values()->map(fn($q) => [
+        'pos' => $q->position,
+        'driver' => $q->driver->name,
+        'team' => $q->team->name ?? 'Privateer',
+        'team_color' => $q->team->primary_color ?? '#666',
+        'time' => $q->best_time,
+        'tyre' => ucfirst($q->tyre_compound ?? '-'),
+    ]);
+
+    // 5. Respuesta JSON Estructurada
+    return response()->json([
+        'round_number' => (int)$roundNumber,
+        'track' => [
+            'name' => $sprint->track->name,
+            'country' => $sprint->track->country_code,
+            'image' => $sprint->track->layout_image_url ? asset('storage/'.$sprint->track->layout_image_url) : null,
+        ],
+        'sprint_race' => $formatResults($sprint),
+        'feature_race' => $formatResults($feature),
+        'qualifying' => $qualyData,
+    ]);
+});
+
+// Endpoint: Detalle Público de Piloto (Stats)
+Route::get('/drivers/{id}', function ($id) {
+    $seasonId = \App\Models\Season::where('is_active', true)->value('id');
+    $user = \App\Models\User::with('team')->findOrFail($id);
+
+    // Calcular Stats (Simplificado para API)
+    $stats = [
+        'starts' => $user->raceResults()->whereHas('race', fn($q) => $q->where('season_id', $seasonId))->count(),
+        'wins' => $user->raceResults()->whereHas('race', fn($q) => $q->where('season_id', $seasonId))->where('position', 1)->count(),
+        'points' => (int) $user->raceResults()->whereHas('race', fn($q) => $q->where('season_id', $seasonId))->sum('points'),
+    ];
+
+    return response()->json([
+        'driver' => [
+            'name' => $user->name,
+            'number' => $user->driver_number,
+            'nationality' => $user->nationality,
+            'team' => $user->team ? $user->team->name : 'Free Agent',
+            'team_color' => $user->team->primary_color ?? '#666',
+            'avatar' => $user->avatar_url ? asset('storage/' . $user->avatar_url) : null,
+            'bio' => $user->bio,
+            'equipment' => $user->equipment,
+        ],
+        'stats' => $stats
+    ]);
+});
+
+// Endpoint: Detalle de Equipo
+Route::get('/teams/{id}', function ($id) {
+    $team = \App\Models\Team::with('drivers')->findOrFail($id);
+
+    return response()->json([
+        'name' => $team->name,
+        'car' => $team->car_model,
+        'manufacturer' => $team->car_brand,
+        'color' => $team->primary_color,
+        'image' => $team->car_image_url ? asset('storage/'.$team->car_image_url) : null,
+        'drivers' => $team->drivers->map(fn($d) => [
+            'id' => $d->id,
+            'name' => $d->name,
+            'role' => $d->isTeamPrincipal() ? 'Principal' : 'Driver'
+        ])
+    ]);
+});

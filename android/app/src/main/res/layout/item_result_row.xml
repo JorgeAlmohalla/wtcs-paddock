@@ -1,0 +1,135 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal"
+    android:paddingVertical="10dp"
+    android:paddingHorizontal="8dp"
+    android:background="@drawable/border_bottom_dark"
+    android:gravity="center_vertical">
+
+    <!-- 1. POSICIÓN (Columna Izquierda) -->
+    <TextView
+        android:id="@+id/tvPos"
+        android:layout_width="24dp"
+        android:layout_height="wrap_content"
+        android:text="1"
+        android:textColor="@color/white"
+        android:textStyle="bold"
+        android:gravity="center"
+        android:layout_marginEnd="8dp"/>
+
+    <!-- 2. LINEA VERTICAL DE COLOR (Equipo) -->
+    <View
+        android:id="@+id/viewTeamColor"
+        android:layout_width="3dp"
+        android:layout_height="32dp"
+        android:background="#FF0000"
+        android:layout_marginEnd="12dp"/>
+
+    <!-- 3. PILOTO Y COCHE (Centro) -->
+    <LinearLayout
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/tvDriverName"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            tools:text="Alex Mancinelli"
+            android:textColor="@color/white"
+            android:textStyle="bold"
+            android:textSize="14sp"/>
+
+        <TextView
+            android:id="@+id/tvTeamCar"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            tools:text="Alfa Romeo 156"
+            android:textColor="@color/text_secondary"
+            android:textSize="11sp"/>
+
+        <!-- Badge de STATUS (Solo para carrera: DNF, DNS) -->
+        <TextView
+            android:id="@+id/tvStatusBadge"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="DNF"
+            android:textSize="9sp"
+            android:textStyle="bold"
+            android:textColor="#FF5555"
+            android:background="#30FF0000"
+            android:paddingHorizontal="4dp"
+            android:visibility="gone"
+            android:layout_marginTop="2dp"/>
+    </LinearLayout>
+
+    <!-- 4. DATOS VARIABLES (Derecha) -->
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:gravity="end">
+
+        <!-- TIEMPO / GAP -->
+        <TextView
+            android:id="@+id/tvTime"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            tools:text="1:09.355"
+            android:textColor="@color/white"
+            android:fontFamily="monospace"
+            android:textSize="12sp"
+            android:textStyle="bold"/>
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_marginTop="4dp"
+            android:gravity="center_vertical">
+
+            <!-- SOLO CARRERA: Vueltas -->
+            <TextView
+                android:id="@+id/tvLaps"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                tools:text="18 LAPS"
+                android:textSize="10sp"
+                android:textColor="@color/text_secondary"
+                android:layout_marginEnd="8dp"/>
+
+            <!-- SOLO QUALY: Neumático -->
+            <TextView
+                android:id="@+id/tvTyreBadge"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                tools:text="SOFT"
+                android:textSize="9sp"
+                android:textStyle="bold"
+                android:textColor="@color/black"
+                android:background="#FF5555"
+                android:paddingHorizontal="6dp"
+                android:paddingVertical="1dp"/>
+
+            <!-- SOLO CARRERA: Puntos -->
+            <TextView
+                android:id="@+id/tvPointsBadge"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                tools:text="25 PTS"
+                android:textSize="10sp"
+                android:textStyle="bold"
+                android:textColor="#4CAF50"
+                android:background="#204CAF50"
+                android:paddingHorizontal="6dp"
+                android:paddingVertical="1dp"
+                android:visibility="gone"/>
+
+        </LinearLayout>
+    </LinearLayout>
+
+</LinearLayout>
