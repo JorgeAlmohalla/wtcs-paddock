@@ -1,21 +1,22 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
 
-    <!-- IZQUIERDA: Perfil -->
+    <!-- IZQUIERDA: Home (Dashboard) -->
     <item
-        android:id="@+id/nav_profile"
-        android:icon="@drawable/baseline_person_24"
-        android:title="Profile" />
+        android:id="@+id/nav_home"
+        android:icon="@drawable/ic_home"
+        android:title="Home" />
 
-    <!-- CENTRO: Menú Desplegable (El Hub) -->
+    <!-- CENTRO: El Hub Desplegable -->
     <item
         android:id="@+id/nav_menu_hub"
-        android:icon="@drawable/baseline_arrow_circle_up_24"
+        android:icon="@drawable/ic_menu_grid"
         android:title="Paddock" />
 
-    <!-- DERECHA: Cerrar Sesión -->
+    <!-- DERECHA: Perfil -->
     <item
-        android:id="@+id/nav_logout"
-        android:icon="@drawable/baseline_smoke_free_24"
-        android:title="Logout" />
+        android:id="@+id/nav_profile"
+        android:icon="@drawable/ic_profile"
+        android:title="Profile" />
+
 </menu>

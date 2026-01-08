@@ -23,45 +23,27 @@ public class MenuBottomSheet extends BottomSheetDialogFragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-
-        // Obtenemos referencia al MainActivity para poder llamar a sus métodos
         MainActivity main = (MainActivity) getActivity();
         if (main == null) return;
 
-        // 1. DASHBOARD (HOME) - ¡IMPORTANTE!
-        view.findViewById(R.id.btnNavHome).setOnClickListener(v -> {
-            main.navigateToHome(); // Llama al método que carga HomeFragment
-            dismiss();
-        });
+        // YA NO EXISTE EL btnNavHome PORQUE ESTÁ EN LA BARRA PRINCIPAL
 
-        // 2. CALENDAR
+        // 1. CALENDAR
         view.findViewById(R.id.btnNavCalendar).setOnClickListener(v -> {
             main.navigateToCalendar();
             dismiss();
         });
 
-        // 3. STANDINGS
-        view.findViewById(R.id.btnNavStandings).setOnClickListener(v -> {
-            main.navigateToStandings();
-            dismiss();
-        });
+        // ... (Standings, Drivers, Teams, News igual que antes) ...
+        view.findViewById(R.id.btnNavStandings).setOnClickListener(v -> { main.navigateToStandings(); dismiss(); });
+        view.findViewById(R.id.btnNavDrivers).setOnClickListener(v -> { main.navigateToDrivers(); dismiss(); });
+        view.findViewById(R.id.btnNavTeams).setOnClickListener(v -> { main.navigateToTeams(); dismiss(); });
+        view.findViewById(R.id.btnNavNews).setOnClickListener(v -> { main.navigateToNews(); dismiss(); });
 
-        // 4. DRIVERS
-        view.findViewById(R.id.btnNavDrivers).setOnClickListener(v -> {
-            main.navigateToDrivers();
-            dismiss();
-        });
-
-        // 5. TEAMS
-        view.findViewById(R.id.btnNavTeams).setOnClickListener(v -> {
-            main.navigateToTeams();
-            dismiss();
-        });
-
-        // 6. NEWS
-        view.findViewById(R.id.btnNavNews).setOnClickListener(v -> {
-            main.navigateToNews();
-            dismiss();
+        // 2. LOGOUT (El nuevo botón en la rejilla)
+        view.findViewById(R.id.btnNavLogout).setOnClickListener(v -> {
+            dismiss(); // Cerramos el menú primero
+            main.performLogout(); // Llamamos al método de logout
         });
     }
 }

@@ -35,108 +35,90 @@
         android:useDefaultMargins="true"
         android:alignmentMode="alignBounds">
 
-        <!-- 1. DASHBOARD -->
-        <com.google.android.material.button.MaterialButton
-            android:id="@+id/btnNavHome"
-            style="@style/Widget.MaterialComponents.Button.OutlinedButton"
-            android:layout_width="0dp"
-            android:layout_height="60dp"
-            android:layout_columnWeight="1"
-            android:layout_marginEnd="6dp"
-            android:layout_marginBottom="12dp"
-            android:padding="0dp"
-            android:text="DASHBOARD"
-            android:textSize="12sp"
-            android:textColor="@color/white"
-            app:icon="@android:drawable/ic_menu_my_calendar"
-            app:iconTint="@color/white"
-            app:iconPadding="8dp"
-            app:iconGravity="textStart"
-            app:strokeColor="@color/wtcs_red"/>
-
-        <!-- 2. CALENDAR -->
+        <!-- 1. CALENDAR -->
         <com.google.android.material.button.MaterialButton
             android:id="@+id/btnNavCalendar"
             style="@style/Widget.MaterialComponents.Button.OutlinedButton"
             android:layout_width="0dp"
             android:layout_height="60dp"
             android:layout_columnWeight="1"
-            android:layout_marginStart="6dp"
+            android:layout_marginEnd="6dp"
             android:layout_marginBottom="12dp"
             android:padding="0dp"
             android:text="CALENDAR"
             android:textSize="12sp"
             android:textColor="@color/white"
-            app:icon="@drawable/baseline_calendar_month_24"
+            app:icon="@drawable/ic_calendar"
             app:iconTint="@color/white"
             app:iconPadding="8dp"
             app:iconGravity="textStart"
             app:strokeColor="@color/wtcs_red"/>
 
-        <!-- 3. STANDINGS -->
+        <!-- 2. STANDINGS -->
         <com.google.android.material.button.MaterialButton
             android:id="@+id/btnNavStandings"
             style="@style/Widget.MaterialComponents.Button.OutlinedButton"
             android:layout_width="0dp"
             android:layout_height="60dp"
             android:layout_columnWeight="1"
-            android:layout_marginEnd="6dp"
+            android:layout_marginStart="6dp"
             android:layout_marginBottom="12dp"
             android:padding="0dp"
             android:text="STANDINGS"
             android:textSize="12sp"
             android:textColor="@color/white"
-            app:icon="@drawable/baseline_format_list_numbered_24"
+            app:icon="@drawable/ic_standings"
             app:iconTint="@color/white"
             app:iconPadding="8dp"
             app:iconGravity="textStart"
             app:strokeColor="@color/wtcs_red"/>
 
-        <!-- 4. DRIVERS (Actualizado a Rojo + Icono) -->
+        <!-- 3. DRIVERS -->
         <com.google.android.material.button.MaterialButton
             android:id="@+id/btnNavDrivers"
             style="@style/Widget.MaterialComponents.Button.OutlinedButton"
             android:layout_width="0dp"
             android:layout_height="60dp"
             android:layout_columnWeight="1"
-            android:layout_marginStart="6dp"
+            android:layout_marginEnd="6dp"
             android:layout_marginBottom="12dp"
             android:padding="0dp"
             android:text="DRIVERS"
             android:textSize="12sp"
             android:textColor="@color/white"
-            app:icon="@drawable/baseline_person_24"
+            app:icon="@drawable/ic_profile"
             app:iconTint="@color/white"
             app:iconPadding="8dp"
             app:iconGravity="textStart"
             app:strokeColor="@color/wtcs_red"/>
 
-        <!-- 5. TEAMS (Actualizado a Rojo + Icono) -->
+        <!-- 4. TEAMS -->
         <com.google.android.material.button.MaterialButton
             android:id="@+id/btnNavTeams"
             style="@style/Widget.MaterialComponents.Button.OutlinedButton"
             android:layout_width="0dp"
             android:layout_height="60dp"
             android:layout_columnWeight="1"
-            android:layout_marginEnd="6dp"
+            android:layout_marginStart="6dp"
+            android:layout_marginBottom="12dp"
             android:padding="0dp"
             android:text="TEAMS"
             android:textSize="12sp"
             android:textColor="@color/white"
-            app:icon="@drawable/baseline_arrow_circle_up_24"
+            app:icon="@drawable/ic_menu_grid"
             app:iconTint="@color/white"
             app:iconPadding="8dp"
             app:iconGravity="textStart"
             app:strokeColor="@color/wtcs_red"/>
 
-        <!-- 6. NEWS (Actualizado a Rojo + Icono) -->
+        <!-- 5. NEWS -->
         <com.google.android.material.button.MaterialButton
             android:id="@+id/btnNavNews"
             style="@style/Widget.MaterialComponents.Button.OutlinedButton"
             android:layout_width="0dp"
             android:layout_height="60dp"
             android:layout_columnWeight="1"
-            android:layout_marginStart="6dp"
+            android:layout_marginEnd="6dp"
             android:padding="0dp"
             android:text="NEWS"
             android:textSize="12sp"
@@ -146,6 +128,26 @@
             app:iconPadding="8dp"
             app:iconGravity="textStart"
             app:strokeColor="@color/wtcs_red"/>
+
+        <!-- 6. LOGOUT (ESTE ES EL NUEVO) -->
+        <!-- Lo ponemos de color distinto (Gris o Rojo oscuro) para diferenciar -->
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btnNavLogout"
+            style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+            android:layout_width="0dp"
+            android:layout_height="60dp"
+            android:layout_columnWeight="1"
+            android:layout_marginStart="6dp"
+            android:padding="0dp"
+            android:text="LOGOUT"
+            android:textSize="12sp"
+            android:textColor="#FF5555"
+            app:icon="@drawable/ic_logout"
+            app:iconTint="#FF5555"
+            app:iconPadding="8dp"
+            app:iconGravity="textStart"
+            app:strokeColor="#FF5555"
+            app:rippleColor="#33FF0000"/>
 
     </GridLayout>
 </LinearLayout>

@@ -24,6 +24,7 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        // 1. Verificar Sesión
         SessionManager session = new SessionManager(this);
         if (!session.isLoggedIn()) {
             startActivity(new Intent(this, LoginActivity.class));
@@ -31,34 +32,34 @@ public class MainActivity extends AppCompatActivity {
             return;
         }
 
+        // 2. Vincular Barra de Navegación
         bottomNav = findViewById(R.id.bottom_navigation);
 
-        // Listener de los 3 botones
+        // 3. Configurar Listener de los 3 botones
         bottomNav.setOnItemSelectedListener(item -> {
             int itemId = item.getItemId();
 
-            if (itemId == R.id.nav_profile) {
-                // IZQUIERDA: Perfil
-                loadFragment(new ProfileFragment());
-                return true;
+            if (itemId == R.id.nav_home) {
+                // IZQUIERDA: Ir al Home (Dashboard)
+                loadFragment(new com.example.wtcspaddock.ui.home.HomeFragment());
+                return true; // Se marca el icono
 
             } else if (itemId == R.id.nav_menu_hub) {
-                // CENTRO: Abrir BottomSheet
-                MenuBottomSheet bottomSheet = new MenuBottomSheet();
-                bottomSheet.show(getSupportFragmentManager(), "WtcsMenu");
-                return false; // False para que no se quede "seleccionado" visualmente
+                // CENTRO: Abrir el Menú Desplegable (Paddock)
+                new com.example.wtcspaddock.ui.MenuBottomSheet().show(getSupportFragmentManager(), "WtcsMenu");
+                return false; // Devolvemos FALSE para que el icono central NO se quede marcado
 
-            } else if (itemId == R.id.nav_logout) {
-                // DERECHA: Logout con confirmación
-                showLogoutDialog();
-                return false; // No queremos navegar, solo ejecutar la acción
+            } else if (itemId == R.id.nav_profile) {
+                // DERECHA: Ir al Perfil
+                loadFragment(new com.example.wtcspaddock.ui.profile.ProfileFragment());
+                return true; // Se marca el icono
             }
             return false;
         });
 
-        // Cargar Calendario al inicio
+        // 4. Cargar pantalla inicial (Home) al arrancar la app
         if (savedInstanceState == null) {
-            loadFragment(new HomeFragment());
+            loadFragment(new com.example.wtcspaddock.ui.home.HomeFragment());
         }
     }
 
@@ -131,6 +132,21 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void showLogoutDialog() {
+        new AlertDialog.Builder(this)
+                .setTitle("Logout")
+                .setMessage("Are you sure you want to exit?")
+                .setPositiveButton("Yes", (dialog, which) -> {
+                    SessionManager session = new SessionManager(this);
+                    session.logout();
+                    Intent intent = new Intent(this, LoginActivity.class);
+                    intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                    startActivity(intent);
+                })
+                .setNegativeButton("Cancel", null)
+                .show();
+    }
+
+    public void performLogout() {
         new AlertDialog.Builder(this)
                 .setTitle("Logout")
                 .setMessage("Are you sure you want to exit?")
