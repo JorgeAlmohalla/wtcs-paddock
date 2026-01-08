@@ -15,4 +15,5 @@
 
     <!-- EXTRAS -->
     <color name="divider">#334155</color>
+    <color name="privateer_bg">#1A2B3C</color> <!-- Azul oscuro grisáceo para destacar -->
 </resources>

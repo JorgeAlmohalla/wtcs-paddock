@@ -5,23 +5,33 @@ All notable changes to the **WTCS Paddock** project will be documented in this f
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## [v4.2.0-android-alpha] - 08-01-2026
+## [v4.2.0-android-beta] - 08-01-2026
 ### 🔄 Changed (Navigation Architecture)
-- **Central Hub Navigation:** Refactored `BottomNavigationView` from standard tabs to a minimalist layout (Profile - Paddock Hub - Logout).
-- **Navigation Sheet:** Implemented `MenuBottomSheet` as a central modal dashboard containing grid navigation to all app sections (Dashboard, Calendar, Standings, Drivers, Teams, News).
-- **Fragment Management:** Split `CalendarFragment` logic; created distinct `HomeFragment` (Dashboard) and `CalendarFragment` (List View).
-- **Logout Flow:** Added a confirmation dialog before logging out to prevent accidental exits.
+- **Central Hub Overhaul:** Replaced standard bottom tabs with a "hub-centric" navigation (Home - Paddock Hub - Profile).
+- **Menu BottomSheet:** Implemented a modal grid menu providing access to Dashboard, Calendar, Standings, Drivers, Teams, and News.
+- **Logout Flow:** Integrated secure logout logic with confirmation dialog within the navigation hub.
 
-### 🚀 Added (Home Dashboard & API)
-- **Live Race Countdown:** Implemented `CountDownTimer` in Java to show real-time remaining time (Days, Hours, Minutes, Seconds) to the next event.
-- **Dynamic API Binding:**
-    - Connected `GET /calendar` to fetch race data and automatically identify the next upcoming race based on system date.
-    - Connected `GET /standings` to dynamically display the current Championship Leader on the dashboard.
-- **Image Handling:** Implemented `Glide` with a URL patcher to correctly load local server images (`127.0.0.1` -> `10.0.2.2`) in the Android Emulator.
+### 🏠 Added (Home Dashboard)
+- **Real-time Countdown:** Implemented `CountDownTimer` logic to display live D/H/M/S until the next race session.
+- **Dynamic Leader Card:** Linked the "Championship Leader" card to live `/standings` API data.
+- **Smart Navigation:** Clicking "Next Race" or "Leader" cards now deep-links to the specific Calendar or Standings tabs.
 
-### 🐛 Fixed
-- **JSON Parsing:** Resolved discrepancies between Laravel API Resources (wrapped in `data`) and direct Eloquent collections (JSON Arrays) in Retrofit models.
-- **UI Scaling:** Fixed button padding and text alignment in the Navigation Sheet for better symmetry on small screens.
+### 🏁 Added (Calendar & Race Center)
+- **Grouped Calendar:** Implemented logic to merge separate API entries (Sprint/Feature) into a single "Race Weekend" card per round.
+- **Race Details View:** Created a new Activity with `TabLayout` + `ViewPager2` to display results for Qualifying, Sprint, and Feature races separately.
+- **Visual Formatting:** Implemented conditional UI rendering to show Tyre compounds in Qualifying vs. Laps/Points in Races.
+
+### 🏆 Added (Championship Standings)
+- **Multi-View Tables:** Created a unified `StandingsFragment` supporting Drivers, Constructors, and Manufacturers tabs.
+- **Polymorphic Adapter:** Implemented a smart `RecyclerView` adapter capable of rendering different row types (Driver, Team, Manufacturer) from a single list.
+- **Privateer Logic:** Added business logic to detect `type: "privateer"` teams and highlight their rows with a distinct blue background (`#1A2B3C`).
+
+### 🛠️ Backend & Network
+- **API Integration:** Connected and mapped endpoints for:
+    - `GET /calendar` (Season schedule)
+    - `GET /rounds/{id}` (Detailed session results)
+    - `GET /standings` (Drivers, Teams, Manufacturers)
+- **Data Modeling:** Created robust Java POJOs (`RaceEvent`, `ResultRow`, `TeamStanding`) to handle complex nested JSON responses from Laravel.
 
 ## [v4.1.0-android-alpha] - 07-01-2026
 ### 📱 Added (Mobile Client)

@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/rowRoot"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal"
+    android:paddingVertical="12dp"
+    android:paddingHorizontal="8dp"
+    android:background="@drawable/border_bottom_dark"
+    android:gravity="center_vertical">
+
+    <!-- 1. POSICIÓN (ID: tvPos) -->
+    <TextView
+        android:id="@+id/tvPos"
+        android:layout_width="30dp"
+        android:layout_height="wrap_content"
+        android:text="1"
+        android:textColor="@color/white"
+        android:textStyle="bold"
+        android:gravity="center"
+        android:layout_marginEnd="8dp"/>
+
+    <!-- 2. LINEA COLOR (ID: viewColorBar) -->
+    <View
+        android:id="@+id/viewColorBar"
+        android:layout_width="4dp"
+        android:layout_height="36dp"
+        android:background="#FF0000"
+        android:layout_marginEnd="12dp"/>
+
+    <!-- 3. INFO PRINCIPAL -->
+    <LinearLayout
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:orientation="vertical">
+
+        <!-- TÍTULO (ID: tvTitle) -->
+        <TextView
+            android:id="@+id/tvTitle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            tools:text="Alex Mancinelli"
+            android:textColor="@color/white"
+            android:textStyle="bold"
+            android:textSize="15sp"/>
+
+        <!-- SUBTÍTULO (ID: tvSubtitle) -->
+        <TextView
+            android:id="@+id/tvSubtitle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            tools:text="Alfa Romeo Nordauto"
+            android:textColor="@color/text_secondary"
+            android:textSize="12sp"/>
+
+        <!-- BADGE PRIVATEER (ID: tvBadge) -->
+        <TextView
+            android:id="@+id/tvBadge"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="PRIVATEER"
+            android:textSize="8sp"
+            android:textStyle="bold"
+            android:textColor="#80D8FF"
+            android:background="#2080D8FF"
+            android:paddingHorizontal="4dp"
+            android:visibility="gone"
+            android:layout_marginTop="2dp"/>
+    </LinearLayout>
+
+    <!-- 4. PUNTOS (ID: tvPoints) -->
+    <TextView
+        android:id="@+id/tvPoints"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        tools:text="197"
+        android:textColor="@color/wtcs_red"
+        android:textStyle="bold"
+        android:textSize="16sp"/>
+
+</LinearLayout>

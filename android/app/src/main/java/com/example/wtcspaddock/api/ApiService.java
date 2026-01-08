@@ -4,8 +4,10 @@ import com.example.wtcspaddock.models.CalendarResponse;
 import com.example.wtcspaddock.models.DriverStanding;
 import com.example.wtcspaddock.models.LoginRequest;
 import com.example.wtcspaddock.models.LoginResponse;
+import com.example.wtcspaddock.models.ManufacturerStanding;
 import com.example.wtcspaddock.models.RoundDetailResponse;
 import com.example.wtcspaddock.models.StandingsResponse;
+import com.example.wtcspaddock.models.TeamStanding;
 import com.example.wtcspaddock.models.User;
 
 import java.util.List;
@@ -18,23 +20,35 @@ import retrofit2.http.POST;
 
 public interface ApiService {
 
-    // 1. Login
+    // Login
     @POST("login")
     Call<LoginResponse> login(@Body LoginRequest request);
 
-    // 2. Obtener Calendario (Con respuesta envuelta en "data")
+    // Obtener Calendario (Con respuesta envuelta en "data")
     @GET("calendar")
     Call<CalendarResponse> getCalendar();
 
-    // 3. Obtener Clasificación (CORREGIDO: Usamos StandingsResponse)
+    // Obtener Clasificación (CORREGIDO: Usamos StandingsResponse)
     @GET("standings")
     Call<List<DriverStanding>> getStandings();
 
-    // 4. Perfil de Usuario (Protegido)
+    // Perfil de Usuario (Protegido)
     @GET("user")
     Call<User> getUserProfile(@Header("Authorization") String token);
 
     // Detalle de Ronda (Resultados)
     @GET("rounds/{id}")
     Call<RoundDetailResponse> getRoundDetails(@retrofit2.http.Path("id") int roundId);
+
+    // Drivers
+    @GET("standings")
+    Call<List<DriverStanding>> getDriverStandings();
+
+    // Teams
+    @GET("standings/teams")
+    Call<List<TeamStanding>> getTeamStandings();
+
+    // Manufacturers
+    @GET("standings/manufacturers")
+    Call<List<ManufacturerStanding>> getManufacturerStandings();
 }

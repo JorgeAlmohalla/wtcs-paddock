@@ -72,14 +72,20 @@ public class HomeFragment extends Fragment {
             });
         }
 
+        // 2. NUEVO: Vinculamos la tarjeta del Líder del Campeonato
+        View cardLeader = view.findViewById(R.id.cardLeader); // Asegúrate de que este ID está en fragment_home.xml
+        if (cardLeader != null) {
+            cardLeader.setOnClickListener(v -> {
+                if (getActivity() instanceof com.example.wtcspaddock.MainActivity) {
+                    // Navegamos a la pantalla de Standings
+                    ((com.example.wtcspaddock.MainActivity) getActivity()).navigateToStandings();
+                }
+            });
+        }
+
         loadRaceData();
         loadStandingsData();
     }
-
-    // ... (El método loadRaceData se queda IGUAL que antes) ...
-    // ... (El método findAndShowNextRace se queda IGUAL que antes) ...
-
-    // COPIA ESTOS MÉTODOS DE ABAJO:
 
     private void loadRaceData() {
         RetrofitClient.getApiService().getCalendar().enqueue(new Callback<CalendarResponse>() {

@@ -215,3 +215,67 @@ Route::get('/teams/{id}', function ($id) {
         ])
     ]);
 });
+
+// Endpoint Lista de equipos
+Route::get('/standings/teams', function () {
+    $activeSeasonId = \App\Models\Season::where('is_active', true)->value('id');
+
+    $teams = \App\Models\Team::get()
+        ->map(function ($team) use ($activeSeasonId) {
+            // Calcular puntos (Carrera + Qualy)
+            $racePoints = \App\Models\RaceResult::where('team_id', $team->id)
+                ->whereHas('race', fn($q) => $q->where('season_id', $activeSeasonId))->sum('points');
+            
+            $qualyPoints = \App\Models\QualifyingResult::where('team_id', $team->id)
+                ->whereHas('race', fn($q) => $q->where('season_id', $activeSeasonId))->sum('points');
+
+            return [
+                'id' => $team->id,
+                'name' => $team->name,
+                'car' => $team->car_model,
+                'type' => $team->type, // <--- ESTO ES LO QUE NECESITAS ('works' o 'privateer')
+                'color' => $team->primary_color ?? '#666',
+                'points' => (int) ($racePoints + $qualyPoints),
+            ];
+        })
+        ->filter(fn ($t) => $t['points'] > 0)
+        ->sortByDesc('points')
+        ->values();
+
+    return response()->json($teams);
+});
+
+// Enpoint manufacturesr
+Route::get('/standings/manufacturers', function () {
+    $activeSeasonId = \App\Models\Season::where('is_active', true)->value('id');
+    $seasonRaces = \App\Models\Race::where('season_id', $activeSeasonId)->pluck('id');
+
+    $manufacturers = \App\Models\Team::select('car_brand')->distinct()->get()
+        ->map(function ($brandEntry) use ($seasonRaces) {
+            $brand = $brandEntry->car_brand;
+            $brandTeams = \App\Models\Team::where('car_brand', $brand)->pluck('id');
+
+            $totalPoints = 0;
+            foreach ($seasonRaces as $raceId) {
+                // Sumar el mejor resultado de carrera
+                $best = \App\Models\RaceResult::where('race_id', $raceId)
+                    ->whereIn('team_id', $brandTeams)->max('points');
+                if ($best) $totalPoints += $best;
+            }
+
+            return [
+                'name' => $brand,
+                'points' => (int) $totalPoints,
+                'team_count' => $brandTeams->count(),
+                // Usamos el color del primer equipo de la marca
+                'color' => \App\Models\Team::where('car_brand', $brand)->first()->primary_color ?? '#666',
+            ];
+        })
+        ->filter(fn ($m) => $m['points'] > 0)
+        ->sortByDesc('points')
+        ->values();
+
+    return response()->json($manufacturers);
+});
+
+
