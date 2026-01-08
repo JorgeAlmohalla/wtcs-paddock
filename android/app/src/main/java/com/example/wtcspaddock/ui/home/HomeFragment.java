@@ -60,6 +60,18 @@ public class HomeFragment extends Fragment {
         tvLeaderTeam = view.findViewById(R.id.tvLeaderTeam);
         tvLeaderPoints = view.findViewById(R.id.tvLeaderPoints);
 
+        // 1. Vinculamos la tarjeta de Próxima Carrera
+        View cardNextRace = view.findViewById(R.id.cardNextRace); // Asegúrate de poner el ID en el XML
+
+        if (cardNextRace != null) {
+            cardNextRace.setOnClickListener(v -> {
+                if (getActivity() instanceof com.example.wtcspaddock.MainActivity) {
+                    // Llamamos al método de navegación que creamos antes
+                    ((com.example.wtcspaddock.MainActivity) getActivity()).navigateToCalendar();
+                }
+            });
+        }
+
         loadRaceData();
         loadStandingsData();
     }

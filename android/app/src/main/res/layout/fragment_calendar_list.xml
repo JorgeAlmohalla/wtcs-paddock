@@ -4,12 +4,13 @@
     android:layout_height="match_parent"
     android:background="@color/wtcs_background">
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:text="FULL CALENDAR"
-        android:textColor="@color/white"
-        android:textSize="24sp"
-        android:textStyle="bold" />
+    <!-- RECYCLER VIEW CON EL ID CORRECTO -->
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/recyclerCalendar"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:clipToPadding="false"
+        android:paddingTop="8dp"
+        android:paddingBottom="80dp" /> <!-- Padding abajo para evitar la barra de menú -->
+
 </FrameLayout>
