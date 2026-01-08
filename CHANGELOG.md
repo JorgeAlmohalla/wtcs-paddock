@@ -5,6 +5,24 @@ All notable changes to the **WTCS Paddock** project will be documented in this f
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [v4.2.0-android-alpha] - 08-01-2026
+### 🔄 Changed (Navigation Architecture)
+- **Central Hub Navigation:** Refactored `BottomNavigationView` from standard tabs to a minimalist layout (Profile - Paddock Hub - Logout).
+- **Navigation Sheet:** Implemented `MenuBottomSheet` as a central modal dashboard containing grid navigation to all app sections (Dashboard, Calendar, Standings, Drivers, Teams, News).
+- **Fragment Management:** Split `CalendarFragment` logic; created distinct `HomeFragment` (Dashboard) and `CalendarFragment` (List View).
+- **Logout Flow:** Added a confirmation dialog before logging out to prevent accidental exits.
+
+### 🚀 Added (Home Dashboard & API)
+- **Live Race Countdown:** Implemented `CountDownTimer` in Java to show real-time remaining time (Days, Hours, Minutes, Seconds) to the next event.
+- **Dynamic API Binding:**
+    - Connected `GET /calendar` to fetch race data and automatically identify the next upcoming race based on system date.
+    - Connected `GET /standings` to dynamically display the current Championship Leader on the dashboard.
+- **Image Handling:** Implemented `Glide` with a URL patcher to correctly load local server images (`127.0.0.1` -> `10.0.2.2`) in the Android Emulator.
+
+### 🐛 Fixed
+- **JSON Parsing:** Resolved discrepancies between Laravel API Resources (wrapped in `data`) and direct Eloquent collections (JSON Arrays) in Retrofit models.
+- **UI Scaling:** Fixed button padding and text alignment in the Navigation Sheet for better symmetry on small screens.
+
 ## [v4.1.0-android-alpha] - 07-01-2026
 ### 📱 Added (Mobile Client)
 - **Project Setup:** Initialized Android Studio project with Java & Gradle (Kotlin DSL) inside the monorepo structure.

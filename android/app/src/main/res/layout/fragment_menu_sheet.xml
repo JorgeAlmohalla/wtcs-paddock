@@ -26,6 +26,7 @@
         android:textStyle="bold"
         android:layout_marginBottom="16dp"/>
 
+    <!-- GRILLA SIMÉTRICA Y UNIFICADA -->
     <GridLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -91,7 +92,7 @@
             app:iconGravity="textStart"
             app:strokeColor="@color/wtcs_red"/>
 
-        <!-- 4. DRIVERS -->
+        <!-- 4. DRIVERS (Actualizado a Rojo + Icono) -->
         <com.google.android.material.button.MaterialButton
             android:id="@+id/btnNavDrivers"
             style="@style/Widget.MaterialComponents.Button.OutlinedButton"
@@ -103,11 +104,14 @@
             android:padding="0dp"
             android:text="DRIVERS"
             android:textSize="12sp"
-            android:textColor="@color/text_secondary"
-            app:strokeColor="@color/text_secondary"
-            app:iconGravity="textStart"/>
+            android:textColor="@color/white"
+            app:icon="@drawable/baseline_person_24"
+            app:iconTint="@color/white"
+            app:iconPadding="8dp"
+            app:iconGravity="textStart"
+            app:strokeColor="@color/wtcs_red"/>
 
-        <!-- 5. TEAMS -->
+        <!-- 5. TEAMS (Actualizado a Rojo + Icono) -->
         <com.google.android.material.button.MaterialButton
             android:id="@+id/btnNavTeams"
             style="@style/Widget.MaterialComponents.Button.OutlinedButton"
@@ -118,11 +122,14 @@
             android:padding="0dp"
             android:text="TEAMS"
             android:textSize="12sp"
-            android:textColor="@color/text_secondary"
-            app:strokeColor="@color/text_secondary"
-            app:iconGravity="textStart"/>
+            android:textColor="@color/white"
+            app:icon="@drawable/baseline_arrow_circle_up_24"
+            app:iconTint="@color/white"
+            app:iconPadding="8dp"
+            app:iconGravity="textStart"
+            app:strokeColor="@color/wtcs_red"/>
 
-        <!-- 6. NEWS -->
+        <!-- 6. NEWS (Actualizado a Rojo + Icono) -->
         <com.google.android.material.button.MaterialButton
             android:id="@+id/btnNavNews"
             style="@style/Widget.MaterialComponents.Button.OutlinedButton"
@@ -133,9 +140,12 @@
             android:padding="0dp"
             android:text="NEWS"
             android:textSize="12sp"
-            android:textColor="@color/text_secondary"
-            app:strokeColor="@color/text_secondary"
-            app:iconGravity="textStart"/>
+            android:textColor="@color/white"
+            app:icon="@android:drawable/ic_menu_info_details"
+            app:iconTint="@color/white"
+            app:iconPadding="8dp"
+            app:iconGravity="textStart"
+            app:strokeColor="@color/wtcs_red"/>
 
     </GridLayout>
 </LinearLayout>

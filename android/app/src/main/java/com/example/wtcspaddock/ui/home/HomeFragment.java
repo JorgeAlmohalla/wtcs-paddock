@@ -18,7 +18,9 @@ import com.bumptech.glide.Glide;
 import com.example.wtcspaddock.R;
 import com.example.wtcspaddock.api.RetrofitClient;
 import com.example.wtcspaddock.models.CalendarResponse;
+import com.example.wtcspaddock.models.DriverStanding;
 import com.example.wtcspaddock.models.Race;
+import com.example.wtcspaddock.models.StandingsResponse;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -35,6 +37,7 @@ public class HomeFragment extends Fragment {
 
     private TextView tvTrackName, tvLayout, tvNextRaceLabel, tvCountdown;
     private ImageView imgTrack;
+    private TextView tvLeaderName, tvLeaderTeam, tvLeaderPoints;
 
     // VARIABLE PARA EL TIMER (Para poder cancelarlo luego)
     private CountDownTimer raceTimer;
@@ -53,8 +56,12 @@ public class HomeFragment extends Fragment {
         tvNextRaceLabel = view.findViewById(R.id.lblNextRace);
         tvCountdown = view.findViewById(R.id.tvCountdown);
         imgTrack = view.findViewById(R.id.imgTrack);
+        tvLeaderName = view.findViewById(R.id.tvLeaderName);
+        tvLeaderTeam = view.findViewById(R.id.tvLeaderTeam);
+        tvLeaderPoints = view.findViewById(R.id.tvLeaderPoints);
 
         loadRaceData();
+        loadStandingsData();
     }
 
     // ... (El método loadRaceData se queda IGUAL que antes) ...
@@ -170,6 +177,43 @@ public class HomeFragment extends Fragment {
         super.onDestroyView();
         if (raceTimer != null) {
             raceTimer.cancel();
+        }
+    }
+
+    private void loadStandingsData() {
+        // CAMBIO: Call<List<DriverStanding>>
+        RetrofitClient.getApiService().getStandings().enqueue(new Callback<List<DriverStanding>>() {
+            @Override
+            public void onResponse(Call<List<DriverStanding>> call, Response<List<DriverStanding>> response) {
+                if (response.isSuccessful() && response.body() != null) {
+                    // CAMBIO: response.body() YA ES la lista. No hay .getData()
+                    List<DriverStanding> standings = response.body();
+
+                    if (!standings.isEmpty()) {
+                        // El líder es el primero
+                        DriverStanding leader = standings.get(0);
+                        updateLeaderCard(leader);
+                    } else {
+                        tvLeaderName.setText("Season Not Started");
+                    }
+                } else {
+                    Log.e("API_ERROR", "Error response: " + response.code());
+                }
+            }
+
+            @Override
+            public void onFailure(Call<List<DriverStanding>> call, Throwable t) {
+                Log.e("API_ERROR", "Error cargando standings: " + t.getMessage());
+            }
+        });
+    }
+
+    private void updateLeaderCard(DriverStanding leader) {
+        tvLeaderName.setText(leader.getName());
+        tvLeaderTeam.setText(leader.getTeam());
+
+        if (tvLeaderPoints != null) {
+            tvLeaderPoints.setText(leader.getPoints() + " PTS");
         }
     }
 }
