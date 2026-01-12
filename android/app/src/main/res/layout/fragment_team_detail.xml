@@ -1,0 +1,147 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.core.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/wtcs_background"
+    android:fillViewport="true">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:paddingBottom="40dp">
+
+        <!-- 1. CABECERA CON COLOR DEL EQUIPO -->
+        <FrameLayout
+            android:id="@+id/headerContainer"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="#192e8a"
+            android:padding="24dp">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/tvHeaderType"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="WORKS TEAM"
+                    android:textColor="#CCFFFFFF"
+                    android:textSize="10sp"
+                    android:textStyle="bold"
+                    android:textAllCaps="true"
+                    android:layout_marginBottom="8dp"/>
+
+                <TextView
+                    android:id="@+id/tvDetailName"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    tools:text="Ford Performance Blue Ridge Racing"
+                    android:textColor="@color/white"
+                    android:textSize="28sp"
+                    android:textStyle="bold"
+                    android:layout_marginBottom="8dp"/>
+
+                <TextView
+                    android:id="@+id/tvDetailCar"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    tools:text="Ford Mondeo Zetec"
+                    android:textColor="@color/white"
+                    android:background="#33000000"
+                    android:paddingHorizontal="8dp"
+                    android:paddingVertical="4dp"
+                    android:textSize="12sp"/>
+            </LinearLayout>
+        </FrameLayout>
+
+        <!-- 2. STATS GRID -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:padding="8dp">
+
+            <include layout="@layout/item_stat_card" android:id="@+id/statDrivers"/>
+            <include layout="@layout/item_stat_card" android:id="@+id/statWins"/>
+            <include layout="@layout/item_stat_card" android:id="@+id/statPodiums"/>
+            <include layout="@layout/item_stat_card" android:id="@+id/statPoints"/>
+        </LinearLayout>
+
+        <!-- 3. TEAM ROSTER -->
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="TEAM ROSTER"
+            android:textColor="@color/text_secondary"
+            android:textStyle="bold"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="24dp"
+            android:layout_marginBottom="8dp"/>
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/recyclerRoster"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:nestedScrollingEnabled="false"
+            android:layout_marginHorizontal="16dp"/>
+
+        <!-- 4. OFFICIAL LIVERY -->
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="OFFICIAL LIVERY"
+            android:textColor="@color/text_secondary"
+            android:textStyle="bold"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="24dp"
+            android:layout_marginBottom="8dp"/>
+
+        <androidx.cardview.widget.CardView
+            android:layout_width="match_parent"
+            android:layout_height="200dp"
+            android:layout_marginHorizontal="16dp"
+            app:cardCornerRadius="8dp"
+            app:cardBackgroundColor="@color/wtcs_surface">
+
+            <ImageView
+                android:id="@+id/imgLivery"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:scaleType="fitCenter"
+                android:src="@android:color/darker_gray"/>
+        </androidx.cardview.widget.CardView>
+
+        <!-- 5. SPECS TABLE -->
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="HOMOLOGATION DATA"
+            android:textColor="@color/text_secondary"
+            android:textStyle="bold"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="24dp"
+            android:layout_marginBottom="8dp"/>
+
+        <LinearLayout
+            android:id="@+id/specsContainer"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:background="@color/wtcs_surface"
+            android:layout_marginHorizontal="16dp"
+            android:padding="16dp">
+
+            <TextView android:id="@+id/tvSpecEngine" android:layout_width="match_parent" android:layout_height="wrap_content" android:textColor="@color/white" android:padding="4dp" tools:text="Engine: Cosworth V6"/>
+            <TextView android:id="@+id/tvSpecPower" android:layout_width="match_parent" android:layout_height="wrap_content" android:textColor="@color/white" android:padding="4dp" tools:text="Power: 300HP"/>
+            <TextView android:id="@+id/tvSpecWeight" android:layout_width="match_parent" android:layout_height="wrap_content" android:textColor="@color/white" android:padding="4dp" tools:text="Weight: 975kg"/>
+
+        </LinearLayout>
+
+    </LinearLayout>
+</androidx.core.widget.NestedScrollView>

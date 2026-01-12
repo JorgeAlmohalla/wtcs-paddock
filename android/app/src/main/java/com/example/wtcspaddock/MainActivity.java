@@ -192,7 +192,18 @@ public class MainActivity extends AppCompatActivity {
                 .commit();
     }
 
+    // Método para ir al detalle del equipo
     public void navigateToTeamDetail(int teamId) {
-        android.widget.Toast.makeText(this, "Team ID: " + teamId, android.widget.Toast.LENGTH_SHORT).show();
+        // Instanciamos el fragmento con el ID
+        com.example.wtcspaddock.ui.teams.TeamDetailFragment fragment =
+                com.example.wtcspaddock.ui.teams.TeamDetailFragment.newInstance(teamId);
+
+        // Hacemos la transición
+        getSupportFragmentManager().beginTransaction()
+                .replace(R.id.fragment_container, fragment)
+                .addToBackStack(null) // Para poder volver atrás
+                .commit();
     }
+
+
 }

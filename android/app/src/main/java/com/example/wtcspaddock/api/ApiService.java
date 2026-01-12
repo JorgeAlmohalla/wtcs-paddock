@@ -10,6 +10,7 @@ import com.example.wtcspaddock.models.ManufacturerStanding;
 import com.example.wtcspaddock.models.RoundDetailResponse;
 import com.example.wtcspaddock.models.StandingsResponse;
 import com.example.wtcspaddock.models.Team;
+import com.example.wtcspaddock.models.TeamDetailResponse;
 import com.example.wtcspaddock.models.TeamStanding;
 import com.example.wtcspaddock.models.User;
 
@@ -65,4 +66,7 @@ public interface ApiService {
     // 5. LISTA DE EQUIPOS
     @GET("teams")
     Call<List<Team>> getTeams();
+
+    @GET("teams/{id}")
+    Call<TeamDetailResponse> getTeamDetails(@retrofit2.http.Path("id") int teamId);
 }

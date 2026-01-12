@@ -317,24 +317,52 @@ Route::get('/teams', function () {
     });
 });
 
-// 11. DETALLE DE EQUIPO
+// 11. DETALLE DE EQUIPO (Completo con Stats y Specs)
 Route::get('/teams/{id}', function ($id) {
-    $team = Team::with('drivers')->findOrFail($id);
-    return [
+    $seasonId = \App\Models\Season::where('is_active', true)->value('id');
+    $team = \App\Models\Team::with('drivers')->findOrFail($id);
+
+    // Calcular Stats
+    $stats = [
+        'active_drivers' => $team->drivers->count(),
+        'wins' => \App\Models\RaceResult::where('team_id', $id)
+            ->whereHas('race', fn($q) => $q->where('season_id', $seasonId))
+            ->where('position', 1)->count(),
+        'podiums' => \App\Models\RaceResult::where('team_id', $id)
+            ->whereHas('race', fn($q) => $q->where('season_id', $seasonId))
+            ->where('position', '<=', 3)->count(),
+        'total_points' => (int) (
+            \App\Models\RaceResult::where('team_id', $id)->whereHas('race', fn($q) => $q->where('season_id', $seasonId))->sum('points') +
+            \App\Models\QualifyingResult::where('team_id', $id)->whereHas('race', fn($q) => $q->where('season_id', $seasonId))->sum('points')
+        )
+    ];
+
+    return response()->json([
         'id' => $team->id,
         'name' => $team->name,
-        'color' => $team->primary_color,
-        'car_image' => $team->car_image_url ? asset('storage/'.$team->car_image_url) : null,
+        'color' => $team->primary_color ?? '#666666',
+        'car_model' => $team->car_model,
+        'type' => $team->type, // works/privateer
+        'livery_image' => $team->car_image_url ? asset('storage/'.$team->car_image_url) : null,
+        
+        'stats' => $stats,
+        
         'specs' => [
-            'power' => $team->tech_power,
-            'weight' => $team->tech_weight,
+            'chassis' => 'Unitary steel, built by Prodrive/Matter', // Hardcoded o de DB
+            'engine' => 'Cosworth 2.0L V6 N/A',
+            'power' => $team->tech_power . 'HP',
+            'weight' => $team->tech_weight . 'kg',
+            'gearbox' => 'XTrac 6-speed sequential'
         ],
-        'drivers' => $team->drivers->map(fn($d) => [
+        
+        'roster' => $team->drivers->map(fn($d) => [
             'id' => $d->id,
             'name' => $d->name,
+            'nationality' => $d->nationality,
+            'role' => $d->pivot ? $d->pivot->role : 'Driver', // Ajustar según tu relación DB
             'avatar' => $d->avatar_url ? asset('storage/'.$d->avatar_url) : null,
         ])
-    ];
+    ]);
 });
 
 // 12. NOTICIAS LISTA
