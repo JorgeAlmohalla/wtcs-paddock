@@ -63,11 +63,11 @@ public class CalendarAdapter extends RecyclerView.Adapter<CalendarAdapter.EventV
 
         // 5. CLICK LISTENER
         holder.itemView.setOnClickListener(v -> {
-            android.content.Intent intent = new android.content.Intent(context, RaceDetailActivity.class);
-            intent.putExtra("TRACK_NAME", event.getTrackName());
-            intent.putExtra("ROUND_NUM", event.getRound());
-            // intent.putExtra("ROUND_ID", event.getId()); // Si tienes el ID, pásalo también
-            context.startActivity(intent);
+            if (context instanceof com.example.wtcspaddock.MainActivity) {
+                // Llamamos al nuevo método de navegación
+                ((com.example.wtcspaddock.MainActivity) context)
+                        .navigateToRaceDetail(event.getRound(), event.getTrackName());
+            }
         });
     }
 

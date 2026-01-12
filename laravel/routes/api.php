@@ -245,7 +245,7 @@ Route::get('/standings/teams', function () {
     return response()->json($teams);
 });
 
-// Enpoint manufacturesr
+// Enpoint manufacturers
 Route::get('/standings/manufacturers', function () {
     $activeSeasonId = \App\Models\Season::where('is_active', true)->value('id');
     $seasonRaces = \App\Models\Race::where('season_id', $activeSeasonId)->pluck('id');
@@ -276,6 +276,87 @@ Route::get('/standings/manufacturers', function () {
         ->values();
 
     return response()->json($manufacturers);
+});
+
+use App\Models\Post;
+
+// --- ENDPOINTS PÚBLICOS ---
+
+// 1. LISTA DE PILOTOS (Grid)
+Route::get('/drivers', function () {
+    return \App\Models\User::whereJsonContains('roles', 'driver')
+        ->with('team:id,name,primary_color')
+        ->orderBy('name')
+        ->get()
+        ->map(function ($driver) {
+            return [
+                'id' => $driver->id,
+                'name' => $driver->name,
+                'number' => $driver->driver_number,
+                'nationality' => $driver->nationality,
+                'team_name' => $driver->team->name ?? 'Free Agent',
+                'team_color' => $driver->team->primary_color ?? '#666',
+                'avatar' => $driver->avatar_url ? asset('storage/'.$driver->avatar_url) : null,
+            ];
+        });
+});
+
+// 2. LISTA DE EQUIPOS
+Route::get('/teams', function () {
+    return \App\Models\Team::orderBy('name')->get()->map(function ($team) {
+        return [
+            'id' => $team->id,
+            'name' => $team->name,
+            'logo' => $team->logo_url ? asset('storage/'.$team->logo_url) : null,
+            'color' => $team->primary_color,
+            'car' => $team->car_brand . ' ' . $team->car_model,
+        ];
+    });
+});
+
+// 3. DETALLE DE EQUIPO (Para ver pilotos y coche)
+Route::get('/teams/{id}', function ($id) {
+    $team = \App\Models\Team::with('drivers')->findOrFail($id);
+    
+    return [
+        'id' => $team->id,
+        'name' => $team->name,
+        'car_image' => $team->car_image_url ? asset('storage/'.$team->car_image_url) : null,
+        'specs' => [
+            'power' => $team->tech_power,
+            'weight' => $team->tech_weight,
+        ],
+        'drivers' => $team->drivers->map(fn($d) => [
+            'id' => $d->id,
+            'name' => $d->name,
+            'avatar' => $d->avatar_url ? asset('storage/'.$d->avatar_url) : null,
+        ])
+    ];
+});
+
+// 4. NOTICIAS (Lista)
+Route::get('/news', function () {
+    return Post::orderBy('published_at', 'desc')->take(10)->get()->map(function ($post) {
+        return [
+            'id' => $post->id,
+            'title' => $post->title,
+            'date' => $post->published_at->format('d M Y'),
+            'image' => $post->image_url ? asset('storage/'.$post->image_url) : null,
+            // Enviamos un extracto del texto para la lista
+            'excerpt' => \Illuminate\Support\Str::limit(strip_tags($post->content), 100),
+        ];
+    });
+});
+
+// 5. NOTICIA DETALLE (Para leerla entera)
+Route::get('/news/{id}', function ($id) {
+    $post = Post::findOrFail($id);
+    return [
+        'title' => $post->title,
+        'date' => $post->published_at->format('d M Y'),
+        'image' => $post->image_url ? asset('storage/'.$post->image_url) : null,
+        'content' => $post->content, // HTML completo para renderizar en WebView o limpiar
+    ];
 });
 
 

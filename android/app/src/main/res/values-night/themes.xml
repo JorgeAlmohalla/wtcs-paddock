@@ -24,4 +24,10 @@
         <item name="hintTextColor">@color/wtcs_red</item>
         <item name="shapeAppearanceOverlay">@style/ShapeAppearance.MaterialComponents.SmallComponent</item>
     </style>
+
+    <style name="WhiteCursorSearchView" parent="Widget.AppCompat.SearchView">
+        <item name="android:textColor">@color/white</item>
+        <item name="android:textColorHint">@color/text_secondary</item>
+        <item name="searchIcon">@drawable/ic_menu_grid</item> <!-- O un icono de lupa si tienes -->
+    </style>
 </resources>

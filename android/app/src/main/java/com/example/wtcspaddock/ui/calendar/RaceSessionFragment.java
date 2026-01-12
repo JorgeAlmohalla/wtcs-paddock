@@ -70,19 +70,18 @@ public class RaceSessionFragment extends Fragment {
     // --- LÓGICA DE CARGA ---
     // Este método le pide a la Actividad padre los datos descargados de la API
     public void loadDataFromActivity() {
-        if (getActivity() instanceof RaceDetailActivity) {
-            RaceDetailActivity activity = (RaceDetailActivity) getActivity();
+        // CAMBIO: Ahora buscamos el fragmento padre (getParentFragment), no la Activity
+        Fragment parent = getParentFragment();
 
-            // Pedimos la lista específica (Qualy, Sprint o Feature)
-            List<ResultRow> results = activity.getSessionData(sessionType);
+        if (parent instanceof RaceDetailFragment) {
+            RaceDetailFragment detailFragment = (RaceDetailFragment) parent;
+
+            List<ResultRow> results = detailFragment.getSessionData(sessionType);
 
             if (results != null && !results.isEmpty()) {
-                // Tenemos datos -> Pintamos la lista
                 ResultsAdapter adapter = new ResultsAdapter(results, sessionType);
-                recyclerView.setAdapter(adapter);
-            } else {
-                // No hay datos aún (o la API está cargando)
-                // Podrías poner un adapter vacío o un spinner aquí
+                RecyclerView rv = getView().findViewById(R.id.recyclerCalendar);
+                rv.setAdapter(adapter);
             }
         }
     }

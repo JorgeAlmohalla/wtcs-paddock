@@ -8,6 +8,7 @@ import androidx.fragment.app.Fragment;
 
 import com.example.wtcspaddock.ui.MenuBottomSheet;
 import com.example.wtcspaddock.ui.calendar.CalendarFragment;
+import com.example.wtcspaddock.ui.calendar.RaceDetailFragment;
 import com.example.wtcspaddock.ui.profile.ProfileFragment;
 import com.example.wtcspaddock.ui.standings.StandingsFragment;
 import com.example.wtcspaddock.ui.login.LoginActivity;
@@ -159,5 +160,15 @@ public class MainActivity extends AppCompatActivity {
                 })
                 .setNegativeButton("Cancel", null)
                 .show();
+    }
+
+    // Método para ir al Detalle de Carrera manteniendo la barra abajo
+    public void navigateToRaceDetail(int roundId, String trackName) {
+        RaceDetailFragment fragment = RaceDetailFragment.newInstance(roundId, trackName);
+
+        getSupportFragmentManager().beginTransaction()
+                .replace(R.id.fragment_container, fragment)
+                .addToBackStack(null) //
+                .commit();
     }
 }

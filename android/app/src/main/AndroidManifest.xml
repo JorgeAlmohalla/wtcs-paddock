@@ -17,7 +17,7 @@
         android:networkSecurityConfig="@xml/network_security_config"
         tools:targetApi="31">
 
-        <!-- 1. LOGIN (Launcher) -->
+        <!-- 1. LOGIN (Pantalla de inicio) -->
         <activity
             android:name=".ui.login.LoginActivity"
             android:exported="true">
@@ -27,17 +27,10 @@
             </intent-filter>
         </activity>
 
-        <!-- 2. MAIN ACTIVITY -->
+        <!-- 2. MAIN ACTIVITY (Contenedor principal) -->
         <activity
             android:name=".MainActivity"
             android:exported="false" />
-
-        <!-- 3. RACE DETAIL (¡FALTABA ESTA!) -->
-        <activity
-            android:name=".ui.calendar.RaceDetailActivity"
-            android:exported="false"
-            android:parentActivityName=".MainActivity" />
-        <!-- parentActivityName añade la flecha "Atrás" automáticamente en la barra superior -->
 
     </application>
 

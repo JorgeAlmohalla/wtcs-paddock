@@ -1,6 +1,7 @@
 package com.example.wtcspaddock.api;
 
 import com.example.wtcspaddock.models.CalendarResponse;
+import com.example.wtcspaddock.models.Driver;
 import com.example.wtcspaddock.models.DriverStanding;
 import com.example.wtcspaddock.models.LoginRequest;
 import com.example.wtcspaddock.models.LoginResponse;
@@ -51,4 +52,7 @@ public interface ApiService {
     // Manufacturers
     @GET("standings/manufacturers")
     Call<List<ManufacturerStanding>> getManufacturerStandings();
+
+    @GET("drivers") // Asegúrate de que esta sea la ruta correcta en tu Laravel
+    Call<List<Driver>> getDrivers();
 }
