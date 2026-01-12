@@ -191,4 +191,8 @@ public class MainActivity extends AppCompatActivity {
                 .addToBackStack(null) // Para poder volver atrás con el botón del móvil
                 .commit();
     }
+
+    public void navigateToTeamDetail(int teamId) {
+        android.widget.Toast.makeText(this, "Team ID: " + teamId, android.widget.Toast.LENGTH_SHORT).show();
+    }
 }

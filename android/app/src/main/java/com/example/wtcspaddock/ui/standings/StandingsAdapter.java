@@ -93,7 +93,7 @@ public class StandingsAdapter extends RecyclerView.Adapter<StandingsAdapter.View
             ManufacturerStanding manu = (ManufacturerStanding) item;
 
             holder.tvTitle.setText(manu.getName().toUpperCase());
-            holder.tvSubtitle.setText(manu.getTeamCount() + " Teams");
+            holder.tvSubtitle.setText(manu.getTeamCount() + " Team");
             holder.tvPoints.setText(String.valueOf(manu.getPoints()));
 
             try {

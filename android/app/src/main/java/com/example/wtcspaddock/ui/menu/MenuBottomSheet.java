@@ -34,7 +34,7 @@ public class MenuBottomSheet extends BottomSheetDialogFragment {
             dismiss();
         });
 
-        // ... (Standings, Drivers, Teams, News igual que antes) ...
+        // ... (Standings, Drivers, Team, News igual que antes) ...
         view.findViewById(R.id.btnNavStandings).setOnClickListener(v -> { main.navigateToStandings(); dismiss(); });
         view.findViewById(R.id.btnNavDrivers).setOnClickListener(v -> { main.navigateToDrivers(); dismiss(); });
         view.findViewById(R.id.btnNavTeams).setOnClickListener(v -> { main.navigateToTeams(); dismiss(); });

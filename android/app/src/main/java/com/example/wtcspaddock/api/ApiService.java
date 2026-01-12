@@ -9,6 +9,7 @@ import com.example.wtcspaddock.models.LoginResponse;
 import com.example.wtcspaddock.models.ManufacturerStanding;
 import com.example.wtcspaddock.models.RoundDetailResponse;
 import com.example.wtcspaddock.models.StandingsResponse;
+import com.example.wtcspaddock.models.Team;
 import com.example.wtcspaddock.models.TeamStanding;
 import com.example.wtcspaddock.models.User;
 
@@ -46,7 +47,7 @@ public interface ApiService {
     @GET("standings")
     Call<List<DriverStanding>> getDriverStandings();
 
-    // Teams
+    // Team
     @GET("standings/teams")
     Call<List<TeamStanding>> getTeamStandings();
 
@@ -60,4 +61,8 @@ public interface ApiService {
     // Detalle de Piloto
     @GET("drivers/{id}")
     Call<DriverDetailResponse> getDriverDetails(@retrofit2.http.Path("id") int driverId);
+
+    // 5. LISTA DE EQUIPOS
+    @GET("teams")
+    Call<List<Team>> getTeams();
 }
