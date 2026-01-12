@@ -1,9 +1,14 @@
 package com.example.wtcspaddock.models;
 
 public class DriverStanding {
-    private String name;  // Coincide con "name"
-    private String team;  // Coincide con "team"
-    private String points; // Coincide con "points" (Gson convierte 197 a "197")
+    private int id;
+
+    private String name;
+    private String team;
+    private String points;
+
+    // GETTER
+    public int getId() { return id; }
 
     public String getName() { return name; }
     public String getTeam() { return team; }

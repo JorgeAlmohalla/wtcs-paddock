@@ -10,6 +10,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
@@ -41,6 +42,8 @@ public class DriverDetailFragment extends Fragment {
     // Vistas
     private TextView tvName, tvTeam, tvInput;
     private ImageView imgAvatar;
+    private View contentLayout;
+    private View progressBar;
 
     // Stats Views (Incluidos via <include> en el XML)
     private View statStarts, statWins, statPoints;
@@ -72,6 +75,10 @@ public class DriverDetailFragment extends Fragment {
         tvInput = view.findViewById(R.id.tvProfileInput);
         imgAvatar = view.findViewById(R.id.imgProfileAvatar);
 
+        // Vincular controles de carga
+        contentLayout = view.findViewById(R.id.contentLayout);
+        progressBar = view.findViewById(R.id.progressBar);
+
         // Vincular cajitas de estadísticas
         statStarts = view.findViewById(R.id.statStarts);
         statWins = view.findViewById(R.id.statWins);
@@ -85,9 +92,17 @@ public class DriverDetailFragment extends Fragment {
     }
 
     private void loadDriverData(int id) {
+        // 1. ESTADO INICIAL: Cargando...
+        progressBar.setVisibility(View.VISIBLE);
+        contentLayout.setVisibility(View.INVISIBLE); // Ocultamos el contenido "fake" o vacío
+
         RetrofitClient.getApiService().getDriverDetails(id).enqueue(new Callback<DriverDetailResponse>() {
             @Override
             public void onResponse(Call<DriverDetailResponse> call, Response<DriverDetailResponse> response) {
+                // 2. ESTADO FINAL: Datos recibidos
+                progressBar.setVisibility(View.GONE); // Fuera barra
+                contentLayout.setVisibility(View.VISIBLE); // Hola contenido
+
                 if (response.isSuccessful() && response.body() != null) {
                     updateUI(response.body());
                 } else {
@@ -97,7 +112,10 @@ public class DriverDetailFragment extends Fragment {
 
             @Override
             public void onFailure(Call<DriverDetailResponse> call, Throwable t) {
+                // 3. ESTADO ERROR: Quitamos barra también
+                progressBar.setVisibility(View.GONE);
                 Log.e("API", "Error driver detail: " + t.getMessage());
+                Toast.makeText(getContext(), "Error de conexión", Toast.LENGTH_SHORT).show();
             }
         });
     }

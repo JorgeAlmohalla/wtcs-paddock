@@ -16,6 +16,7 @@ import com.example.wtcspaddock.models.LoginRequest;
 import com.example.wtcspaddock.models.LoginResponse;
 import com.example.wtcspaddock.utils.SessionManager;
 import com.google.android.material.textfield.TextInputEditText;
+import com.example.wtcspaddock.models.User;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -77,9 +78,11 @@ public class LoginActivity extends AppCompatActivity {
                 if (response.isSuccessful() && response.body() != null) {
                     // ÉXITO: Laravel devolvió 200 OK y el Token
                     String token = response.body().getToken();
+                    int userId = response.body().getUser().getId();
 
                     // Guardar token
                     sessionManager.saveToken(token);
+                    sessionManager.saveUserId(userId);
 
                     Toast.makeText(LoginActivity.this, "Bienvenido " + response.body().getUser().getName(), Toast.LENGTH_LONG).show();
                     goToMainActivity();

@@ -41,19 +41,28 @@ public class MainActivity extends AppCompatActivity {
             int itemId = item.getItemId();
 
             if (itemId == R.id.nav_home) {
-                // IZQUIERDA: Ir al Home (Dashboard)
+                // IZQUIERDA: Home
                 loadFragment(new com.example.wtcspaddock.ui.home.HomeFragment());
-                return true; // Se marca el icono
+                return true;
 
             } else if (itemId == R.id.nav_menu_hub) {
-                // CENTRO: Abrir el Menú Desplegable (Paddock)
+                // CENTRO: Menú
                 new com.example.wtcspaddock.ui.MenuBottomSheet().show(getSupportFragmentManager(), "WtcsMenu");
-                return false; // Devolvemos FALSE para que el icono central NO se quede marcado
+                return false;
 
             } else if (itemId == R.id.nav_profile) {
-                // DERECHA: Ir al Perfil
-                loadFragment(new com.example.wtcspaddock.ui.profile.ProfileFragment());
-                return true; // Se marca el icono
+                // DERECHA: PERFIL PROPIO (Reutilizando DriverDetail)
+                int myId = session.getUserId();
+
+                if (myId != -1) {
+                    // Cargamos el detalle del piloto con NUESTRO ID
+                    loadFragment(com.example.wtcspaddock.ui.drivers.DriverDetailFragment.newInstance(myId));
+                } else {
+                    // Por seguridad, si no hay ID (login antiguo), mandamos al login
+                    startActivity(new Intent(this, LoginActivity.class));
+                    finish();
+                }
+                return true;
             }
             return false;
         });

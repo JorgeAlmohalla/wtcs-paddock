@@ -36,26 +36,35 @@ public class StandingsAdapter extends RecyclerView.Adapter<StandingsAdapter.View
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         Object item = items.get(position);
 
-        // Posición (1, 2, 3...)
+        // 1. Configuración Común: Posición
         holder.tvPos.setText(String.valueOf(position + 1));
 
-        // Reseteamos estilos por si acaso (Reciclaje de vistas)
-        holder.root.setBackgroundColor(Color.TRANSPARENT); // Fondo normal
-        holder.tvBadge.setVisibility(View.GONE);
+        // 2. RESETEO DE ESTILOS (Vital para evitar bugs visuales al hacer scroll)
+        holder.root.setBackgroundColor(Color.TRANSPARENT); // Fondo transparente por defecto
+        holder.tvBadge.setVisibility(View.GONE);           // Badge oculto por defecto
+        holder.itemView.setOnClickListener(null);          // Click desactivado por defecto
 
-        // --- CASO 1: PILOTOS ---
+        // --- CASO 1: PILOTOS (Drivers) ---
         if (item instanceof DriverStanding) {
             DriverStanding driver = (DriverStanding) item;
+
             holder.tvTitle.setText(driver.getName());
             holder.tvSubtitle.setText(driver.getTeam());
             holder.tvPoints.setText(String.valueOf(driver.getPoints()));
 
-            // Color barra: No tenemos color de equipo en el DriverStanding simple,
-            // pero si tuvieras 'team_color', úsalo aquí. Por defecto blanco.
+            // Barra lateral blanca (o color del equipo si lo añades al modelo DriverStanding)
             holder.viewColorBar.setBackgroundColor(Color.WHITE);
+
+            // CLICK LISTENER: Navegar al perfil
+            holder.itemView.setOnClickListener(v -> {
+                if (v.getContext() instanceof com.example.wtcspaddock.MainActivity) {
+                    ((com.example.wtcspaddock.MainActivity) v.getContext())
+                            .navigateToDriverDetail(driver.getId());
+                }
+            });
         }
 
-        // --- CASO 2: EQUIPOS (CONSTRUCTORS) ---
+        // --- CASO 2: EQUIPOS (Constructors) ---
         else if (item instanceof TeamStanding) {
             TeamStanding team = (TeamStanding) item;
 
@@ -63,18 +72,18 @@ public class StandingsAdapter extends RecyclerView.Adapter<StandingsAdapter.View
             holder.tvSubtitle.setText(team.getCar());
             holder.tvPoints.setText(String.valueOf(team.getPoints()));
 
-            // Color Barra
+            // Barra lateral con el color del equipo
             try {
                 holder.viewColorBar.setBackgroundColor(Color.parseColor(team.getColor()));
-            } catch (Exception e) { holder.viewColorBar.setBackgroundColor(Color.GRAY); }
+            } catch (Exception e) {
+                holder.viewColorBar.setBackgroundColor(Color.GRAY);
+            }
 
-            // --- LA MAGIA DEL PRIVATEER ---
+            // Lógica Privateer (Fondo Azul Oscuro)
             if (team.isPrivateer()) {
-                // Pintamos el fondo de azul oscuro
+                // Asegúrate de tener R.color.privateer_bg definido en colors.xml
                 int privateerColor = ContextCompat.getColor(holder.itemView.getContext(), R.color.privateer_bg);
                 holder.root.setBackgroundColor(privateerColor);
-
-                // Mostramos badge opcional
                 holder.tvBadge.setVisibility(View.VISIBLE);
             }
         }
@@ -89,7 +98,9 @@ public class StandingsAdapter extends RecyclerView.Adapter<StandingsAdapter.View
 
             try {
                 holder.viewColorBar.setBackgroundColor(Color.parseColor(manu.getColor()));
-            } catch (Exception e) { holder.viewColorBar.setBackgroundColor(Color.GRAY); }
+            } catch (Exception e) {
+                holder.viewColorBar.setBackgroundColor(Color.GRAY);
+            }
         }
     }
 

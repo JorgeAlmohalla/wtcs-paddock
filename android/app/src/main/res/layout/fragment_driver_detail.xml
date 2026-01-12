@@ -1,188 +1,201 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.core.widget.NestedScrollView
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/wtcs_background"
-    android:fillViewport="true">
+    android:background="@color/wtcs_background">
 
-    <LinearLayout
-        android:layout_width="match_parent"
+    <!-- 1. BARRA DE CARGA (Visible por defecto) -->
+    <ProgressBar
+        android:id="@+id/progressBar"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:paddingBottom="40dp">
+        android:layout_gravity="center"
+        android:indeterminateTint="@color/wtcs_red"
+        android:visibility="visible"/>
 
-        <!-- 1. CABECERA PERFIL -->
-        <androidx.constraintlayout.widget.ConstraintLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:background="@color/wtcs_surface"
-            android:padding="24dp">
+    <!-- 2. CONTENIDO PRINCIPAL (Oculto mientras carga) -->
+    <androidx.core.widget.NestedScrollView
+        android:id="@+id/contentLayout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:visibility="invisible"
+        android:fillViewport="true">
 
-            <!-- AVATAR CIRCULAR -->
-            <!-- Añadido padding 4dp para que el borde no toque la foto -->
-            <com.google.android.material.imageview.ShapeableImageView
-                android:id="@+id/imgProfileAvatar"
-                android:layout_width="100dp"
-                android:layout_height="100dp"
-                android:scaleType="centerCrop"
-                android:padding="4dp"
-                android:src="@drawable/ic_profile"
-                app:shapeAppearanceOverlay="@style/CircleImageStyle"
-                app:strokeWidth="2dp"
-                app:strokeColor="@color/wtcs_red"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintBottom_toBottomOf="parent"/>
-
-            <!-- INFO -->
-            <LinearLayout
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:orientation="vertical"
-                android:layout_marginStart="24dp"
-                app:layout_constraintStart_toEndOf="@+id/imgProfileAvatar"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toTopOf="@+id/imgProfileAvatar"
-                app:layout_constraintBottom_toBottomOf="@+id/imgProfileAvatar">
-
-                <!-- NOMBRE -->
-                <TextView
-                    android:id="@+id/tvProfileName"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="ALEX MANCINELLI"
-                    android:textColor="@color/white"
-                    android:textSize="22sp"
-                    android:textStyle="bold"
-                    android:textAllCaps="true"/>
-
-                <!-- CONTENEDOR DE DETALLES (Vertical para que baje) -->
-                <LinearLayout
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:orientation="vertical"
-                    android:layout_marginTop="8dp">
-
-                    <!-- EQUIPO -->
-                    <TextView
-                        android:id="@+id/tvProfileTeam"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="Alfa Romeo Nordauto"
-                        android:textColor="@color/white"
-                        android:textSize="12sp"
-                        android:background="#33FFFFFF"
-                        android:paddingHorizontal="8dp"
-                        android:paddingVertical="4dp"
-                        android:layout_marginBottom="6dp"/> <!-- Margen para separar del input -->
-
-                    <!-- INPUT (WHEEL/PAD) - AHORA DEBAJO -->
-                    <TextView
-                        android:id="@+id/tvProfileInput"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="Wheel"
-                        android:textColor="@color/text_secondary"
-                        android:textSize="12sp"
-                        android:background="#1AFFFFFF"
-                        android:paddingHorizontal="8dp"
-                        android:paddingVertical="4dp"
-                        android:drawablePadding="4dp"/>
-                </LinearLayout>
-            </LinearLayout>
-        </androidx.constraintlayout.widget.ConstraintLayout>
-
-        <!-- 2. STATS GRID (Big Numbers) -->
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:weightSum="3"
-            android:padding="8dp">
+            android:orientation="vertical"
+            android:paddingBottom="40dp">
 
-            <!-- STARTS -->
-            <include layout="@layout/item_stat_card" android:id="@+id/statStarts" />
-            <!-- WINS -->
-            <include layout="@layout/item_stat_card" android:id="@+id/statWins" />
-            <!-- POINTS -->
-            <include layout="@layout/item_stat_card" android:id="@+id/statPoints" />
+            <!-- CABECERA PERFIL -->
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/wtcs_surface"
+                android:padding="24dp">
+
+                <!-- AVATAR CIRCULAR (Grande 100dp) -->
+                <com.google.android.material.imageview.ShapeableImageView
+                    android:id="@+id/imgProfileAvatar"
+                    android:layout_width="100dp"
+                    android:layout_height="100dp"
+                    android:scaleType="centerCrop"
+                    android:padding="4dp"
+                    android:src="@drawable/ic_profile"
+                    app:shapeAppearanceOverlay="@style/CircleImageStyle"
+                    app:strokeWidth="2dp"
+                    app:strokeColor="@color/wtcs_red"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintBottom_toBottomOf="parent"/>
+
+                <!-- INFO (Derecha) -->
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:layout_marginStart="24dp"
+                    app:layout_constraintStart_toEndOf="@+id/imgProfileAvatar"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="@+id/imgProfileAvatar"
+                    app:layout_constraintBottom_toBottomOf="@+id/imgProfileAvatar">
+
+                    <!-- NOMBRE -->
+                    <TextView
+                        android:id="@+id/tvProfileName"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Loading..."
+                        tools:text="ALEX MANCINELLI"
+                        android:textColor="@color/white"
+                        android:textSize="22sp"
+                        android:textStyle="bold"
+                        android:textAllCaps="true"/>
+
+                    <!-- DETALLES (Vertical para que baje el input) -->
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
+                        android:layout_marginTop="8dp">
+
+                        <!-- EQUIPO -->
+                        <TextView
+                            android:id="@+id/tvProfileTeam"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            tools:text="Alfa Romeo Nordauto"
+                            android:textColor="@color/white"
+                            android:textSize="12sp"
+                            android:background="#33FFFFFF"
+                            android:paddingHorizontal="8dp"
+                            android:paddingVertical="4dp"
+                            android:layout_marginBottom="6dp"/>
+
+                        <!-- INPUT (WHEEL/PAD) -->
+                        <TextView
+                            android:id="@+id/tvProfileInput"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            tools:text="Wheel"
+                            android:textColor="@color/text_secondary"
+                            android:textSize="12sp"
+                            android:background="#1AFFFFFF"
+                            android:paddingHorizontal="8dp"
+                            android:paddingVertical="4dp"
+                            android:drawablePadding="4dp"
+                            app:drawableStartCompat="@android:drawable/ic_menu_preferences"
+                            app:drawableTint="@color/text_secondary"/>
+                    </LinearLayout>
+                </LinearLayout>
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <!-- STATS GRID (Big Numbers) -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:weightSum="3"
+                android:padding="8dp">
+
+                <include layout="@layout/item_stat_card" android:id="@+id/statStarts" />
+                <include layout="@layout/item_stat_card" android:id="@+id/statWins" />
+                <include layout="@layout/item_stat_card" android:id="@+id/statPoints" />
+            </LinearLayout>
+
+            <!-- GRÁFICOS (Charts) -->
+
+            <!-- Chart 1: Race Finish -->
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="RACE FINISH POSITION"
+                android:textColor="@color/text_secondary"
+                android:textSize="12sp"
+                android:textStyle="bold"
+                android:layout_marginTop="24dp"
+                android:layout_marginStart="16dp"/>
+
+            <androidx.cardview.widget.CardView
+                android:layout_width="match_parent"
+                android:layout_height="250dp"
+                android:layout_margin="16dp"
+                app:cardBackgroundColor="@color/wtcs_surface"
+                app:cardCornerRadius="8dp">
+
+                <com.github.mikephil.charting.charts.LineChart
+                    android:id="@+id/chartRacePosition"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:padding="8dp"/>
+            </androidx.cardview.widget.CardView>
+
+            <!-- Chart 2: Points -->
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="CHAMPIONSHIP POINTS"
+                android:textColor="@color/text_secondary"
+                android:textSize="12sp"
+                android:textStyle="bold"
+                android:layout_marginStart="16dp"/>
+
+            <androidx.cardview.widget.CardView
+                android:layout_width="match_parent"
+                android:layout_height="250dp"
+                android:layout_margin="16dp"
+                app:cardBackgroundColor="@color/wtcs_surface"
+                app:cardCornerRadius="8dp">
+
+                <com.github.mikephil.charting.charts.LineChart
+                    android:id="@+id/chartPoints"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:padding="8dp"/>
+            </androidx.cardview.widget.CardView>
+
+            <!-- TABLA QUALY HISTORY -->
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="QUALIFYING HISTORY"
+                android:textColor="@color/text_secondary"
+                android:textSize="12sp"
+                android:textStyle="bold"
+                android:layout_marginTop="16dp"
+                android:layout_marginStart="16dp"/>
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/recyclerHistory"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="16dp"
+                android:background="@color/wtcs_surface"
+                android:nestedScrollingEnabled="false"/>
 
         </LinearLayout>
-        <!-- (Si quieres 5 stats en fila en móvil se ve muy pequeño, mejor 3 y 2 abajo o scroll horizontal) -->
+    </androidx.core.widget.NestedScrollView>
 
-        <!-- 3. GRÁFICOS (Charts) -->
-
-        <!-- Chart 1: Race Finish -->
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="RACE FINISH POSITION"
-            android:textColor="@color/text_secondary"
-            android:textSize="12sp"
-            android:textStyle="bold"
-            android:layout_marginTop="24dp"
-            android:layout_marginStart="16dp"/>
-
-        <androidx.cardview.widget.CardView
-            android:layout_width="match_parent"
-            android:layout_height="250dp"
-            android:layout_margin="16dp"
-            app:cardBackgroundColor="@color/wtcs_surface"
-            app:cardCornerRadius="8dp">
-
-            <com.github.mikephil.charting.charts.LineChart
-                android:id="@+id/chartRacePosition"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:padding="8dp"/>
-        </androidx.cardview.widget.CardView>
-
-        <!-- Chart 2: Points -->
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="CHAMPIONSHIP POINTS"
-            android:textColor="@color/text_secondary"
-            android:textSize="12sp"
-            android:textStyle="bold"
-            android:layout_marginStart="16dp"/>
-
-        <androidx.cardview.widget.CardView
-            android:layout_width="match_parent"
-            android:layout_height="250dp"
-            android:layout_margin="16dp"
-            app:cardBackgroundColor="@color/wtcs_surface"
-            app:cardCornerRadius="8dp">
-
-            <com.github.mikephil.charting.charts.LineChart
-                android:id="@+id/chartPoints"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:padding="8dp"/>
-        </androidx.cardview.widget.CardView>
-
-        <!-- 4. TABLA QUALY HISTORY -->
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="QUALIFYING HISTORY"
-            android:textColor="@color/text_secondary"
-            android:textSize="12sp"
-            android:textStyle="bold"
-            android:layout_marginTop="16dp"
-            android:layout_marginStart="16dp"/>
-
-        <!-- RecyclerView para la tabla histórica -->
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/recyclerHistory"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_margin="16dp"
-            android:background="@color/wtcs_surface"
-            android:nestedScrollingEnabled="false"/>
-
-    </LinearLayout>
-</androidx.core.widget.NestedScrollView>
+</FrameLayout>

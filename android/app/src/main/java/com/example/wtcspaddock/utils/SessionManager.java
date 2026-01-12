@@ -8,6 +8,7 @@ public class SessionManager {
     private static final String KEY_TOKEN = "auth_token";
     private SharedPreferences prefs;
     private SharedPreferences.Editor editor;
+    private static final String KEY_USER_ID = "user_id";
 
     public SessionManager(Context context) {
         prefs = context.getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE);
@@ -34,5 +35,15 @@ public class SessionManager {
     public void logout() {
         editor.clear();
         editor.apply();
+    }
+
+    public void saveUserId(int id) {
+        editor.putInt(KEY_USER_ID, id);
+        editor.apply();
+    }
+
+    public int getUserId() {
+        // Devuelve -1 si no hay ID guardado
+        return prefs.getInt(KEY_USER_ID, -1);
     }
 }
