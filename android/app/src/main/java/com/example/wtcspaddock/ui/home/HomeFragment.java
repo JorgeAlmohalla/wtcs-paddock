@@ -1,33 +1,35 @@
 package com.example.wtcspaddock.ui.home;
 
+import android.content.Intent;
 import android.os.Bundle;
-import android.os.CountDownTimer; // IMPORTANTE
+import android.os.CountDownTimer;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
+// Importante para la barra de carga
+import android.widget.ProgressBar;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
 import com.bumptech.glide.Glide;
+import com.example.wtcspaddock.MainActivity;
 import com.example.wtcspaddock.R;
 import com.example.wtcspaddock.api.RetrofitClient;
 import com.example.wtcspaddock.models.CalendarResponse;
 import com.example.wtcspaddock.models.DriverStanding;
 import com.example.wtcspaddock.models.Race;
-import com.example.wtcspaddock.models.StandingsResponse;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
-import java.util.concurrent.TimeUnit; // IMPORTANTE
+import java.util.concurrent.TimeUnit;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -36,11 +38,14 @@ import retrofit2.Response;
 public class HomeFragment extends Fragment {
 
     private TextView tvTrackName, tvLayout, tvNextRaceLabel, tvCountdown;
-    private ImageView imgTrack;
     private TextView tvLeaderName, tvLeaderTeam, tvLeaderPoints;
-
-    // VARIABLE PARA EL TIMER (Para poder cancelarlo luego)
+    private ImageView imgTrack;
     private CountDownTimer raceTimer;
+
+    // --- VARIABLES DE CARGA ---
+    private View contentLayout;
+    private ProgressBar progressBar;
+    private int apiCallsPending = 0; // Contador de peticiones
 
     @Nullable
     @Override
@@ -51,40 +56,60 @@ public class HomeFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+
+        // Vincular Controles de Carga
+        contentLayout = view.findViewById(R.id.contentLayout);
+        progressBar = view.findViewById(R.id.progressBar);
+
+        // Vincular Vistas Home
         tvTrackName = view.findViewById(R.id.tvTrackName);
         tvLayout = view.findViewById(R.id.tvLayout);
         tvNextRaceLabel = view.findViewById(R.id.lblNextRace);
         tvCountdown = view.findViewById(R.id.tvCountdown);
         imgTrack = view.findViewById(R.id.imgTrack);
+
         tvLeaderName = view.findViewById(R.id.tvLeaderName);
         tvLeaderTeam = view.findViewById(R.id.tvLeaderTeam);
         tvLeaderPoints = view.findViewById(R.id.tvLeaderPoints);
 
-        // 1. Vinculamos la tarjeta de Próxima Carrera
-        View cardNextRace = view.findViewById(R.id.cardNextRace); // Asegúrate de poner el ID en el XML
-
+        // Click Listeners
+        View cardNextRace = view.findViewById(R.id.cardNextRace);
         if (cardNextRace != null) {
             cardNextRace.setOnClickListener(v -> {
-                if (getActivity() instanceof com.example.wtcspaddock.MainActivity) {
-                    // Llamamos al método de navegación que creamos antes
-                    ((com.example.wtcspaddock.MainActivity) getActivity()).navigateToCalendar();
-                }
+                if (getActivity() instanceof MainActivity) ((MainActivity) getActivity()).navigateToCalendar();
             });
         }
 
-        // 2. NUEVO: Vinculamos la tarjeta del Líder del Campeonato
-        View cardLeader = view.findViewById(R.id.cardLeader); // Asegúrate de que este ID está en fragment_home.xml
+        View cardLeader = view.findViewById(R.id.cardLeader);
         if (cardLeader != null) {
             cardLeader.setOnClickListener(v -> {
-                if (getActivity() instanceof com.example.wtcspaddock.MainActivity) {
-                    // Navegamos a la pantalla de Standings
-                    ((com.example.wtcspaddock.MainActivity) getActivity()).navigateToStandings();
-                }
+                if (getActivity() instanceof MainActivity) ((MainActivity) getActivity()).navigateToStandings();
             });
         }
+
+        // --- INICIAR CARGA DE DATOS ---
+        startLoadingData();
+    }
+
+    private void startLoadingData() {
+        // Estado inicial: Cargando
+        progressBar.setVisibility(View.VISIBLE);
+        contentLayout.setVisibility(View.INVISIBLE);
+
+        apiCallsPending = 2; // Tenemos 2 peticiones que hacer
 
         loadRaceData();
         loadStandingsData();
+    }
+
+    // Método que se llama cuando termina CUALQUIER petición
+    private void checkLoadingComplete() {
+        apiCallsPending--;
+        if (apiCallsPending <= 0) {
+            // Ya han terminado todas (con éxito o error)
+            if (progressBar != null) progressBar.setVisibility(View.GONE);
+            if (contentLayout != null) contentLayout.setVisibility(View.VISIBLE);
+        }
     }
 
     private void loadRaceData() {
@@ -97,11 +122,41 @@ public class HomeFragment extends Fragment {
                         findAndShowNextRace(allRaces);
                     }
                 }
+                checkLoadingComplete(); // <--- IMPORTANTE
             }
+
             @Override
-            public void onFailure(Call<CalendarResponse> call, Throwable t) { Log.e("API", t.getMessage()); }
+            public void onFailure(Call<CalendarResponse> call, Throwable t) {
+                Log.e("API", "Error calendar: " + t.getMessage());
+                checkLoadingComplete(); // <--- IMPORTANTE
+            }
         });
     }
+
+    private void loadStandingsData() {
+        RetrofitClient.getApiService().getDriverStandings().enqueue(new Callback<List<DriverStanding>>() {
+            @Override
+            public void onResponse(Call<List<DriverStanding>> call, Response<List<DriverStanding>> response) {
+                if (response.isSuccessful() && response.body() != null) {
+                    List<DriverStanding> standings = response.body();
+                    if (!standings.isEmpty()) {
+                        updateLeaderCard(standings.get(0));
+                    }
+                }
+                checkLoadingComplete(); // <--- IMPORTANTE
+            }
+
+            @Override
+            public void onFailure(Call<List<DriverStanding>> call, Throwable t) {
+                Log.e("API", "Error standings: " + t.getMessage());
+                checkLoadingComplete(); // <--- IMPORTANTE
+            }
+        });
+    }
+
+    // ... Resto de métodos (findAndShowNextRace, updateUI, timer...) siguen igual ...
+    // COPIA AQUÍ TUS MÉTODOS DE LÓGICA (findAndShowNextRace, updateUI, startRealTimeCountdown, updateLeaderCard, onDestroyView)
+    // Si no los tienes a mano, dímelo y te los pego de nuevo.
 
     private void findAndShowNextRace(List<Race> races) {
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault());
@@ -133,105 +188,49 @@ public class HomeFragment extends Fragment {
                     .placeholder(android.R.drawable.ic_menu_gallery)
                     .into(imgTrack);
         }
-
-        // INICIAR EL TIMER
         startRealTimeCountdown(race.getDate());
     }
 
     private void startRealTimeCountdown(String raceDateString) {
-        // 1. Si ya había un timer corriendo, lo matamos para no tener dos a la vez
-        if (raceTimer != null) {
-            raceTimer.cancel();
-        }
+        if (raceTimer != null) raceTimer.cancel();
 
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault());
         try {
             Date raceDate = sdf.parse(raceDateString);
             Date now = new Date();
-
             if (raceDate == null) return;
 
             long diffInMillis = raceDate.getTime() - now.getTime();
 
             if (diffInMillis > 0) {
-                // 2. CREAMOS EL TIMER (Cuenta atrás desde 'diffInMillis', actualizando cada 1000ms)
                 raceTimer = new CountDownTimer(diffInMillis, 1000) {
                     @Override
                     public void onTick(long millisUntilFinished) {
-                        // Cálculos matemáticos
                         long days = TimeUnit.MILLISECONDS.toDays(millisUntilFinished);
                         long hours = TimeUnit.MILLISECONDS.toHours(millisUntilFinished) % 24;
                         long minutes = TimeUnit.MILLISECONDS.toMinutes(millisUntilFinished) % 60;
                         long seconds = TimeUnit.MILLISECONDS.toSeconds(millisUntilFinished) % 60;
-
-                        // Formato: 3D 02H 14M 45S
-                        String timeString = String.format(Locale.getDefault(),
-                                "%dD %02dH %02dM %02dS",
-                                days, hours, minutes, seconds);
-
+                        String timeString = String.format(Locale.getDefault(), "%02dD %02dH %02dM %02dS", days, hours, minutes, seconds);
                         tvCountdown.setText(timeString);
                     }
-
                     @Override
-                    public void onFinish() {
-                        tvCountdown.setText("RACE STARTED!");
-                        tvNextRaceLabel.setText("LIVE NOW");
-                    }
-                }.start(); // ¡Arranca!
-
+                    public void onFinish() { tvCountdown.setText("RACE STARTED!"); }
+                }.start();
             } else {
                 tvCountdown.setText("COMPLETED");
             }
-
-        } catch (ParseException e) {
-            e.printStackTrace();
-        }
-    }
-
-    // 3. MUY IMPORTANTE: Limpieza de memoria
-    // Si el usuario cambia de pestaña (se va a Profile), paramos el reloj.
-    @Override
-    public void onDestroyView() {
-        super.onDestroyView();
-        if (raceTimer != null) {
-            raceTimer.cancel();
-        }
-    }
-
-    private void loadStandingsData() {
-        // CAMBIO: Call<List<DriverStanding>>
-        RetrofitClient.getApiService().getStandings().enqueue(new Callback<List<DriverStanding>>() {
-            @Override
-            public void onResponse(Call<List<DriverStanding>> call, Response<List<DriverStanding>> response) {
-                if (response.isSuccessful() && response.body() != null) {
-                    // CAMBIO: response.body() YA ES la lista. No hay .getData()
-                    List<DriverStanding> standings = response.body();
-
-                    if (!standings.isEmpty()) {
-                        // El líder es el primero
-                        DriverStanding leader = standings.get(0);
-                        updateLeaderCard(leader);
-                    } else {
-                        tvLeaderName.setText("Season Not Started");
-                    }
-                } else {
-                    Log.e("API_ERROR", "Error response: " + response.code());
-                }
-            }
-
-            @Override
-            public void onFailure(Call<List<DriverStanding>> call, Throwable t) {
-                Log.e("API_ERROR", "Error cargando standings: " + t.getMessage());
-            }
-        });
+        } catch (ParseException e) { e.printStackTrace(); }
     }
 
     private void updateLeaderCard(DriverStanding leader) {
         tvLeaderName.setText(leader.getName());
         tvLeaderTeam.setText(leader.getTeam());
+        tvLeaderPoints.setText(leader.getPoints() + " PTS");
+    }
 
-        if (tvLeaderPoints != null) {
-            tvLeaderPoints.setText(leader.getPoints() + " PTS");
-        }
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        if (raceTimer != null) raceTimer.cancel();
     }
 }
