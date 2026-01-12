@@ -171,4 +171,15 @@ public class MainActivity extends AppCompatActivity {
                 .addToBackStack(null) //
                 .commit();
     }
+
+    public void navigateToDriverDetail(int driverId) {
+        // Creamos el fragmento (lo programaremos en el Paso 4)
+        com.example.wtcspaddock.ui.drivers.DriverDetailFragment fragment =
+                com.example.wtcspaddock.ui.drivers.DriverDetailFragment.newInstance(driverId);
+
+        getSupportFragmentManager().beginTransaction()
+                .replace(R.id.fragment_container, fragment)
+                .addToBackStack(null) // Para poder volver atrás con el botón del móvil
+                .commit();
+    }
 }

@@ -10,6 +10,7 @@ use Illuminate\Http\Request;
 use App\Models\RaceResult;
 use App\Models\QualifyingResult;
 use App\Models\Team;
+use App\Models\Season;
 
 
 // Endpoint: LOGIN PARA APP MÓVIL
@@ -171,17 +172,62 @@ Route::get('/rounds/{round}', function ($roundNumber) {
     ]);
 });
 
-// Endpoint: Detalle Público de Piloto (Stats)
 Route::get('/drivers/{id}', function ($id) {
     $seasonId = \App\Models\Season::where('is_active', true)->value('id');
     $user = \App\Models\User::with('team')->findOrFail($id);
 
-    // Calcular Stats (Simplificado para API)
+    // 1. Stats Generales
     $stats = [
         'starts' => $user->raceResults()->whereHas('race', fn($q) => $q->where('season_id', $seasonId))->count(),
         'wins' => $user->raceResults()->whereHas('race', fn($q) => $q->where('season_id', $seasonId))->where('position', 1)->count(),
         'points' => (int) $user->raceResults()->whereHas('race', fn($q) => $q->where('season_id', $seasonId))->sum('points'),
     ];
+
+    // 2. CORRECCIÓN: Obtener Clasificaciones mapeadas por Ronda
+    $qualyResults = \App\Models\QualifyingResult::where('user_id', $id)
+        ->with('race') // Cargamos la carrera para leer el round_number
+        ->whereHas('race', fn($q) => $q->where('season_id', $seasonId))
+        ->get()
+        ->mapWithKeys(function ($item) {
+            // Usamos el round_number de la RELACIÓN 'race', no de la tabla de resultados
+            return [$item->race->round_number => $item];
+        });
+
+    // 3. Obtener resultados de carrera
+    $races = \App\Models\Race::where('season_id', $seasonId)
+        ->with(['track', 'results' => fn($q) => $q->where('user_id', $id)])
+        ->orderBy('round_number')
+        ->orderBy('id') // Para que salga primero Sprint y luego Feature
+        ->get();
+
+    $history = [];
+    $runningPoints = 0;
+
+    foreach ($races as $race) {
+        $raceResult = $race->results->first();
+        
+        // Buscamos la qualy de ESTA ronda en el mapa que creamos antes
+        $qualyResult = $qualyResults[$race->round_number] ?? null;
+
+        if (!$raceResult && !$qualyResult) continue;
+
+        $runningPoints += ($raceResult ? $raceResult->points : 0);
+
+$history[] = [
+            'round_number' => $race->round_number,
+            'round_name'   => $race->track->name,
+            'race_type'    => str_contains(strtolower($race->title), 'sprint') ? 'Sprint' : 'Feature',
+            'race_pos'     => $raceResult ? $raceResult->position : 0,
+            'qualy_pos'    => $qualyResult ? $qualyResult->position : 0,
+            
+            // --- CORRECCIÓN FINAL (Usando los nombres reales) ---
+            'qualy_time'   => $qualyResult ? $qualyResult->best_time : '-', 
+            'qualy_tyre'   => $qualyResult ? $qualyResult->tyre_compound : '-',
+            // ----------------------------------------------------
+            
+            'points_after_round' => $runningPoints
+        ];
+    }
 
     return response()->json([
         'driver' => [
@@ -191,10 +237,10 @@ Route::get('/drivers/{id}', function ($id) {
             'team' => $user->team ? $user->team->name : 'Free Agent',
             'team_color' => $user->team->primary_color ?? '#666',
             'avatar' => $user->avatar_url ? asset('storage/' . $user->avatar_url) : null,
-            'bio' => $user->bio,
             'equipment' => $user->equipment,
         ],
-        'stats' => $stats
+        'stats' => $stats,
+        'history' => $history
     ]);
 });
 

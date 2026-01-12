@@ -7,13 +7,14 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
+// import android.widget.Toast; // Ya no lo necesitamos si navegamos de verdad
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
+import com.example.wtcspaddock.MainActivity; // IMPORTANTE
 import com.example.wtcspaddock.R;
 import com.example.wtcspaddock.models.Driver;
 import com.google.android.material.card.MaterialCardView;
@@ -24,30 +25,27 @@ import java.util.List;
 public class DriversAdapter extends RecyclerView.Adapter<DriversAdapter.DriverViewHolder> {
 
     private Context context;
-    private List<Driver> driversFull; // Lista completa (Copia de seguridad)
-    private List<Driver> driversFiltered; // Lista que se muestra
+    private List<Driver> driversFull;
+    private List<Driver> driversFiltered;
 
     public DriversAdapter(Context context, List<Driver> drivers) {
         this.context = context;
-        this.driversFull = new ArrayList<>(drivers); // Guardamos copia
-        this.driversFiltered = drivers; // Inicialmente mostramos todos
+        this.driversFull = new ArrayList<>(drivers);
+        this.driversFiltered = drivers;
     }
 
-    // MÉTODO PARA FILTRAR (SOLO NOMBRE)
     public void filterList(String text) {
         List<Driver> filtered = new ArrayList<>();
         if (text == null || text.isEmpty()) {
             filtered.addAll(driversFull);
         } else {
             String filterPattern = text.toLowerCase().trim();
-
             for (Driver item : driversFull) {
                 if (item.getName().toLowerCase().contains(filterPattern)) {
                     filtered.add(item);
                 }
             }
         }
-        // Actualizamos la lista visible
         this.driversFiltered = filtered;
         notifyDataSetChanged();
     }
@@ -61,7 +59,7 @@ public class DriversAdapter extends RecyclerView.Adapter<DriversAdapter.DriverVi
 
     @Override
     public void onBindViewHolder(@NonNull DriverViewHolder holder, int position) {
-        Driver driver = driversFiltered.get(position); // Usamos la lista filtrada
+        Driver driver = driversFiltered.get(position);
 
         // 1. Datos
         holder.tvName.setText(driver.getName());
@@ -89,9 +87,12 @@ public class DriversAdapter extends RecyclerView.Adapter<DriversAdapter.DriverVi
             holder.tvInitials.setVisibility(View.VISIBLE);
         }
 
-        // 4. Click
+        // 4. CLICK LISTENER (LA CLAVE)
         holder.itemView.setOnClickListener(v -> {
-            Toast.makeText(context, "Clicked: " + driver.getName(), Toast.LENGTH_SHORT).show();
+            // Verificamos que el contexto es la MainActivity para poder navegar
+            if (context instanceof MainActivity) {
+                ((MainActivity) context).navigateToDriverDetail(driver.getId());
+            }
         });
     }
 
@@ -100,7 +101,6 @@ public class DriversAdapter extends RecyclerView.Adapter<DriversAdapter.DriverVi
         return driversFiltered.size();
     }
 
-    // --- Helpers ---
     private String getInitials(String name) {
         if (name == null || name.isEmpty()) return "";
         String[] parts = name.split(" ");
@@ -112,9 +112,11 @@ public class DriversAdapter extends RecyclerView.Adapter<DriversAdapter.DriverVi
 
     private String getFlagEmoji(String countryCode) {
         if (countryCode == null) return "";
-        int firstLetter = Character.codePointAt(countryCode, 0) - 0x41 + 0x1F1E6;
-        int secondLetter = Character.codePointAt(countryCode, 1) - 0x41 + 0x1F1E6;
-        return new String(Character.toChars(firstLetter)) + new String(Character.toChars(secondLetter));
+        try {
+            int firstLetter = Character.codePointAt(countryCode, 0) - 0x41 + 0x1F1E6;
+            int secondLetter = Character.codePointAt(countryCode, 1) - 0x41 + 0x1F1E6;
+            return new String(Character.toChars(firstLetter)) + new String(Character.toChars(secondLetter));
+        } catch (Exception e) { return ""; }
     }
 
     public static class DriverViewHolder extends RecyclerView.ViewHolder {

@@ -40,13 +40,16 @@ dependencies {
     testImplementation(libs.junit)
     androidTestImplementation(libs.ext.junit)
     androidTestImplementation(libs.espresso.core)
+
     // --- RED Y API (RETROFIT) ---
     implementation("com.squareup.retrofit2:retrofit:2.9.0")
     implementation("com.squareup.retrofit2:converter-gson:2.9.0")
-    // Interceptor para ver Logs en la consola (Vital para debug)
     implementation("com.squareup.okhttp3:logging-interceptor:4.11.0")
+
     // --- IMÁGENES (GLIDE) ---
     implementation("com.github.bumptech.glide:glide:4.16.0")
-    // Nota: annotationProcessor es para Java
     annotationProcessor("com.github.bumptech.glide:compiler:4.16.0")
+
+    // --- GRÁFICOS (MPAndroidChart) ---
+    implementation("com.github.PhilJay:MPAndroidChart:v3.1.0")
 }

@@ -30,4 +30,10 @@
         <item name="android:textColorHint">@color/text_secondary</item>
         <item name="searchIcon">@drawable/ic_menu_grid</item> <!-- O un icono de lupa si tienes -->
     </style>
+
+    <!-- Estilo para imágenes circulares -->
+    <style name="CircleImageStyle" parent="">
+        <item name="cornerFamily">rounded</item>
+        <item name="cornerSize">50%</item>
+    </style>
 </resources>

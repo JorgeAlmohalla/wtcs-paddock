@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal"
+    android:paddingVertical="12dp"
+    android:paddingHorizontal="16dp"
+    android:background="@drawable/border_bottom_dark"
+    android:gravity="center_vertical">
+
+    <!-- 1. NOMBRE RONDA -->
+    <LinearLayout
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/tvRoundName"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Silverstone"
+            android:textColor="@color/white"
+            android:textStyle="bold"
+            android:textSize="14sp"/>
+
+        <TextView
+            android:id="@+id/tvRoundNum"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="ROUND 1"
+            android:textColor="@color/text_secondary"
+            android:textSize="10sp"/>
+    </LinearLayout>
+
+    <!-- 2. GRID POS -->
+    <TextView
+        android:id="@+id/tvGridPos"
+        android:layout_width="40dp"
+        android:layout_height="wrap_content"
+        android:text="6"
+        android:textColor="@color/white"
+        android:textStyle="bold"
+        android:gravity="center"
+        android:layout_marginEnd="8dp"/>
+
+    <!-- 3. TIEMPO -->
+    <TextView
+        android:id="@+id/tvQualyTime"
+        android:layout_width="80dp"
+        android:layout_height="wrap_content"
+        android:text="1:47.020"
+        android:textColor="@color/text_secondary"
+        android:textSize="12sp"
+        android:fontFamily="monospace"
+        android:gravity="end"
+        android:layout_marginEnd="16dp"/>
+
+    <!-- 4. NEUMÁTICO (Punto de color) -->
+    <ImageView
+        android:id="@+id/imgTyreDot"
+        android:layout_width="12dp"
+        android:layout_height="12dp"
+        android:src="@drawable/circle_bg_gray"
+        android:layout_gravity="center_vertical"/>
+
+</LinearLayout>

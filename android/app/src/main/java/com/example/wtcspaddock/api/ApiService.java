@@ -2,6 +2,7 @@ package com.example.wtcspaddock.api;
 
 import com.example.wtcspaddock.models.CalendarResponse;
 import com.example.wtcspaddock.models.Driver;
+import com.example.wtcspaddock.models.DriverDetailResponse;
 import com.example.wtcspaddock.models.DriverStanding;
 import com.example.wtcspaddock.models.LoginRequest;
 import com.example.wtcspaddock.models.LoginResponse;
@@ -55,4 +56,8 @@ public interface ApiService {
 
     @GET("drivers") // Asegúrate de que esta sea la ruta correcta en tu Laravel
     Call<List<Driver>> getDrivers();
+
+    // Detalle de Piloto
+    @GET("drivers/{id}")
+    Call<DriverDetailResponse> getDriverDetails(@retrofit2.http.Path("id") int driverId);
 }
