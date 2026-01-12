@@ -54,6 +54,14 @@ public class ResultsAdapter extends RecyclerView.Adapter<ResultsAdapter.ViewHold
             holder.viewTeamColor.setBackgroundColor(Color.GRAY); // Fallback
         }
 
+        holder.itemView.setOnClickListener(v -> {
+            if (v.getContext() instanceof com.example.wtcspaddock.MainActivity) {
+                // Navegamos al perfil usando el ID que acabamos de añadir
+                ((com.example.wtcspaddock.MainActivity) v.getContext())
+                        .navigateToDriverDetail(row.getDriverId());
+            }
+        });
+
         // 3. Lógica según sesión (Qualy vs Carrera)
         if (sessionType.equals("qualy")) {
             // MODO QUALY: Muestra Neumático

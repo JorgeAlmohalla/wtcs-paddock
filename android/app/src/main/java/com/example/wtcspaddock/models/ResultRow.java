@@ -10,6 +10,9 @@ public class ResultRow {
     @SerializedName("team_color")
     private String teamColor; // Ej: "#a30101"
 
+    @SerializedName("driver_id")
+    private int driverId;
+
     private String time; // Ej: "22:09.378" o "DNF"
 
     // Solo Carrera
@@ -31,4 +34,5 @@ public class ResultRow {
     public String getCar() { return car; }
     public boolean isFastestLap() { return fastestLap; }
     public String getTyre() { return tyre; }
+    public int getDriverId() { return driverId; }
 }
