@@ -63,7 +63,6 @@ public class DriverDetailResponse {
         private int starts;
         private int wins;
         private int points;
-        // Podiums y Poles no vienen en tu JSON aún, añádelos si la API los manda
         private int podiums;
         private int poles;
 

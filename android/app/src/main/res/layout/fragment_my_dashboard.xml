@@ -173,17 +173,39 @@
 
             <!-- 2. ZONA PÚBLICA (Stats + Charts + History) -->
 
-            <!-- STATS -->
+            <!-- 2. STATS GRID (2 Filas) -->
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:weightSum="3"
-                android:paddingHorizontal="8dp"
-                android:paddingBottom="8dp">
-                <include layout="@layout/item_stat_card" android:id="@+id/statStarts" />
-                <include layout="@layout/item_stat_card" android:id="@+id/statWins" />
-                <include layout="@layout/item_stat_card" android:id="@+id/statPoints" />
+                android:orientation="vertical"
+                android:paddingHorizontal="12dp"
+                android:paddingTop="12dp">
+
+                <!-- FILA 1: Starts, Wins, Podiums -->
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:weightSum="3">
+                    <include layout="@layout/item_stat_card" android:id="@+id/statStarts" />
+                    <include layout="@layout/item_stat_card" android:id="@+id/statWins" />
+                    <include layout="@layout/item_stat_card" android:id="@+id/statPodiums" />
+                </LinearLayout>
+
+                <!-- FILA 2: Poles, Points -->
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:weightSum="2"
+                    android:layout_marginTop="4dp">
+
+                    <include layout="@layout/item_stat_card" android:id="@+id/statPoles" />
+
+                    <!-- La de puntos ocupará la mitad, como en la web se destaca -->
+                    <include layout="@layout/item_stat_card" android:id="@+id/statPoints" />
+                </LinearLayout>
+
             </LinearLayout>
 
             <!-- Chart 1: Race Finish -->

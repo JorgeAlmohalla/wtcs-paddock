@@ -48,7 +48,7 @@ public class MyDashboardFragment extends Fragment {
     private ImageView imgAvatar;
 
     // Stats Views
-    private View statStarts, statWins, statPoints;
+    private View statStarts, statWins, statPoints, statPodiums, statPoles;
 
     // Loading Views
     private ProgressBar progressBar;
@@ -78,6 +78,8 @@ public class MyDashboardFragment extends Fragment {
         statStarts = view.findViewById(R.id.statStarts);
         statWins = view.findViewById(R.id.statWins);
         statPoints = view.findViewById(R.id.statPoints);
+        statPodiums = view.findViewById(R.id.statPodiums);
+        statPoles = view.findViewById(R.id.statPoles);
 
         // Cargar mis datos
         SessionManager session = new SessionManager(requireContext());
@@ -139,9 +141,15 @@ public class MyDashboardFragment extends Fragment {
         }
 
         // 2. Stats
-        setStat(statStarts, "STARTS", String.valueOf(stats.getStarts()));
-        setStat(statWins, "WINS", String.valueOf(stats.getWins()));
-        setStat(statPoints, "POINTS", String.valueOf(stats.getPoints()));
+        setStat(statStarts, "STARTS", String.valueOf(stats.getStarts()), null, null);
+        setStat(statWins, "WINS", String.valueOf(stats.getWins()), "#FFD700", null); // Oro opcional para wins
+        setStat(statPodiums, "PODIUMS", String.valueOf(stats.getPodiums()), null, null);
+
+        // POLES: Texto Morado (como en la web)
+        setStat(statPoles, "POLES", String.valueOf(stats.getPoles()), "#BB86FC", null);
+
+        // POINTS: Fondo Rojo oscuro (como en la web)
+        setStat(statPoints, "TOTAL POINTS", String.valueOf(stats.getPoints()), "#FF8888", "#3E1818");
 
         // 3. Gráficos
         setupCharts(data.getHistory());
@@ -236,10 +244,36 @@ public class MyDashboardFragment extends Fragment {
         chart.getAxisRight().setEnabled(false);
     }
 
-    private void setStat(View view, String label, String value) {
+    private void setStat(View view, String label, String value, String valueColorHex, String bgColorHex) {
         if (view == null) return;
-        ((TextView)view.findViewById(R.id.tvStatLabel)).setText(label);
-        ((TextView)view.findViewById(R.id.tvStatValue)).setText(value);
+
+        // CORRECCIÓN: La 'view' que recibimos YA ES el CardView. No hay que buscarlo.
+        androidx.cardview.widget.CardView card = (androidx.cardview.widget.CardView) view;
+
+        // Los TextViews sí son hijos, así que los buscamos dentro
+        TextView tvVal = view.findViewById(R.id.tvStatValue);
+        TextView tvLbl = view.findViewById(R.id.tvStatLabel);
+
+        // Seguridad por si acaso
+        if (tvVal == null || tvLbl == null) return;
+
+        tvVal.setText(value);
+        tvLbl.setText(label);
+
+        // Color del Texto (Value)
+        if (valueColorHex != null) {
+            tvVal.setTextColor(Color.parseColor(valueColorHex));
+        } else {
+            tvVal.setTextColor(Color.WHITE);
+        }
+
+        // Color del Fondo de la Tarjeta
+        if (bgColorHex != null) {
+            card.setCardBackgroundColor(Color.parseColor(bgColorHex));
+        } else {
+            // Color por defecto (Surface)
+            card.setCardBackgroundColor(Color.parseColor("#1E293B"));
+        }
     }
 
     private void showEditBioDialog() {
