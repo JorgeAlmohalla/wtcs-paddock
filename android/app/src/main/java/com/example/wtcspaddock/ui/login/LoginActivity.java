@@ -42,6 +42,14 @@ public class LoginActivity extends AppCompatActivity {
             goToMainActivity();
         }
 
+        // BLOQUEAR BOTÓN ATRÁS (Forma moderna)
+        getOnBackPressedDispatcher().addCallback(this, new androidx.activity.OnBackPressedCallback(true) {
+            @Override
+            public void handleOnBackPressed() {
+                // No hacemos nada. Así el usuario no puede volver atrás.
+            }
+        });
+
         // 2. Vincular Vistas
         etEmail = findViewById(R.id.etEmail);
         etPassword = findViewById(R.id.etPassword);
