@@ -7,6 +7,7 @@ import com.example.wtcspaddock.models.DriverStanding;
 import com.example.wtcspaddock.models.LoginRequest;
 import com.example.wtcspaddock.models.LoginResponse;
 import com.example.wtcspaddock.models.ManufacturerStanding;
+import com.example.wtcspaddock.models.News;
 import com.example.wtcspaddock.models.RoundDetailResponse;
 import com.example.wtcspaddock.models.StandingsResponse;
 import com.example.wtcspaddock.models.Team;
@@ -69,4 +70,12 @@ public interface ApiService {
 
     @GET("teams/{id}")
     Call<TeamDetailResponse> getTeamDetails(@retrofit2.http.Path("id") int teamId);
+
+    // LISTA DE NOTICIAS
+    @GET("news")
+    Call<List<News>> getNewsList();
+
+    // DETALLE DE NOTICIA
+    @GET("news/{id}")
+    Call<News> getNewsDetail(@retrofit2.http.Path("id") int newsId);
 }
