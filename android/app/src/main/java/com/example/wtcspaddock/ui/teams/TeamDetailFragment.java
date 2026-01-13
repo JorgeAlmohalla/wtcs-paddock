@@ -65,32 +65,47 @@ public class TeamDetailFragment extends Fragment {
         View v = getView();
         if (v == null) return;
 
-        // Cabecera
-        v.findViewById(R.id.headerContainer).setBackgroundColor(Color.parseColor(team.getColor()));
+        // 1. Cabecera y Color
+        v.findViewById(R.id.headerContainer).setBackgroundColor(android.graphics.Color.parseColor(team.getColor()));
         ((TextView)v.findViewById(R.id.tvDetailName)).setText(team.getName());
         ((TextView)v.findViewById(R.id.tvDetailCar)).setText(team.getCarModel());
 
-        // Stats
+        // 2. Stats (Big Numbers)
         setStat(v.findViewById(R.id.statDrivers), "DRIVERS", String.valueOf(team.getStats().activeDrivers));
         setStat(v.findViewById(R.id.statWins), "WINS", String.valueOf(team.getStats().wins));
         setStat(v.findViewById(R.id.statPodiums), "PODIUMS", String.valueOf(team.getStats().podiums));
         setStat(v.findViewById(R.id.statPoints), "POINTS", String.valueOf(team.getStats().totalPoints));
 
-        // Roster
-        RecyclerView rv = v.findViewById(R.id.recyclerRoster);
+        // 3. Roster (Lista de pilotos)
+        androidx.recyclerview.widget.RecyclerView rv = v.findViewById(R.id.recyclerRoster);
         rv.setLayoutManager(new LinearLayoutManager(getContext()));
         rv.setAdapter(new RosterAdapter(getContext(), team.getRoster()));
 
-        // Livery
+        // 4. Livery (Foto del coche)
         ImageView imgLivery = v.findViewById(R.id.imgLivery);
         if (team.getLiveryImage() != null) {
             Glide.with(this).load(team.getLiveryImage()).into(imgLivery);
         }
 
-        // Specs
-        ((TextView)v.findViewById(R.id.tvSpecEngine)).setText("Engine: " + team.getSpecs().engine);
-        ((TextView)v.findViewById(R.id.tvSpecPower)).setText("Power: " + team.getSpecs().power);
-        ((TextView)v.findViewById(R.id.tvSpecWeight)).setText("Weight: " + team.getSpecs().weight);
+        // 5. SPECS (CORREGIDO Y COMPLETO)
+        // Usamos el helper setText para no repetir código y evitar nulos
+        // Fíjate que ya NO ponemos "Engine: " delante, solo el valor.
+        setText(v, R.id.tvSpecChassis, team.getSpecs().chassis);
+        setText(v, R.id.tvSpecEngine, team.getSpecs().engine);
+        setText(v, R.id.tvSpecPower, team.getSpecs().power);
+
+        // AQUÍ EL CAMBIO CLAVE: Usamos Layout, no Weight
+        setText(v, R.id.tvSpecLayout, team.getSpecs().layout);
+
+        setText(v, R.id.tvSpecGearbox, team.getSpecs().gearbox);
+    }
+
+    // Asegúrate de tener este helper al final de la clase:
+    private void setText(View root, int id, String text) {
+        TextView tv = root.findViewById(id);
+        if (tv != null) {
+            tv.setText((text != null && !text.isEmpty()) ? text : "-");
+        }
     }
 
     private void setStat(View view, String label, String value) {

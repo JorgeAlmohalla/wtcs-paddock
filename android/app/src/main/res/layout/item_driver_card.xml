@@ -21,7 +21,7 @@
         android:gravity="center_vertical"
         android:padding="12dp">
 
-        <!-- 1. AVATAR -->
+        <!-- 1. AVATAR (Izquierda) -->
         <FrameLayout
             android:layout_width="48dp"
             android:layout_height="48dp">
@@ -48,7 +48,7 @@
                 android:scaleType="centerCrop"/>
         </FrameLayout>
 
-        <!-- 2. INFO PRINCIPAL -->
+        <!-- 2. INFO PRINCIPAL (Centro) -->
         <LinearLayout
             android:layout_width="0dp"
             android:layout_height="wrap_content"
@@ -56,6 +56,7 @@
             android:orientation="vertical"
             android:layout_marginStart="16dp">
 
+            <!-- Nombre -->
             <TextView
                 android:id="@+id/tvDriverName"
                 android:layout_width="wrap_content"
@@ -65,6 +66,8 @@
                 android:textStyle="bold"
                 android:textSize="16sp"/>
 
+            <!-- Equipo (Visible en lista general) / Rol (Visible en Roster) -->
+            <!-- Usaremos este mismo TextView para ambos casos o lo cambiamos por código -->
             <TextView
                 android:id="@+id/tvTeamName"
                 android:layout_width="wrap_content"
@@ -74,23 +77,51 @@
                 android:textSize="12sp"
                 android:maxLines="1"
                 android:ellipsize="end"/>
+
+            <!-- Rol + Bandera (Específico para Roster) -->
+            <TextView
+                android:id="@+id/tvRosterRole"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                tools:text="🇮🇹 PRIMARY"
+                android:textColor="@color/text_secondary"
+                android:textSize="10sp"
+                android:textStyle="bold"
+                android:textAllCaps="true"
+                android:visibility="gone"/> <!-- Oculto por defecto, lo activamos en el adapter -->
+
         </LinearLayout>
 
-        <!-- 3. DERECHA (Bandera y Status) -->
+        <!-- 3. DERECHA (Badge Principal y Bandera antigua) -->
         <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:orientation="vertical"
             android:gravity="end">
 
+            <!-- BADGE TEAM PRINCIPAL (Dorado) -->
+            <TextView
+                android:id="@+id/badgePrincipal"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Team Principal"
+                android:textSize="10sp"
+                android:textColor="#FFD700"
+                android:background="#26FFD700"
+                android:paddingHorizontal="8dp"
+                android:paddingVertical="4dp"
+                android:visibility="gone"/>
+
+            <!-- Bandera (Para la lista general de drivers) -->
             <TextView
                 android:id="@+id/tvFlag"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 tools:text="🇮🇹"
-                android:textSize="20sp"/>
+                android:textSize="20sp"
+                android:layout_marginTop="4dp"/>
 
-            <!-- Badge de Rol (Opcional, visible si es Principal o Privateer) -->
+            <!-- Rol Genérico (Para lista general) -->
             <TextView
                 android:id="@+id/tvRole"
                 android:layout_width="wrap_content"
@@ -99,7 +130,8 @@
                 android:textColor="@color/wtcs_red"
                 android:textSize="10sp"
                 android:textStyle="bold"
-                android:layout_marginTop="4dp"/>
+                android:visibility="gone"/>
+
         </LinearLayout>
 
     </LinearLayout>

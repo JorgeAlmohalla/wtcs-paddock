@@ -5,6 +5,47 @@ All notable changes to the **WTCS Paddock** project will be documented in this f
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [v4.3.0-android-beta] - 12-01-2026
+
+### 👤 Added (Driver Profile & Analytics)
+- **Driver Detail View:** Implemented `DriverDetailFragment` accessible from any driver link in the app.
+- **Interactive Charts:** Integrated `MPAndroidChart` to visualize performance:
+    - **Race Finish Position:** Inverted Y-axis line chart with cubic bezier curves (Red).
+    - **Championship Points:** Cumulative points progression chart with filled area (Gold).
+    - **Clean UI:** Custom chart configuration removing grid lines, axis labels, and clutter for a minimal "Dark Mode" look.
+- **Qualifying History:** Added a `RecyclerView` table showing historical qualifying results (Time, Grid Position) with color-coded tyre compound dots (Soft/Medium/Hard).
+- **Header Redesign:** Implemented circular avatars with team-colored borders and improved layout for Input method (Wheel/Pad) and Team Name.
+
+### 🏎️ Added (Teams Ecosystem)
+- **Teams List:** Created `TeamsFragment` with a new card design featuring a colored side-strip, removing generic initial letters for a cleaner look.
+- **Team Detail View:** Implemented a comprehensive Team Hub including:
+    - **Header:** Dynamic background color based on team branding.
+    - **Official Livery:** Large display of the car model image.
+    - **Homologation Data:** Dynamic table showing Chassis, Engine, Power (highlighted), Layout, and Gearbox data fetched from the API.
+    - **Team Stats:** Grid showing Active Drivers, Wins, Podiums, and Points.
+- **Roster Management:**
+    - Implemented `RosterAdapter` to display team members.
+    - **Smart Role Badges:** Logic to distinguish and highlight "Team Principal" (Gold Badge) vs "Primary" vs "Reserve" drivers based on API data.
+
+### 🛠️ Backend & API Improvements
+- **Endpoint `GET /drivers/{id}`:** 
+    - Injected a `history` array containing calculated race-by-race data for graph generation.
+    - Fixed SQL column mapping for qualifying times (`best_time`) and tyres (`tyre_compound`).
+- **Endpoint `GET /teams/{id}`:** 
+    - Updated to include dynamic vehicle specifications (`tech_chassis`, `tech_power`, etc.) instead of hardcoded values.
+    - Improved Role detection logic to parse JSON roles and identify "Team Principal" robustly.
+
+### 🎨 UI/UX Polish
+- **Loading States:** Implemented `ProgressBar` overlays in Home and Driver Profile screens to prevent UI "flashing" (placeholder data) while fetching API responses.
+- **Navigation:**
+    - Enabled deep-linking: Clicking a driver in the Team Roster navigates to their Driver Profile.
+    - Enabled deep-linking: Clicking a team in the Driver Profile (future scope) or list navigates to the Team Detail.
+- **Visual consistency:** Standardized card heights in lists and aligned text/badges to match the Web Portal design.
+
+### 🐛 Fixed & Refined
+- **Search Logic:** Refined the search algorithm in `DriversAdapter` to filter strictly by **Driver Name**, excluding Team Name matches to improve search relevance.
+- **UI Adjustments:** Improved contrast for the search bar text in Dark Mode.
+
 ## [v4.2.0-android-beta] - 08-01-2026
 ### 🔄 Changed (Navigation Architecture)
 - **Central Hub Overhaul:** Replaced standard bottom tabs with a "hub-centric" navigation (Home - Paddock Hub - Profile).

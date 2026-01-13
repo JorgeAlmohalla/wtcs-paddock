@@ -135,13 +135,141 @@
             android:orientation="vertical"
             android:background="@color/wtcs_surface"
             android:layout_marginHorizontal="16dp"
-            android:padding="16dp">
+            android:padding="16dp"
+            android:layout_marginBottom="32dp">
 
-            <TextView android:id="@+id/tvSpecEngine" android:layout_width="match_parent" android:layout_height="wrap_content" android:textColor="@color/white" android:padding="4dp" tools:text="Engine: Cosworth V6"/>
-            <TextView android:id="@+id/tvSpecPower" android:layout_width="match_parent" android:layout_height="wrap_content" android:textColor="@color/white" android:padding="4dp" tools:text="Power: 300HP"/>
-            <TextView android:id="@+id/tvSpecWeight" android:layout_width="match_parent" android:layout_height="wrap_content" android:textColor="@color/white" android:padding="4dp" tools:text="Weight: 975kg"/>
+            <!-- 1. CHASSIS (Permitimos multilínea) -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:paddingVertical="6dp">
+                <TextView
+                    android:layout_width="100dp"
+                    android:layout_height="wrap_content"
+                    android:text="CHASSIS"
+                    android:textColor="@color/text_secondary"
+                    android:textSize="12sp"
+                    android:textStyle="bold"/>
+                <TextView
+                    android:id="@+id/tvSpecChassis"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    tools:text="Unitary steel, built by Prodrive/Matter"
+                    android:textColor="@color/white"
+                    android:textSize="13sp"
+                    android:gravity="end"/> <!-- Alineado a la derecha como en la web -->
+            </LinearLayout>
+
+            <View android:layout_width="match_parent" android:layout_height="1dp" android:background="#1AFFFFFF"/>
+
+            <!-- 2. ENGINE -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:paddingVertical="6dp">
+                <TextView
+                    android:layout_width="100dp"
+                    android:layout_height="wrap_content"
+                    android:text="ENGINE"
+                    android:textColor="@color/text_secondary"
+                    android:textSize="12sp"
+                    android:textStyle="bold"/>
+                <TextView
+                    android:id="@+id/tvSpecEngine"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    tools:text="Cosworth 2.0L V6"
+                    android:textColor="@color/white"
+                    android:textSize="13sp"
+                    android:gravity="end"/>
+            </LinearLayout>
+
+            <View android:layout_width="match_parent" android:layout_height="1dp" android:background="#1AFFFFFF"/>
+
+            <!-- 3. POWER -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:paddingVertical="6dp">
+                <TextView
+                    android:layout_width="100dp"
+                    android:layout_height="wrap_content"
+                    android:text="POWER"
+                    android:textColor="@color/text_secondary"
+                    android:textSize="12sp"
+                    android:textStyle="bold"/>
+                <TextView
+                    android:id="@+id/tvSpecPower"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    tools:text="300HP"
+                    android:textColor="@color/wtcs_red"
+                    android:textStyle="bold"
+                    android:textSize="13sp"
+                    android:gravity="end"/>
+            </LinearLayout>
+
+            <View android:layout_width="match_parent" android:layout_height="1dp" android:background="#1AFFFFFF"/>
+
+            <!-- 4. LAYOUT (NUEVO, reemplaza a Weight) -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:paddingVertical="6dp">
+                <TextView
+                    android:layout_width="100dp"
+                    android:layout_height="wrap_content"
+                    android:text="LAYOUT"
+                    android:textColor="@color/text_secondary"
+                    android:textSize="12sp"
+                    android:textStyle="bold"/>
+                <TextView
+                    android:id="@+id/tvSpecLayout"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    tools:text="FR"
+                    android:textColor="@color/white"
+                    android:textSize="13sp"
+                    android:textStyle="bold"
+                    android:gravity="end"/>
+            </LinearLayout>
+
+            <View android:layout_width="match_parent" android:layout_height="1dp" android:background="#1AFFFFFF"/>
+
+            <!-- 5. GEARBOX -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:paddingVertical="6dp">
+                <TextView
+                    android:layout_width="100dp"
+                    android:layout_height="wrap_content"
+                    android:text="GEARBOX"
+                    android:textColor="@color/text_secondary"
+                    android:textSize="12sp"
+                    android:textStyle="bold"/>
+                <TextView
+                    android:id="@+id/tvSpecGearbox"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    tools:text="XTrac 6-speed"
+                    android:textColor="@color/white"
+                    android:textSize="13sp"
+                    android:gravity="end"/>
+            </LinearLayout>
 
         </LinearLayout>
 
     </LinearLayout>
+
 </androidx.core.widget.NestedScrollView>

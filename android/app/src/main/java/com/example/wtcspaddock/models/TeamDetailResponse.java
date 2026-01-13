@@ -50,7 +50,7 @@ public class TeamDetailResponse {
         public String chassis;
         public String engine;
         public String power;
-        public String weight;
+        public String layout;
         public String gearbox;
     }
 
