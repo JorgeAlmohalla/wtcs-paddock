@@ -20,7 +20,7 @@ class ReportController extends Controller
             ->get();
 
         // 2. Pilotos: Mostrar todos los activos (filtrar por carrera es difícil sin JS reactivo)
-        $drivers = User::where('role', 'driver')
+        $drivers = User::whereJsonContains('roles', 'driver') // <--- CAMBIO: whereJsonContains
             ->orderBy('name')
             ->get();
 
