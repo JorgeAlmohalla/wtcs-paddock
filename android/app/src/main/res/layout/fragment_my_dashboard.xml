@@ -1,0 +1,257 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/wtcs_background">
+
+    <!-- BARRA DE CARGA -->
+    <ProgressBar
+        android:id="@+id/progressBar"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:indeterminateTint="@color/wtcs_red"
+        android:visibility="visible"/>
+
+    <androidx.core.widget.NestedScrollView
+        android:id="@+id/contentLayout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:visibility="invisible"
+        android:fillViewport="true">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:paddingBottom="40dp">
+
+            <!-- 1. ZONA PRIVADA (Header + Bio + Botones) -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:padding="16dp">
+
+                <com.google.android.material.card.MaterialCardView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    app:cardBackgroundColor="@color/wtcs_surface"
+                    app:cardCornerRadius="12dp"
+                    app:contentPadding="16dp"
+                    app:strokeWidth="0dp">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical">
+
+                        <!-- Avatar + Datos -->
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal">
+
+                            <com.google.android.material.imageview.ShapeableImageView
+                                android:id="@+id/imgMyAvatar"
+                                android:layout_width="80dp"
+                                android:layout_height="80dp"
+                                android:src="@drawable/ic_profile"
+                                android:scaleType="centerCrop"
+                                app:shapeAppearanceOverlay="@style/CircleImageStyle"
+                                app:strokeWidth="2dp"
+                                app:strokeColor="@color/wtcs_red"/>
+
+                            <LinearLayout
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:orientation="vertical"
+                                android:layout_marginStart="16dp">
+
+                                <TextView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:text="CURRENT TEAM"
+                                    android:textColor="@color/text_secondary"
+                                    android:textSize="10sp"
+                                    android:textStyle="bold"/>
+
+                                <TextView
+                                    android:id="@+id/tvMyTeam"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:text="Loading..."
+                                    android:textColor="@color/white"
+                                    android:textStyle="bold"
+                                    android:textSize="14sp"
+                                    android:layout_marginBottom="4dp"/>
+
+                                <TextView
+                                    android:id="@+id/tvMyName"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:text="MY NAME"
+                                    android:textColor="@color/white"
+                                    android:textSize="22sp"
+                                    android:textStyle="bold"/>
+
+                                <TextView
+                                    android:id="@+id/tvMyInput"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:text="WHEEL"
+                                    android:textColor="@color/text_secondary"
+                                    android:textSize="10sp"
+                                    android:background="#1AFFFFFF"
+                                    android:paddingHorizontal="6dp"
+                                    android:paddingVertical="2dp"
+                                    android:layout_marginTop="4dp"/>
+                            </LinearLayout>
+                        </LinearLayout>
+
+                        <!-- Botones de Acción (Edit / Report) -->
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal"
+                            android:gravity="end"
+                            android:layout_marginTop="16dp">
+
+                            <com.google.android.material.button.MaterialButton
+                                android:id="@+id/btnEditProfile"
+                                style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+                                android:layout_width="wrap_content"
+                                android:layout_height="36dp"
+                                android:text="Edit"
+                                android:textColor="@color/white"
+                                app:strokeColor="#666"
+                                app:icon="@android:drawable/ic_menu_edit"
+                                app:iconTint="@color/white"
+                                android:layout_marginEnd="8dp"/>
+
+                            <com.google.android.material.button.MaterialButton
+                                android:id="@+id/btnReport"
+                                android:layout_width="wrap_content"
+                                android:layout_height="36dp"
+                                android:text="Report"
+                                android:textColor="@color/white"
+                                android:backgroundTint="#D32F2F"
+                                app:icon="@android:drawable/ic_dialog_alert"
+                                app:iconTint="@color/white"/>
+                        </LinearLayout>
+
+                        <View
+                            android:layout_width="match_parent"
+                            android:layout_height="1dp"
+                            android:background="#1AFFFFFF"
+                            android:layout_marginVertical="16dp"/>
+
+                        <!-- Bio -->
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="DRIVER BIO"
+                            android:textColor="#666"
+                            android:textStyle="bold"
+                            android:textSize="12sp"
+                            android:layout_marginBottom="8dp"/>
+
+                        <TextView
+                            android:id="@+id/tvMyBio"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="No bio added yet."
+                            android:textColor="@color/white"
+                            android:textSize="14sp"
+                            android:fontFamily="sans-serif-light"/>
+
+                    </LinearLayout>
+                </com.google.android.material.card.MaterialCardView>
+            </LinearLayout>
+
+            <!-- 2. ZONA PÚBLICA (Stats + Charts + History) -->
+
+            <!-- STATS -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:weightSum="3"
+                android:paddingHorizontal="8dp"
+                android:paddingBottom="8dp">
+                <include layout="@layout/item_stat_card" android:id="@+id/statStarts" />
+                <include layout="@layout/item_stat_card" android:id="@+id/statWins" />
+                <include layout="@layout/item_stat_card" android:id="@+id/statPoints" />
+            </LinearLayout>
+
+            <!-- Chart 1: Race Finish -->
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="RACE FINISH POSITION"
+                android:textColor="@color/text_secondary"
+                android:textSize="12sp"
+                android:textStyle="bold"
+                android:layout_marginTop="16dp"
+                android:layout_marginStart="16dp"/>
+
+            <androidx.cardview.widget.CardView
+                android:layout_width="match_parent"
+                android:layout_height="250dp"
+                android:layout_margin="16dp"
+                app:cardBackgroundColor="@color/wtcs_surface"
+                app:cardCornerRadius="8dp">
+                <com.github.mikephil.charting.charts.LineChart
+                    android:id="@+id/chartRacePosition"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:padding="8dp"/>
+            </androidx.cardview.widget.CardView>
+
+            <!-- Chart 2: Points -->
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="CHAMPIONSHIP POINTS"
+                android:textColor="@color/text_secondary"
+                android:textSize="12sp"
+                android:textStyle="bold"
+                android:layout_marginStart="16dp"/>
+
+            <androidx.cardview.widget.CardView
+                android:layout_width="match_parent"
+                android:layout_height="250dp"
+                android:layout_margin="16dp"
+                app:cardBackgroundColor="@color/wtcs_surface"
+                app:cardCornerRadius="8dp">
+                <com.github.mikephil.charting.charts.LineChart
+                    android:id="@+id/chartPoints"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:padding="8dp"/>
+            </androidx.cardview.widget.CardView>
+
+            <!-- Tabla History -->
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="QUALIFYING HISTORY"
+                android:textColor="@color/text_secondary"
+                android:textSize="12sp"
+                android:textStyle="bold"
+                android:layout_marginTop="16dp"
+                android:layout_marginStart="16dp"/>
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/recyclerHistory"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="16dp"
+                android:background="@color/wtcs_surface"
+                android:nestedScrollingEnabled="false"/>
+
+        </LinearLayout>
+    </androidx.core.widget.NestedScrollView>
+</FrameLayout>

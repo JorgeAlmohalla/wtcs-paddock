@@ -19,9 +19,16 @@ import java.util.List;
 
 import retrofit2.Call;
 import retrofit2.http.Body;
+import retrofit2.http.Field;
 import retrofit2.http.GET;
 import retrofit2.http.Header;
+import retrofit2.http.Multipart;
 import retrofit2.http.POST;
+import retrofit2.http.Field;
+import retrofit2.http.FormUrlEncoded;
+import okhttp3.MultipartBody;
+import okhttp3.RequestBody;
+import retrofit2.http.Part;
 
 public interface ApiService {
 
@@ -78,4 +85,29 @@ public interface ApiService {
     // DETALLE DE NOTICIA
     @GET("news/{id}")
     Call<News> getNewsDetail(@retrofit2.http.Path("id") int newsId);
+
+    // ACTUALIZAR PERFIL (Multipart para la foto)
+    @Multipart
+    @POST("user/update-profile")
+    Call<Void> updateProfile(
+            @Header("Authorization") String token,
+            @Part("name") RequestBody name,
+            @Part("email") RequestBody email,
+            @Part("nationality") RequestBody nationality,
+            @Part("steam_id") RequestBody steamId,
+            @Part("equipment") RequestBody equipment,
+            @Part("driver_number") RequestBody number,
+            @Part("bio") RequestBody bio,
+            @Part MultipartBody.Part avatar // La imagen (puede ser null)
+    );
+
+    // CAMBIAR PASSWORD
+    @FormUrlEncoded
+    @POST("user/change-password")
+    Call<Void> changePassword(
+            @Header("Authorization") String token,
+            @Field("current_password") String current,
+            @Field("password") String newPass,
+            @Field("password_confirmation") String confirmPass
+    );
 }

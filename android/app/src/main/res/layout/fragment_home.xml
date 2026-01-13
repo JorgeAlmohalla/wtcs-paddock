@@ -128,6 +128,7 @@
                 android:id="@+id/cardLeader"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginBottom="24dp"
                 android:clickable="true"
                 android:foreground="?android:attr/selectableItemBackground"
                 app:cardCornerRadius="12dp"
@@ -181,6 +182,85 @@
                         android:layout_marginTop="12dp"/>
 
                 </LinearLayout>
+            </androidx.cardview.widget.CardView>
+
+            <!-- CARD 3: LATEST NEWS (NUEVA) -->
+            <androidx.cardview.widget.CardView
+                android:id="@+id/cardLatestNews"
+                android:layout_width="match_parent"
+                android:layout_height="200dp"
+                android:layout_marginBottom="24dp"
+                android:clickable="true"
+                android:foreground="?android:attr/selectableItemBackground"
+                app:cardCornerRadius="12dp"
+                app:cardElevation="4dp"
+                app:cardBackgroundColor="@color/wtcs_surface">
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent">
+
+                    <!-- Imagen de fondo de la noticia -->
+                    <ImageView
+                        android:id="@+id/imgHomeNews"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:scaleType="centerCrop"
+                        android:src="@android:color/darker_gray" />
+
+                    <!-- Gradiente para que se lea el texto -->
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:background="@drawable/gradient_black" />
+
+                    <!-- Etiqueta -->
+                    <TextView
+                        android:id="@+id/lblLatestNews"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="LATEST NEWS"
+                        android:textColor="@color/wtcs_red"
+                        android:textStyle="bold"
+                        android:letterSpacing="0.1"
+                        android:textSize="12sp"
+                        android:layout_marginTop="16dp"
+                        android:layout_marginStart="16dp"
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:layout_constraintStart_toStartOf="parent" />
+
+                    <!-- Fecha -->
+                    <TextView
+                        android:id="@+id/tvHomeNewsDate"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Loading..."
+                        android:textColor="@color/text_secondary"
+                        android:textSize="12sp"
+                        android:layout_marginTop="4dp"
+                        android:layout_marginStart="16dp"
+                        app:layout_constraintTop_toBottomOf="@+id/lblLatestNews"
+                        app:layout_constraintStart_toStartOf="parent" />
+
+                    <!-- Título -->
+                    <TextView
+                        android:id="@+id/tvHomeNewsTitle"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:text="Loading News..."
+                        android:textColor="@color/white"
+                        android:textSize="20sp"
+                        android:textStyle="bold"
+                        android:maxLines="3"
+                        android:ellipsize="end"
+                        android:layout_marginBottom="16dp"
+                        android:layout_marginStart="16dp"
+                        android:layout_marginEnd="16dp"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"/>
+
+                </androidx.constraintlayout.widget.ConstraintLayout>
             </androidx.cardview.widget.CardView>
 
         </LinearLayout>

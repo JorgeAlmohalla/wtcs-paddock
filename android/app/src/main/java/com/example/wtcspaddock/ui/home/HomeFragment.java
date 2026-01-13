@@ -9,8 +9,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
-// Importante para la barra de carga
 import android.widget.ProgressBar;
+
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -23,6 +23,7 @@ import com.example.wtcspaddock.api.RetrofitClient;
 import com.example.wtcspaddock.models.CalendarResponse;
 import com.example.wtcspaddock.models.DriverStanding;
 import com.example.wtcspaddock.models.Race;
+import com.example.wtcspaddock.models.News;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -41,6 +42,9 @@ public class HomeFragment extends Fragment {
     private TextView tvLeaderName, tvLeaderTeam, tvLeaderPoints;
     private ImageView imgTrack;
     private CountDownTimer raceTimer;
+    private TextView tvHomeNewsTitle, tvHomeNewsDate;
+    private ImageView imgHomeNews;
+    private View cardLatestNews;
 
     // --- VARIABLES DE CARGA ---
     private View contentLayout;
@@ -72,6 +76,12 @@ public class HomeFragment extends Fragment {
         tvLeaderTeam = view.findViewById(R.id.tvLeaderTeam);
         tvLeaderPoints = view.findViewById(R.id.tvLeaderPoints);
 
+        // Vincular News
+        tvHomeNewsTitle = view.findViewById(R.id.tvHomeNewsTitle);
+        tvHomeNewsDate = view.findViewById(R.id.tvHomeNewsDate);
+        imgHomeNews = view.findViewById(R.id.imgHomeNews);
+        cardLatestNews = view.findViewById(R.id.cardLatestNews);
+
         // Click Listeners
         View cardNextRace = view.findViewById(R.id.cardNextRace);
         if (cardNextRace != null) {
@@ -96,10 +106,11 @@ public class HomeFragment extends Fragment {
         progressBar.setVisibility(View.VISIBLE);
         contentLayout.setVisibility(View.INVISIBLE);
 
-        apiCallsPending = 2; // Tenemos 2 peticiones que hacer
+        apiCallsPending = 3; // Tenemos 2 peticiones que hacer
 
         loadRaceData();
         loadStandingsData();
+        loadLatestNews();
     }
 
     // Método que se llama cuando termina CUALQUIER petición
@@ -232,5 +243,52 @@ public class HomeFragment extends Fragment {
     public void onDestroyView() {
         super.onDestroyView();
         if (raceTimer != null) raceTimer.cancel();
+    }
+
+    private void loadLatestNews() {
+        RetrofitClient.getApiService().getNewsList().enqueue(new Callback<List<com.example.wtcspaddock.models.News>>() {
+            @Override
+            public void onResponse(Call<List<com.example.wtcspaddock.models.News>> call, Response<List<com.example.wtcspaddock.models.News>> response) {
+                if (response.isSuccessful() && response.body() != null) {
+                    List<com.example.wtcspaddock.models.News> newsList = response.body();
+
+                    if (!newsList.isEmpty()) {
+                        // Cogemos la primera noticia (la más reciente)
+                        com.example.wtcspaddock.models.News latest = newsList.get(0);
+                        updateNewsCard(latest);
+                    } else {
+                        // Si no hay noticias, ocultamos la tarjeta
+                        if (cardLatestNews != null) cardLatestNews.setVisibility(View.GONE);
+                    }
+                }
+                checkLoadingComplete();
+            }
+
+            @Override
+            public void onFailure(Call<List<com.example.wtcspaddock.models.News>> call, Throwable t) {
+                Log.e("API", "Error news: " + t.getMessage());
+                checkLoadingComplete();
+            }
+        });
+    }
+
+    private void updateNewsCard(com.example.wtcspaddock.models.News news) {
+        tvHomeNewsTitle.setText(news.getTitle());
+        tvHomeNewsDate.setText(news.getDate());
+
+        if (getContext() != null && news.getImageUrl() != null) {
+            Glide.with(this)
+                    .load(news.getImageUrl())
+                    .centerCrop()
+                    .placeholder(android.R.drawable.ic_menu_gallery)
+                    .into(imgHomeNews);
+        }
+
+        // Click para leer la noticia
+        cardLatestNews.setOnClickListener(v -> {
+            if (getActivity() instanceof MainActivity) {
+                ((MainActivity) getActivity()).navigateToNewsDetail(news.getId());
+            }
+        });
     }
 }

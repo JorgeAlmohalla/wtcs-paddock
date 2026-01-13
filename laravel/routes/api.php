@@ -230,6 +230,10 @@ Route::get('/drivers/{id}', function ($id) {
     $stats = [
         'starts' => $user->raceResults()->whereHas('race', fn($q) => $q->where('season_id', $seasonId))->count(),
         'wins' => $user->raceResults()->whereHas('race', fn($q) => $q->where('season_id', $seasonId))->where('position', 1)->count(),
+        'podiums' => $user->raceResults()->whereHas('race', fn($q) => $q->where('season_id', $seasonId))->where('position', '<=', 3)->count(),
+        'poles' => \App\Models\QualifyingResult::where('user_id', $id)
+            ->whereHas('race', fn($q) => $q->where('season_id', $seasonId))
+            ->where('position', 1)->count(),
         'points' => (int) $user->raceResults()->whereHas('race', fn($q) => $q->where('season_id', $seasonId))->sum('points'),
     ];
 
@@ -279,6 +283,7 @@ Route::get('/drivers/{id}', function ($id) {
             'team_color' => $user->team->primary_color ?? '#666',
             'avatar' => $user->avatar_url ? asset('storage/' . $user->avatar_url) : null,
             'equipment' => $user->equipment,
+            'bio' => $user->bio, 
         ],
         'stats' => $stats,
         'history' => $history
@@ -450,4 +455,80 @@ Route::get('/news/{id}', function ($id) {
         'image' => $post->image_url ? asset('storage/'.$post->image_url) : null,
         'content' => $post->content,
     ];
+});
+
+// --- ENDPOINTS PRIVADOS (Requieren Token) ---
+Route::middleware('auth:sanctum')->group(function () {
+
+// ACTUALIZAR PERFIL COMPLETO (Con Foto)
+    Route::post('/user/update-profile', function (Illuminate\Http\Request $request) {
+        $user = $request->user();
+
+        $validated = $request->validate([
+            'name' => 'required|string|max:255',
+            'email' => 'required|email|unique:users,email,'.$user->id,
+            'steam_id' => 'nullable|string',
+            'nationality' => 'nullable|string|size:2',
+            'equipment' => 'nullable|string', // wheel, pad, keyboard
+            'bio' => 'nullable|string',
+            'driver_number' => 'nullable|integer',
+            'avatar' => 'nullable|image|max:2048', // Max 2MB
+        ]);
+
+        // Actualizar textos
+        $user->fill($request->except(['avatar', 'password'])); // Ignoramos password y avatar aquí
+
+        // Subir Avatar si viene uno nuevo
+        if ($request->hasFile('avatar')) {
+            // Borrar anterior si existe (opcional, buena práctica)
+            // if ($user->avatar_url) Storage::disk('public')->delete($user->avatar_url);
+            
+            $path = $request->file('avatar')->store('avatars', 'public');
+            $user->avatar_url = $path;
+        }
+
+        $user->save();
+
+        return response()->json(['message' => 'Profile updated successfully', 'user' => $user]);
+    });
+
+    // CAMBIAR CONTRASEÑA
+    Route::post('/user/change-password', function (Illuminate\Http\Request $request) {
+        $request->validate([
+            'current_password' => 'required|current_password',
+            'password' => 'required|confirmed|min:8',
+        ]);
+
+        $request->user()->update([
+            'password' => Illuminate\Support\Facades\Hash::make($request->password),
+        ]);
+
+        return response()->json(['message' => 'Password updated']);
+    });
+
+    // REPORTAR INCIDENTE
+    Route::post('/incidents', function (Illuminate\Http\Request $request) {
+        // Validación básica
+        $request->validate([
+            'race_id' => 'required|exists:races,id',
+            'accused_driver_id' => 'required|exists:users,id',
+            'lap' => 'required|integer',
+            'description' => 'required|string',
+            'video_url' => 'nullable|url'
+        ]);
+
+        // Crear reporte (Asumiendo que tienes un modelo IncidentReport)
+        // Si no tienes el modelo, crea la tabla primero.
+        // \App\Models\IncidentReport::create([
+        //     'reporter_id' => $request->user()->id,
+        //     'race_id' => $request->race_id,
+        //     'accused_id' => $request->accused_driver_id,
+        //     'lap' => $request->lap,
+        //     'description' => $request->description,
+        //     'video_url' => $request->video_url,
+        //     'status' => 'pending'
+        // ]);
+
+        return response()->json(['message' => 'Report submitted successfully']);
+    });
 });

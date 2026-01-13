@@ -56,7 +56,8 @@ public class MainActivity extends AppCompatActivity {
 
                 if (myId != -1) {
                     // Cargamos el detalle del piloto con NUESTRO ID
-                    loadFragment(com.example.wtcspaddock.ui.drivers.DriverDetailFragment.newInstance(myId));
+                    loadFragment(new com.example.wtcspaddock.ui.profile.MyDashboardFragment());
+                    return true;
                 } else {
                     // Por seguridad, si no hay ID (login antiguo), mandamos al login
                     startActivity(new Intent(this, LoginActivity.class));

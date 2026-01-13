@@ -31,10 +31,12 @@ public class DriverDetailResponse {
         private String teamColor;
         private String avatar;
         private String equipment; // "wheel" o "pad"
+        private String bio;
 
         public String getName() { return name; }
         public String getNationality() { return nationality; }
         public String getTeam() { return team; }
+        public String getBio() { return bio; }
 
         public String getTeamColor() {
             // Fix para colores cortos tipo #666 -> #666666
