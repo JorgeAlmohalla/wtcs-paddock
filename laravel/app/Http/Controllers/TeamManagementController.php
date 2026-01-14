@@ -34,6 +34,8 @@ class TeamManagementController extends Controller
             'car_model' => 'required|string|max:255',
             'primary_color' => 'required|string|size:7',
             'car_image' => 'nullable|image|max:5120', // Max 5MB
+            'bio' => 'nullable|string|max:500',
+            'team_logo' => 'nullable|image|max:2048',
             'tech_chassis' => 'nullable|string|max:100',
             'tech_engine' => 'nullable|string|max:100',
             'tech_power' => 'nullable|string|max:50',
@@ -50,6 +52,12 @@ class TeamManagementController extends Controller
             
             $path = $request->file('car_image')->store('team-cars', 'public');
             $data['car_image_url'] = $path;
+        }
+
+        // SUBIDA LOGO
+        if ($request->hasFile('team_logo')) {
+            $path = $request->file('team_logo')->store('team-logos', 'public');
+            $data['logo_url'] = $path;
         }
 
         $user->team->update($data);

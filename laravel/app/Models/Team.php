@@ -17,6 +17,7 @@ class Team extends Model
         'type',
         'car_brand',
         'logo_url',
+        'bio',
         'primary_color',
         'car_model',
         'car_image_url',
@@ -31,5 +32,10 @@ class Team extends Model
     public function drivers(): HasMany
     {
         return $this->hasMany(User::class);
+    }
+
+    public function raceResults()
+    {
+        return $this->hasMany(RaceResult::class);
     }
 }
