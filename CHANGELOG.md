@@ -5,6 +5,41 @@ All notable changes to the **WTCS Paddock** project will be documented in this f
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [v4.4.0-android-beta] - 13-01-2026
+
+### 📰 Added (News Module)
+- **News Feed:** Implemented `NewsFragment` displaying a scrollable list of articles with large cover images, titles, and dates.
+- **Article Reader:** Created `NewsDetailFragment` to render full article content (supporting HTML text) and high-resolution header images.
+- **Home Integration:** Added a "Latest News" card to the Home Dashboard that deep-links directly to the most recent article.
+
+### 👤 Added (User Management & Private Dashboard)
+- **Unified MyDashboard:** Created a hybrid view (`MyDashboardFragment`) combining the public analytics (Charts, History) with private management controls.
+- **Profile Editing:** Implemented `EditProfileFragment` allowing users to update their:
+    - Personal Info (Name, Email, Nationality).
+    - SimRacing Data (Steam ID, Race Number, Equipment).
+    - Driver Bio (Multi-line text).
+- **Multipart API Support:** Configured Retrofit to handle `Multipart/Form-Data` for profile updates (preparing for future avatar uploads).
+
+### 🏠 Changed (Home & Navigation)
+- **Smart Loading State:** Implemented a semaphore-based loading logic (`apiCallsPending`) in the Home Dashboard to wait for all parallel requests (Race, Leader, News) before revealing the UI.
+- **Navigation Flow:** Standardized fragment transactions using `.addToBackStack(null)` to ensure the Android "Back" button navigates history instead of exiting the app.
+- **Login UX:** Implemented `OnBackPressedDispatcher` in the Login screen to prevent users from returning to the app after logging out.
+
+### 📊 Visuals & Charts Refinement
+- **Chart Cleanup:** Removed grid lines, right-axis labels, and touch highlights from `MPAndroidChart` for a cleaner, minimal look.
+- **Data Padding:** Adjusted Y-Axis scaling (`setSpaceBottom`, `setSpaceTop`) to prevent data points (like P1 or P20) from being cut off at the chart edges.
+- **Stat Cards V2:** Redesigned statistics cards to support dynamic background colors (Red for Points) and text colors (Purple for Poles), matching the web design.
+
+### 🛠️ Backend & Bug Fixes
+- **Endpoint `/user/update-profile`:** Created a new secure endpoint to handle profile form submissions.
+- **Endpoint `/teams/{id}`:** Fixed "Hardcoded Specs" issue; the API now dynamically fetches Chassis, Engine, Power, and Layout from the database.
+- **Role Detection Logic:** Rewrote the PHP logic to correctly identify "Team Principal" roles by parsing JSON columns and checking contract types flexibly.
+- **Data Integrity:** Fixed `NullPointerException` issues in adapters by adding robust null-checks for optional API fields (Bio, Car Image).
+
+### Fixed (UI/UX)
+- **News Card Interaction:** Refactored the "Latest News" card on the Homepage to support dual-link behavior (Main area -> Article, Footer -> News Archive) using z-index layering.
+- **Visual Visibility:** Fixed readability issues on the News card by removing excessive overlay opacity and applying a solid background to the card footer.
+
 ## [v4.3.0-android-beta] - 12-01-2026
 
 ### 👤 Added (Driver Profile & Analytics)

@@ -95,39 +95,52 @@
                 @endif
             </a>
 
-            <!-- TARJETA 3: LATEST NEWS -->
-            <a href="{{ $latestPost ? route('post.show', $latestPost) : route('news.index') }}" 
-               class="bg-gray-800 p-6 rounded-lg shadow-md border border-gray-700 hover:border-red-500 hover:shadow-red-900/20 transition duration-300 relative overflow-hidden group block flex flex-col h-full">
+<!-- TARJETA 3: LATEST NEWS (VERSIÓN LIMPIA) -->
+            <div class="bg-gray-800 p-0 rounded-lg shadow-md border border-gray-700 hover:border-red-500 hover:shadow-red-900/20 transition duration-300 relative overflow-hidden group flex flex-col h-full">
                
-               <h3 class="text-xl font-bold text-red-500 mb-4 uppercase tracking-widest relative z-10 group-hover:text-red-400 text-center">Latest News</h3>
-               
-               @if($latestPost)
-                    <div class="relative z-10 flex flex-col flex-grow justify-center items-center text-center">
-                        <p class="text-xl md:text-2xl text-white font-bold leading-tight mb-2 group-hover:underline decoration-red-500 underline-offset-4 decoration-2">{{ $latestPost->title }}</p>
-                        <p class="text-xs text-gray-400 mb-6 font-mono uppercase">{{ $latestPost->published_at->format('M d, Y') }}</p>
-                        
-                        <span class="text-sm text-red-400 hover:text-white transition cursor-pointer font-bold">
-                            Read Article &rarr;
-                        </span>
-                    </div>
-
-                    <!-- Imagen de fondo -->
-                    @if($latestPost->image_url)
-                        <div class="absolute inset-0 opacity-20 bg-cover bg-center group-hover:scale-105 transition duration-700"
-                             style="background-image: url('{{ asset('storage/' . $latestPost->image_url) }}');">
+               <!-- ENLACE PRINCIPAL -->
+               <a href="{{ $latestPost ? route('post.show', $latestPost) : '#' }}" class="flex-grow relative flex flex-col p-6 z-10">
+                   
+                   <h3 class="text-xl font-bold text-red-500 mb-4 uppercase tracking-widest text-center relative z-20">Latest News</h3>
+                   
+                   @if($latestPost)
+                        <div class="flex flex-col flex-grow justify-center items-center text-center relative z-20">
+                            <!-- Título blanco puro -->
+                            <p class="text-xl md:text-2xl text-white font-bold leading-tight mb-3 group-hover:text-red-100 transition">
+                                {{ $latestPost->title }}
+                            </p>
+                            
+                            <p class="text-xs text-gray-400 mb-6 font-mono uppercase">
+                                {{ $latestPost->published_at->format('M d, Y') }}
+                            </p>
+                            
+                            <span class="text-sm text-red-400 font-bold border-b border-red-500/50 pb-0.5 group-hover:text-white transition">
+                                Read Article &rarr;
+                            </span>
                         </div>
-                        <div class="absolute inset-0 bg-gradient-to-t from-gray-900 via-gray-900/50 to-transparent"></div>
-                    @endif
-               @else
-                    <div class="flex flex-col items-center justify-center flex-grow relative z-10">
-                        <p class="text-gray-500 italic">No news published yet.</p>
-                    </div>
-               @endif
 
-               <div class="mt-auto pt-4 text-center relative z-10 border-t border-gray-700 w-full">
-                    <span class="text-xs text-gray-500 uppercase tracking-widest group-hover:text-white transition">View All News</span>
+                        <!-- Imagen de fondo (Muy oscura para no molestar) -->
+                        @if($latestPost->image_url)
+                            <div class="absolute inset-0 opacity-100 bg-cover bg-center group-hover:scale-105 transition duration-700 z-0"
+                                 style="background-image: url('{{ asset('storage/' . $latestPost->image_url) }}');">
+                            </div>
+                            <!-- Degradado suave -->
+                            <div class="absolute inset-0 bg-gradient-to-t from-gray-900 via-gray-900/80 to-transparent z-0"></div>
+                        @endif
+                   @else
+                        <div class="flex flex-col items-center justify-center flex-grow text-center">
+                            <p class="text-gray-500 italic">No news published yet.</p>
+                        </div>
+                   @endif
+               </a>
+
+               <!-- FOOTER SEPARADO (Fondo sólido) -->
+               <div class="bg-gray-900 border-t border-gray-700 p-3 text-center relative z-30">
+                    <a href="{{ route('news.index') }}" class="text-xs text-gray-400 hover:text-white hover:underline transition font-bold tracking-widest uppercase">
+                        View All News
+                    </a>
                </div>
-            </a>
+            </div>
 
         </div>
 
