@@ -3,20 +3,30 @@
 @section('content')
 <div class="max-w-7xl mx-auto py-8 px-4">
     
-    <div class="text-center mb-12">
-        <h1 class="text-4xl md:text-5xl font-black text-white uppercase tracking-tighter">Driver Lineup</h1>
-        <p class="text-gray-400 mt-2 font-mono text-sm uppercase tracking-widest">{{ $drivers->count() }} Active Drivers</p>
+    <div class="text-center mb-8">
+        <h1 class="text-4xl md:text-5xl font-black text-white uppercase tracking-tighter mb-4">Driver Lineup</h1>
+        
+        <!-- BUSCADOR -->
+        <div class="max-w-md mx-auto relative">
+            <form method="GET" action="{{ route('drivers') }}">
+                <input type="text" name="search" value="{{ request('search') }}" 
+                       placeholder="Search driver by name..." 
+                       class="w-full bg-gray-800 text-white border border-gray-600 rounded-full py-3 px-6 pl-12 focus:ring-2 focus:ring-red-500 focus:border-transparent outline-none shadow-lg transition duration-200 placeholder-gray-500">
+                <svg class="w-5 h-5 text-gray-500 absolute left-4 top-3.5 pointer-events-none" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path></svg>
+            </form>
+        </div>
+
+        <p class="text-gray-400 mt-4 font-mono text-sm uppercase tracking-widest">{{ $drivers->count() }} Drivers Found</p>
     </div>
 
+    <!-- GRID DE PILOTOS -->
     <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
         @foreach($drivers as $driver)
-            <!-- TARJETA CLICABLE -->
             <a href="{{ route('driver.show', $driver) }}" 
                class="block bg-gray-800 rounded-xl overflow-hidden shadow-lg border-t-4 transition transform hover:-translate-y-1 hover:shadow-2xl group border-gray-700 hover:border-t-4"
                style="border-top-color: {{ $driver->team->primary_color ?? '#6b7280' }}">
                 
                 <div class="p-6 flex items-center space-x-4">
-                    <!-- Avatar (Foto o Inicial) -->
                     <div class="flex-shrink-0">
                         @if($driver->avatar_url)
                             <img src="{{ asset('storage/' . $driver->avatar_url) }}" 
@@ -29,7 +39,6 @@
                     </div>
 
                     <div class="min-w-0">
-                        <!-- Nombre y Bandera -->
                         <h2 class="text-xl font-bold text-white flex items-center gap-2 group-hover:text-red-400 transition truncate">
                             {{ $driver->name }}
                             @if($driver->nationality)
@@ -37,12 +46,10 @@
                             @endif
                         </h2>
                         
-                        <!-- Equipo -->
                         <p class="text-sm font-semibold mt-1 truncate" style="color: {{ $driver->team->primary_color ?? '#9ca3af' }}">
                             {{ $driver->team->name ?? 'Free Agent' }}
                         </p>
 
-                        <!-- Etiquetas Rol -->
                         <div class="mt-2 flex gap-2">
                              @if($driver->contract_type === 'reserve')
                                 <span class="text-[10px] bg-gray-700 text-gray-300 px-2 py-0.5 rounded border border-gray-600 uppercase font-bold">Res</span>
@@ -54,7 +61,6 @@
                     </div>
                 </div>
                 
-                <!-- Barra inferior -->
                 <div class="bg-gray-900/50 px-6 py-3 flex justify-between items-center text-xs text-gray-500 border-t border-gray-700 group-hover:bg-gray-900 transition">
                     <span class="uppercase tracking-wider font-bold">{{ $driver->team ? ($driver->team->type === 'works' ? 'Works Driver' : 'Privateer') : 'Unsigned' }}</span>
                     @if($driver->driver_number)
