@@ -45,6 +45,11 @@ Route::get('/team/{team}', [PublicTeamController::class, 'show'])->name('team.sh
 Route::get('/standings/pdf', [PdfController::class, 'downloadStandings'])->name('standings.pdf');
 Route::get('/report/{report}', [ReportController::class, 'show'])->name('report.show');
 
+
+Route::get('/legal/{page}', function ($page) {
+    return view('legal.generic', ['title' => ucfirst(str_replace('-', ' ', $page))]);
+})->name('legal.show');
+
 //Fichar / Despedir piloto
 Route::post('/my-team/add', [TeamManagementController::class, 'addDriver'])->name('team.addDriver');
 Route::delete('/my-team/remove/{driver}', [TeamManagementController::class, 'removeDriver'])->name('team.removeDriver');
