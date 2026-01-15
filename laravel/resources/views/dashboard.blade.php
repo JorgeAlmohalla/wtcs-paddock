@@ -288,17 +288,56 @@
                 <thead class="bg-gray-900/50 text-xs uppercase font-bold text-gray-500">
                     <tr><th class="px-6 py-3">Status</th><th class="px-6 py-3">Race</th><th class="px-6 py-3">Role</th><th class="px-6 py-3">Involved</th><th class="px-6 py-3">Decision</th></tr>
                 </thead>
-                <tbody class="divide-y divide-gray-700">
+<tbody class="divide-y divide-gray-700">
                     @forelse($myReports as $report)
-                        <tr class="hover:bg-gray-700/30">
-                            <td class="px-6 py-4"><span class="px-2 py-1 rounded text-xs font-bold text-white uppercase {{ match($report->status) { 'pending' => 'bg-gray-600', 'investigating' => 'bg-yellow-600', 'resolved' => 'bg-red-600', 'dismissed' => 'bg-green-600' } }}">{{ $report->status }}</span></td>
-                            <td class="px-6 py-4 font-bold text-white">{{ $report->race->track->name }}</td>
-                            <td class="px-6 py-4">{{ $report->reporter_id === Auth::id() ? 'You Reported' : 'Reported You' }}</td>
-                            <td class="px-6 py-4">{{ $report->reporter_id === Auth::id() ? $report->reported->name : $report->reporter->name }}</td>
-                            <td class="px-6 py-4">{{ $report->penalty_applied ?? '-' }}</td>
+                        <!-- FILA CLICABLE -->
+                        <tr class="hover:bg-gray-700/50 transition cursor-pointer group" 
+                            onclick="window.location='{{ route('report.show', $report) }}'">
+                            
+                            <!-- Status -->
+                            <td class="px-6 py-4">
+                                @php
+                                    $color = match($report->status) {
+                                        'pending' => 'bg-gray-600',
+                                        'investigating' => 'bg-yellow-600',
+                                        'resolved' => 'bg-red-600',
+                                        'dismissed' => 'bg-green-600',
+                                    };
+                                @endphp
+                                <span class="px-2 py-1 rounded text-xs font-bold text-white uppercase {{ $color }}">{{ $report->status }}</span>
+                            </td>
+
+                            <!-- Race -->
+                            <td class="px-6 py-4 font-bold text-white group-hover:text-red-400 transition">{{ $report->race->track->name }}</td>
+
+                            <!-- Role -->
+                            <td class="px-6 py-4">
+                                @if($report->reporter_id === Auth::id()) 
+                                    <span class="text-blue-400 font-bold">You Reported</span> 
+                                @else 
+                                    <span class="text-red-400 font-bold">Reported You</span> 
+                                @endif
+                            </td>
+
+                            <!-- Involved -->
+                            <td class="px-6 py-4 text-gray-300">
+                                {{ $report->reporter_id === Auth::id() ? $report->reported->name : $report->reporter->name }}
+                            </td>
+
+                            <!-- Decision -->
+                            <td class="px-6 py-4 font-mono text-white">
+                                {{ $report->penalty_applied ?? '-' }}
+                            </td>
+
+                            <!-- Flecha -->
+                            <td class="px-6 py-4 text-right">
+                                <svg class="w-5 h-5 text-gray-600 group-hover:text-white transition transform group-hover:translate-x-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path></svg>
+                            </td>
                         </tr>
                     @empty
-                        <tr><td colspan="5" class="px-6 py-8 text-center text-gray-500 italic">Clean record.</td></tr>
+                        <tr>
+                            <td colspan="6" class="px-6 py-8 text-center text-gray-500 italic">Clean record.</td>
+                        </tr>
                     @endforelse
                 </tbody>
             </table>

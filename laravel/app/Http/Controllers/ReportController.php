@@ -45,4 +45,15 @@ class ReportController extends Controller
 
         return redirect()->route('dashboard')->with('status', 'Report submitted successfully.');
     }
+
+    public function show(IncidentReport $report)
+    {
+        // Seguridad: Solo el reportador, el reportado o un Admin pueden ver esto
+        $user = Auth::user();
+        if ($report->reporter_id !== $user->id && $report->reported_id !== $user->id && !$user->hasRole('admin') && !$user->hasRole('steward')) {
+            abort(403);
+        }
+
+        return view('reports.show', compact('report'));
+    }
 }

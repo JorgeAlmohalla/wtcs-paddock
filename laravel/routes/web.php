@@ -43,6 +43,7 @@ Route::patch('/my-team', [TeamManagementController::class, 'update'])->name('tea
 Route::get('/driver/{user}', [PublicProfileController::class, 'show'])->name('driver.show');
 Route::get('/team/{team}', [PublicTeamController::class, 'show'])->name('team.show');
 Route::get('/standings/pdf', [PdfController::class, 'downloadStandings'])->name('standings.pdf');
+Route::get('/report/{report}', [ReportController::class, 'show'])->name('report.show');
 
 //Fichar / Despedir piloto
 Route::post('/my-team/add', [TeamManagementController::class, 'addDriver'])->name('team.addDriver');
