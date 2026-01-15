@@ -29,16 +29,18 @@ public class TeamDetailResponse {
     public String getLogo() {
         if (logo == null) return null;
 
-        String url = logo;
-
-        // Parche para emulador Android: Cambiar localhost o 127.0.0.1 por 10.0.2.2
-        if (url.contains("127.0.0.1")) {
-            url = url.replace("127.0.0.1", "10.0.2.2");
-        } else if (url.contains("localhost")) {
-            url = url.replace("localhost", "10.0.2.2");
+        // 1. Si viene con localhost o 127.0.0.1, lo cambiamos a la IP del emulador
+        if (logo.contains("127.0.0.1")) {
+            return logo.replace("127.0.0.1", "10.0.2.2");
+        } else if (logo.contains("localhost")) {
+            return logo.replace("localhost", "10.0.2.2");
         }
 
-        return url;
+        // Si estás usando móvil físico con IP local (ej: 192.168.1.35),
+        // asegúrate de que Laravel esté enviando esa IP o haz el replace aquí también:
+        // if (logo.contains("127.0.0.1")) return logo.replace("127.0.0.1", "192.168.1.35");
+
+        return logo;
     }
 
     public String getColor() {
@@ -51,16 +53,11 @@ public class TeamDetailResponse {
 
     public String getLiveryImage() {
         if (liveryImage == null) return null;
+        // Misma lógica
+        if (liveryImage.contains("127.0.0.1")) return liveryImage.replace("127.0.0.1", "10.0.2.2");
+        if (liveryImage.contains("localhost")) return liveryImage.replace("localhost", "10.0.2.2");
 
-        String url = liveryImage;
-
-        if (url.contains("127.0.0.1")) {
-            url = url.replace("127.0.0.1", "10.0.2.2");
-        } else if (url.contains("localhost")) {
-            url = url.replace("localhost", "10.0.2.2");
-        }
-
-        return url;
+        return liveryImage;
     }
 
     public boolean isPrivateer() { return "privateer".equalsIgnoreCase(type); }

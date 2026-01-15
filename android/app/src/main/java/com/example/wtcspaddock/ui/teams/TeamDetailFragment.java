@@ -13,10 +13,12 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+
 import com.bumptech.glide.Glide;
 import com.example.wtcspaddock.R;
 import com.example.wtcspaddock.api.RetrofitClient;
 import com.example.wtcspaddock.models.TeamDetailResponse;
+import com.bumptech.glide.load.resource.bitmap.RoundedCorners;
 
 import com.bumptech.glide.load.model.GlideUrl;
 import com.bumptech.glide.load.model.LazyHeaders;
@@ -99,19 +101,24 @@ public class TeamDetailFragment extends Fragment {
         setText(v, R.id.tvSpecLayout, team.getSpecs().layout);
         setText(v, R.id.tvSpecGearbox, team.getSpecs().gearbox);
 
-        // --- LOGO (NUEVO) ---
+// --- LOGO CON PROTECCIÓN ANTIFALLOS ---
         ImageView imgLogo = v.findViewById(R.id.imgTeamDetailLogo);
-        String urlString = team.getLogo();
+        String logoUrl = team.getLogo();
 
-        if (urlString != null) {
-            // 1. TRUCO DE EXPERTO: Crear una GlideUrl con cabeceras personalizadas
-            GlideUrl urlWithHeaders = new GlideUrl(urlString, new LazyHeaders.Builder()
-                    .addHeader("Connection", "close") // <--- ESTO SOLUCIONA EL ERROR
-                    .build());
+        if (logoUrl != null) {
+            // Usamos GlideUrl con cabeceras para evitar cortes de conexión en local
+            com.bumptech.glide.load.model.GlideUrl urlWithHeaders = new com.bumptech.glide.load.model.GlideUrl(
+                    logoUrl,
+                    new com.bumptech.glide.load.model.LazyHeaders.Builder()
+                            .addHeader("Connection", "close")
+                            .build()
+            );
 
             Glide.with(this)
-                    .load(urlWithHeaders) // Usamos el objeto urlWithHeaders en vez del string directo
-                    .error(android.R.drawable.ic_delete)
+                    .load(urlWithHeaders)
+                    .transform(new RoundedCorners(48))
+                    .placeholder(R.drawable.circle_bg_gray) // Mientras carga
+                    .error(android.R.drawable.ic_delete)    // Si falla (saldrá una X)
                     .into(imgLogo);
 
             imgLogo.setVisibility(View.VISIBLE);
