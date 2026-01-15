@@ -15,13 +15,18 @@ class PdfController extends Controller
     // MÉTODO 1: Descargar el PDF de la Ronda completa (El botón de arriba)
     public function downloadRound($roundNumber)
     {
+                // 1. Obtener ID de la Temporada Activa (o la seleccionada en sesión)
+        $seasonId = app()->bound('currentSeason') ? app('currentSeason')->id : \App\Models\Season::where('is_active', true)->value('id');
+
+        // 2. Buscar las sesiones DE ESA TEMPORADA
         $sessions = Race::where('round_number', $roundNumber)
+            ->where('season_id', $seasonId) // <--- ESTO ES LO QUE FALTABA
             ->with(['track', 'results.driver', 'results.team', 'qualifyingResults.driver'])
             ->orderBy('race_date', 'asc')
             ->get();
 
         if ($sessions->isEmpty()) {
-            abort(404);
+            abort(404, "No races found for Round $roundNumber in Season $seasonId");
         }
 
         $sprintRace = $sessions->first();
