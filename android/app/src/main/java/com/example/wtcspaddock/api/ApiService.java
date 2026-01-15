@@ -14,6 +14,8 @@ import com.example.wtcspaddock.models.Team;
 import com.example.wtcspaddock.models.TeamDetailResponse;
 import com.example.wtcspaddock.models.TeamStanding;
 import com.example.wtcspaddock.models.User;
+import com.example.wtcspaddock.models.Report;
+import com.example.wtcspaddock.models.FormData;
 
 import java.util.List;
 
@@ -109,5 +111,25 @@ public interface ApiService {
             @Field("current_password") String current,
             @Field("password") String newPass,
             @Field("password_confirmation") String confirmPass
+    );
+
+    // 1. Obtener el historial de reportes del usuario
+    @GET("user/reports")
+    Call<List<Report>> getUserReports(@Header("Authorization") String token);
+
+    // 2. Obtener listas para el formulario (Carreras y Pilotos)
+    @GET("form-data")
+    Call<FormData> getFormData(@Header("Authorization") String token);
+
+    // 3. ENVIAR EL REPORTE
+    @FormUrlEncoded // <--- ¡ESTO ES LO QUE FALTABA Y PROVOCABA EL CRASH!
+    @POST("incidents")
+    Call<Void> submitReport(
+            @Header("Authorization") String token,
+            @Field("race_id") int raceId,
+            @Field("accused_driver_id") int driverId,
+            @Field("lap_corner") String lapCorner,
+            @Field("description") String description,
+            @Field("video_url") String videoUrl
     );
 }

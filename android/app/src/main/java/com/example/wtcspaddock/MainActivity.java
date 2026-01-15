@@ -209,8 +209,10 @@ public class MainActivity extends AppCompatActivity {
 
     public void navigateToNewsDetail(int newsId) {
         loadFragment(com.example.wtcspaddock.ui.news.NewsDetailFragment.newInstance(newsId));
-        // Opcional: addToBackStack(null) si usas la lógica de reemplazar fragmentos con pila
-        // (Recomendado si quieres volver a la lista)
+    }
+
+    public void navigateToReportDetail(com.example.wtcspaddock.models.Report report) {
+        loadFragment(com.example.wtcspaddock.ui.profile.ReportDetailFragment.newInstance(report));
     }
 
 

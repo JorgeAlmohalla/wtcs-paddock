@@ -10,6 +10,8 @@ public class TeamDetailResponse {
     @SerializedName("car_model") private String carModel;
     private String type; // works/privateer
     @SerializedName("livery_image") private String liveryImage;
+    private String bio;
+    private String logo;
 
     private TeamStats stats;
     private TeamSpecs specs;
@@ -22,6 +24,22 @@ public class TeamDetailResponse {
     public TeamStats getStats() { return stats; }
     public TeamSpecs getSpecs() { return specs; }
     public List<RosterMember> getRoster() { return roster; }
+    public String getBio() { return bio; }
+
+    public String getLogo() {
+        if (logo == null) return null;
+
+        String url = logo;
+
+        // Parche para emulador Android: Cambiar localhost o 127.0.0.1 por 10.0.2.2
+        if (url.contains("127.0.0.1")) {
+            url = url.replace("127.0.0.1", "10.0.2.2");
+        } else if (url.contains("localhost")) {
+            url = url.replace("localhost", "10.0.2.2");
+        }
+
+        return url;
+    }
 
     public String getColor() {
         if (color != null && color.length() == 4) { // Fix #666
@@ -32,8 +50,17 @@ public class TeamDetailResponse {
     }
 
     public String getLiveryImage() {
-        if (liveryImage != null && liveryImage.contains("127.0.0.1")) return liveryImage.replace("127.0.0.1", "10.0.2.2");
-        return liveryImage;
+        if (liveryImage == null) return null;
+
+        String url = liveryImage;
+
+        if (url.contains("127.0.0.1")) {
+            url = url.replace("127.0.0.1", "10.0.2.2");
+        } else if (url.contains("localhost")) {
+            url = url.replace("localhost", "10.0.2.2");
+        }
+
+        return url;
     }
 
     public boolean isPrivateer() { return "privateer".equalsIgnoreCase(type); }

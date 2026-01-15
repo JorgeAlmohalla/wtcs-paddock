@@ -25,6 +25,7 @@ import com.example.wtcspaddock.R;
 import com.example.wtcspaddock.api.RetrofitClient;
 import com.example.wtcspaddock.models.DriverDetailResponse;
 import com.example.wtcspaddock.models.DriverHistory;
+import com.example.wtcspaddock.models.Report;
 import com.example.wtcspaddock.ui.drivers.HistoryAdapter;
 import com.example.wtcspaddock.utils.SessionManager;
 import com.github.mikephil.charting.charts.LineChart;
@@ -93,14 +94,18 @@ public class MyDashboardFragment extends Fragment {
                     .commit();
         });
 
-        view.findViewById(R.id.btnReport).setOnClickListener(v ->
-                Toast.makeText(getContext(), "Report system ready", Toast.LENGTH_SHORT).show()
-        );
+        view.findViewById(R.id.btnReport).setOnClickListener(v -> {
+            getParentFragmentManager().beginTransaction()
+                    .replace(R.id.fragment_container, new ReportIncidentFragment())
+                    .addToBackStack(null)
+                    .commit();
+        });
     }
 
     private void loadMyData(int myId) {
         progressBar.setVisibility(View.VISIBLE);
         contentLayout.setVisibility(View.INVISIBLE);
+        loadReports();
 
         // Usamos el MISMO endpoint que el perfil público, ya que trae stats y history
         RetrofitClient.getApiService().getDriverDetails(myId).enqueue(new Callback<DriverDetailResponse>() {
@@ -300,5 +305,22 @@ public class MyDashboardFragment extends Fragment {
         // Cargar datos cada vez que la pantalla se muestra (incluso al volver de editar)
         SessionManager session = new SessionManager(requireContext());
         loadMyData(session.getUserId());
+    }
+
+    private void loadReports() {
+        SessionManager session = new SessionManager(requireContext());
+        String token = "Bearer " + session.getToken();
+
+        RetrofitClient.getApiService().getUserReports(token).enqueue(new Callback<List<Report>>() {
+            @Override
+            public void onResponse(Call<List<Report>> call, Response<List<Report>> response) {
+                if (response.isSuccessful() && response.body() != null) {
+                    RecyclerView rv = getView().findViewById(R.id.recyclerReports);
+                    rv.setLayoutManager(new LinearLayoutManager(getContext()));
+                    rv.setAdapter(new ReportsAdapter(response.body()));
+                }
+            }
+            @Override public void onFailure(Call<List<Report>> call, Throwable t) {}
+        });
     }
 }

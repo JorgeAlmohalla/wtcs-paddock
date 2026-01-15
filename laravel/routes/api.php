@@ -47,19 +47,24 @@ Route::post('/login', function (Request $request) {
     ]);
 });
 
-// 2. CALENDARIO
+// 2. CALENDARIO (SIN Caché para desarrollo)
 Route::get('/calendar', function () {
-    return Cache::remember('api_calendar', 60 * 60, function () {
-        $seasonId = Season::where('is_active', true)->value('id');
+    // Quitamos el Cache::remember y ejecutamos directo
     
-        $races = Race::where('season_id', $seasonId)
-            ->with(['track', 'results.driver'])
-            ->orderBy('round_number')
-            ->orderBy('race_date')
-            ->get();
+    $seasonId = \App\Models\Season::where('is_active', true)->value('id');
+    
+    // Si no hay temporada activa, cogemos la última para que no de error
+    if (!$seasonId) {
+        $seasonId = \App\Models\Season::max('id');
+    }
 
-        return RaceResource::collection($races);
-    });
+    $races = \App\Models\Race::where('season_id', $seasonId)
+        ->with(['track', 'results.driver'])
+        ->orderBy('round_number')
+        ->orderBy('race_date')
+        ->get();
+
+    return \App\Http\Resources\RaceResource::collection($races);
 });
 
 // 3. STANDINGS: DRIVERS
@@ -195,6 +200,8 @@ Route::get('/rounds/{round}', function ($roundNumber) {
                 'points' => (int)$r->points,
                 'fastest_lap' => (bool)$r->fastest_lap,
                 'car' => $r->car_name ?? $r->team->car_model,
+                'team_type' => $r->team->type, // Para saber si es 'privateer'
+                'penalty' => $r->penalty_seconds > 0 ? "+{$r->penalty_seconds}s pen" : null, // Ajusta 'penalty_seconds' al nombre real de tu columna
             ])
         ];
     };
@@ -207,6 +214,7 @@ Route::get('/rounds/{round}', function ($roundNumber) {
         'team_color' => $q->team->primary_color ?? '#666',
         'time' => $q->best_time,
         'tyre' => ucfirst($q->tyre_compound ?? '-'),
+        'team_type' => $q->team->type,
     ]);
 
     return response()->json([
@@ -222,22 +230,44 @@ Route::get('/rounds/{round}', function ($roundNumber) {
     ]);
 });
 
-// 8. DETALLE DE PILOTO (Gráficos)
-Route::get('/drivers/{id}', function ($id) {
-    $seasonId = Season::where('is_active', true)->value('id');
-    $user = User::with('team')->findOrFail($id);
+    // 8. DETALLE DE PILOTO (Gráficos + Historial CORREGIDO)
+    Route::get('/drivers/{id}', function ($id) {
+    $seasonId = \App\Models\Season::where('is_active', true)->value('id');
+    $user = \App\Models\User::with('team')->findOrFail($id);
 
     $stats = [
-        'starts' => $user->raceResults()->whereHas('race', fn($q) => $q->where('season_id', $seasonId))->count(),
-        'wins' => $user->raceResults()->whereHas('race', fn($q) => $q->where('season_id', $seasonId))->where('position', 1)->count(),
-        'podiums' => $user->raceResults()->whereHas('race', fn($q) => $q->where('season_id', $seasonId))->where('position', '<=', 3)->count(),
+        // Starts: Carreras donde ha participado
+        'starts' => $user->raceResults()
+            ->whereHas('race', fn($q) => $q->where('season_id', $seasonId))
+            ->count(),
+
+        // Wins: Posición exacta 1
+        'wins' => $user->raceResults()
+            ->whereHas('race', fn($q) => $q->where('season_id', $seasonId))
+            ->where('position', 1)
+            ->count(),
+
+        // PODIOS: Posición menor o igual a 3 (CORREGIDO)
+        'podiums' => $user->raceResults()
+            ->whereHas('race', fn($q) => $q->where('season_id', $seasonId))
+            ->where('position', '<=', 3) // <--- ESTO ES LA CLAVE
+            ->count(),
+
+        // Poles: Posición 1 en Clasificación
         'poles' => \App\Models\QualifyingResult::where('user_id', $id)
             ->whereHas('race', fn($q) => $q->where('season_id', $seasonId))
-            ->where('position', 1)->count(),
-        'points' => (int) $user->raceResults()->whereHas('race', fn($q) => $q->where('season_id', $seasonId))->sum('points'),
+            ->where('position', 1)
+            ->count(),
+
+        // Puntos totales
+        'points' => (int) $user->raceResults()
+            ->whereHas('race', fn($q) => $q->where('season_id', $seasonId))
+            ->sum('points'),
     ];
 
-    $qualyResults = QualifyingResult::where('user_id', $id)
+    // Historial para gráficas
+    // CORRECCIÓN: Usamos 'user_id' en lugar de 'driver_id'
+    $qualyResults = \App\Models\QualifyingResult::where('user_id', $id)
         ->with('race')
         ->whereHas('race', fn($q) => $q->where('season_id', $seasonId))
         ->get()
@@ -245,8 +275,12 @@ Route::get('/drivers/{id}', function ($id) {
             return [$item->race->round_number => $item];
         });
 
-    $races = Race::where('season_id', $seasonId)
-        ->with(['track', 'results' => fn($q) => $q->where('user_id', $id)])
+    $races = \App\Models\Race::where('season_id', $seasonId)
+        ->with([
+            'track',
+            // CORRECCIÓN: Usamos 'user_id' aquí también
+            'results' => fn($q) => $q->where('user_id', $id) 
+        ])
         ->orderBy('round_number')
         ->orderBy('id')
         ->get();
@@ -268,8 +302,11 @@ Route::get('/drivers/{id}', function ($id) {
             'race_type'    => str_contains(strtolower($race->title), 'sprint') ? 'Sprint' : 'Feature',
             'race_pos'     => $raceResult ? $raceResult->position : 0,
             'qualy_pos'    => $qualyResult ? $qualyResult->position : 0,
-            'qualy_time'   => $qualyResult ? $qualyResult->best_time : '-', 
-            'qualy_tyre'   => $qualyResult ? $qualyResult->tyre_compound : '-',
+            
+            // Usamos nombres seguros por si acaso (best_time / time)
+            'qualy_time'   => $qualyResult ? ($qualyResult->best_time ?? $qualyResult->time) : '-', 
+            'qualy_tyre'   => $qualyResult ? ($qualyResult->tyre_compound ?? $qualyResult->tyre) : '-',
+            
             'points_after_round' => $runningPoints
         ];  
     }
@@ -280,10 +317,10 @@ Route::get('/drivers/{id}', function ($id) {
             'number' => $user->driver_number,
             'nationality' => $user->nationality,
             'team' => $user->team ? $user->team->name : 'Free Agent',
-            'team_color' => $user->team->primary_color ?? '#666',
+            'team_color' => $user->team->primary_color ?? '#666666',
             'avatar' => $user->avatar_url ? asset('storage/' . $user->avatar_url) : null,
             'equipment' => $user->equipment,
-            'bio' => $user->bio, 
+            'bio' => $user->bio, // Añadido para que se vea en el perfil
         ],
         'stats' => $stats,
         'history' => $history
@@ -352,6 +389,8 @@ Route::get('/teams/{id}', function ($id) {
         'type' => $team->type, 
         'livery_image' => $team->car_image_url ? asset('storage/'.$team->car_image_url) : null,
         'stats' => $stats,
+        'bio' => $team->bio, // Asegúrate de tener esta columna en la BD, o usa 'description'
+        'logo' => $team->logo_url ? asset('storage/'.$team->logo_url) : null,
         
         // --- AQUÍ ESTABA LO HARDCODED: AHORA DINÁMICO ---
         'specs' => [
@@ -517,18 +556,137 @@ Route::middleware('auth:sanctum')->group(function () {
             'video_url' => 'nullable|url'
         ]);
 
-        // Crear reporte (Asumiendo que tienes un modelo IncidentReport)
-        // Si no tienes el modelo, crea la tabla primero.
-        // \App\Models\IncidentReport::create([
-        //     'reporter_id' => $request->user()->id,
-        //     'race_id' => $request->race_id,
-        //     'accused_id' => $request->accused_driver_id,
-        //     'lap' => $request->lap,
-        //     'description' => $request->description,
-        //     'video_url' => $request->video_url,
-        //     'status' => 'pending'
-        // ]);
+ \App\Models\IncidentReport::create([
+        'reporter_id' => $request->user()->id,
+        'reported_id' => $request->accused_driver_id, // <--- CORREGIDO (reported_id)
+        'race_id' => $request->race_id,
+        'lap' => $request->lap,
+        'description' => $request->description,
+        'video_url' => $request->video_url,
+        'status' => 'pending'
+    ]);
 
         return response()->json(['message' => 'Report submitted successfully']);
+    });
+
+    // HISTORIAL DE REPORTES
+    Route::get('/user/reports', function (Illuminate\Http\Request $request) {
+        $user = $request->user();
+        // Asumiendo modelo IncidentReport
+        // Obtenemos reportes donde soy el que reporta O el acusado
+        $reports = \App\Models\IncidentReport::with(['race.track', 'accused', 'reporter'])
+            ->where('reporter_id', $user->id)
+            ->orWhere('accused_id', $user->id)
+            ->orderBy('created_at', 'desc')
+            ->get()
+            ->map(function ($r) use ($user) {
+                return [
+                    'id' => $r->id,
+                    'status' => strtoupper($r->status), // PENDING, RESOLVED
+                    'race_name' => $r->race->track->name ?? 'Unknown',
+                    'role' => ($r->reporter_id == $user->id) ? 'You Reported' : 'You were Reported',
+                    'involved_name' => ($r->reporter_id == $user->id) ? $r->accused->name : $r->reporter->name,
+                    'decision' => $r->penalty ?? 'Under Review'
+                ];
+            });
+            
+        return response()->json($reports);
+    });
+
+    // DATOS PARA EL FORMULARIO (Races y Drivers)
+    Route::get('/form-data', function () {
+        $seasonId = \App\Models\Season::where('is_active', true)->value('id');
+        
+        $races = \App\Models\Race::where('season_id', $seasonId)
+            ->with('track')
+            ->orderBy('round_number')
+            ->get()
+            ->map(fn($r) => ['id' => $r->id, 'name' => "R" . $r->round_number . " - " . $r->track->name]);
+
+        $drivers = \App\Models\User::whereJsonContains('roles', 'driver')
+            ->orderBy('name')
+            ->get()
+            ->map(fn($d) => ['id' => $d->id, 'name' => $d->name]);
+
+        return ['races' => $races, 'drivers' => $drivers];
+    });
+
+// --- GESTIÓN DE INCIDENTES Y REPORTES ---
+
+// 14. HISTORIAL DE REPORTES (CORREGIDO)
+    Route::middleware('auth:sanctum')->get('/user/reports', function (Illuminate\Http\Request $request) {
+        $user = $request->user();
+        
+        $reports = \App\Models\IncidentReport::with(['race.track', 'accused', 'reporter'])
+            ->where('reporter_id', $user->id)
+            ->orWhere('reported_id', $user->id)
+            ->orderBy('created_at', 'desc')
+            ->get()
+            ->map(function ($r) use ($user) {
+                // Seguridad con optional chaining
+                $raceName = $r->race?->track?->name ?? 'Unknown Race';
+                $accusedName = $r->accused?->name ?? 'Unknown Driver';
+                $reporterName = $r->reporter?->name ?? 'Unknown Driver';
+
+                return [
+                    'id' => $r->id,
+                    'status' => strtoupper($r->status),
+                    'race_name' => $raceName,
+                    'role' => ($r->reporter_id == $user->id) ? 'You Reported' : 'You were Reported',
+                    'involved_name' => ($r->reporter_id == $user->id) ? $accusedName : $reporterName,
+                    'steward_notes' => $r->steward_notes,
+                    
+                    // --- CORRECCIÓN AQUÍ ---
+                    'decision' => $r->penalty_applied ?? 'Under Review', 
+                    // -----------------------
+
+                    'lap' => $r->lap_corner,
+                    'description' => $r->description,
+                    'video_url' => $r->video_url,
+                    'created_at' => $r->created_at->format('d M Y')
+                ];
+            });
+            
+        return response()->json($reports);
+    });
+
+    // 15. DATOS PARA EL FORMULARIO (Se mantiene igual)
+    Route::get('/form-data', function () {
+        $seasonId = \App\Models\Season::where('is_active', true)->value('id');
+        
+        $races = \App\Models\Race::where('season_id', $seasonId)
+            ->with('track')
+            ->orderBy('round_number')
+            ->get()
+            ->map(fn($r) => ['id' => $r->id, 'name' => "R" . $r->round_number . " - " . $r->track->name]);
+
+        $drivers = \App\Models\User::whereJsonContains('roles', 'driver')
+            ->orderBy('name')
+            ->get()
+            ->map(fn($d) => ['id' => $d->id, 'name' => $d->name]);
+
+        return ['races' => $races, 'drivers' => $drivers];
+    });
+
+    // 16. ENVIAR REPORTE (Corregido para lap_corner)
+    Route::middleware('auth:sanctum')->post('/incidents', function (Illuminate\Http\Request $request) {
+        $request->validate([
+            'race_id' => 'required',
+            'accused_driver_id' => 'required',
+            'lap_corner' => 'required|string', // <--- Acepta texto
+            'description' => 'required',
+        ]);
+
+        \App\Models\IncidentReport::create([
+            'reporter_id' => $request->user()->id,
+            'reported_id' => $request->accused_driver_id,
+            'race_id' => $request->race_id,
+            'lap_corner' => $request->lap_corner, // <--- CAMBIO
+            'description' => $request->description,
+            'video_url' => $request->video_url,
+            'status' => 'pending'
+        ]);
+
+        return response()->json(['message' => 'Report sent']);
     });
 });

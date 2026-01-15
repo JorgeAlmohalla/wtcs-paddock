@@ -1,0 +1,136 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.core.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/wtcs_background"
+    android:padding="24dp">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="INCIDENT REPORT"
+            android:textColor="@color/text_secondary"
+            android:textStyle="bold"
+            android:layout_marginBottom="24dp"/>
+
+        <!-- STATUS -->
+        <TextView
+            android:id="@+id/tvDetailStatus"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="PENDING"
+            android:textColor="@color/white"
+            android:background="#FFA000"
+            android:paddingHorizontal="12dp"
+            android:paddingVertical="4dp"
+            android:textStyle="bold"
+            android:layout_marginBottom="24dp"/>
+
+        <!-- RACE & LAP -->
+        <TextView
+            android:id="@+id/tvDetailRace"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Silverstone GP"
+            android:textColor="@color/white"
+            android:textSize="20sp"
+            android:textStyle="bold"/>
+
+        <TextView
+            android:id="@+id/tvDetailLap"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Lap 4, Turn 1"
+            android:textColor="@color/wtcs_red"
+            android:layout_marginBottom="24dp"/>
+
+        <!-- DESCRIPTION -->
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="DESCRIPTION"
+            android:textColor="@color/text_secondary"
+            android:textSize="12sp"
+            android:textStyle="bold"
+            android:layout_marginBottom="8dp"/>
+
+        <TextView
+            android:id="@+id/tvDetailDescription"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="..."
+            android:textColor="@color/white"
+            android:background="@color/wtcs_surface"
+            android:padding="16dp"
+            android:layout_marginBottom="24dp"/>
+
+        <!-- VIDEO LINK -->
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="EVIDENCE"
+            android:textColor="@color/text_secondary"
+            android:textSize="12sp"
+            android:textStyle="bold"
+            android:layout_marginBottom="8dp"/>
+
+        <TextView
+            android:id="@+id/tvDetailVideo"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="http://youtube.com/..."
+            android:textColor="#64B5F6"
+            android:background="@color/wtcs_surface"
+            android:padding="16dp"
+            android:autoLink="web"
+            android:layout_marginBottom="24dp"/>
+
+        <!-- DECISION (Si existe) -->
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="STEWARD DECISION"
+            android:textColor="@color/text_secondary"
+            android:textSize="12sp"
+            android:textStyle="bold"
+            android:layout_marginBottom="8dp"/>
+
+        <TextView
+            android:id="@+id/tvDetailDecision"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Under Review"
+            android:textColor="#FFD700"
+            android:background="@color/wtcs_surface"
+            android:padding="16dp"
+            android:textStyle="bold"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20px"
+            android:text="REASON"
+            android:textColor="@color/text_secondary"
+            android:textSize="12sp"
+            android:textStyle="bold"
+            android:layout_marginBottom="8dp"/>
+
+        <TextView
+            android:id="@+id/tvDetailNotes"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Explanation..."
+            android:textColor="@color/white"
+            android:background="@color/wtcs_surface"
+            android:padding="16dp"
+            android:layout_marginTop="1dp"
+            android:textSize="14sp"
+            android:visibility="gone"/> <!-- Oculto si no hay notas -->
+
+    </LinearLayout>
+</androidx.core.widget.NestedScrollView>

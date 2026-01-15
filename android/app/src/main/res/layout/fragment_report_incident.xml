@@ -1,0 +1,142 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.core.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/wtcs_background"
+    android:padding="24dp">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="REPORT INCIDENT"
+            android:textColor="@color/white"
+            android:textSize="24sp"
+            android:textStyle="bold"
+            android:layout_gravity="center"
+            android:layout_marginBottom="32dp"/>
+
+        <!-- SELECT RACE -->
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="SELECT RACE"
+            android:textColor="@color/text_secondary"
+            android:textSize="12sp"
+            android:textStyle="bold"
+            android:layout_marginBottom="8dp"/>
+
+        <Spinner
+            android:id="@+id/spinnerRaces"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:background="@color/wtcs_surface"
+            android:layout_marginBottom="16dp"/>
+
+        <!-- DRIVER INVOLVED -->
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="DRIVER INVOLVED"
+            android:textColor="@color/text_secondary"
+            android:textSize="12sp"
+            android:textStyle="bold"
+            android:layout_marginBottom="8dp"/>
+
+        <Spinner
+            android:id="@+id/spinnerDrivers"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:background="@color/wtcs_surface"
+            android:layout_marginBottom="16dp"/>
+
+        <!-- LOCATION (LAP / CORNER) -->
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="LOCATION (LAP/CORNER)"
+            android:textColor="@color/text_secondary"
+            android:textSize="12sp"
+            android:textStyle="bold"
+            android:layout_marginBottom="8dp"/>
+
+        <EditText
+            android:id="@+id/etLap"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:background="@color/wtcs_surface"
+            android:textColor="@color/white"
+            android:padding="12dp"
+            android:inputType="textCapSentences"
+            android:hint="e.g. Lap 4, Turn 1"
+            android:textColorHint="#666"
+            android:layout_marginBottom="16dp"/>
+        <!-- inputType="text..." para permitir letras -->
+
+        <!-- DESCRIPTION -->
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="DESCRIPTION"
+            android:textColor="@color/text_secondary"
+            android:textSize="12sp"
+            android:textStyle="bold"
+            android:layout_marginBottom="8dp"/>
+
+        <EditText
+            android:id="@+id/etDescription"
+            android:layout_width="match_parent"
+            android:layout_height="120dp"
+            android:background="@color/wtcs_surface"
+            android:textColor="@color/white"
+            android:padding="12dp"
+            android:gravity="top"
+            android:hint="Describe what happened..."
+            android:textColorHint="#666"
+            android:layout_marginBottom="16dp"/>
+
+        <!-- VIDEO URL -->
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="VIDEO EVIDENCE (URL)"
+            android:textColor="@color/text_secondary"
+            android:textSize="12sp"
+            android:textStyle="bold"
+            android:layout_marginBottom="8dp"/>
+
+        <EditText
+            android:id="@+id/etVideo"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:background="@color/wtcs_surface"
+            android:textColor="@color/white"
+            android:padding="12dp"
+            android:inputType="textUri"
+            android:hint="https://youtube.com/..."
+            android:textColorHint="#666"
+            android:layout_marginBottom="32dp"/>
+
+        <!-- BUTTONS -->
+        <Button
+            android:id="@+id/btnSubmitReport"
+            android:layout_width="match_parent"
+            android:layout_height="60dp"
+            android:text="SUBMIT REPORT"
+            android:backgroundTint="#D32F2F"
+            android:textStyle="bold"/>
+
+        <Button
+            android:id="@+id/btnCancelReport"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Cancel"
+            android:backgroundTint="@android:color/transparent"
+            android:textColor="@color/text_secondary"/>
+
+    </LinearLayout>
+</androidx.core.widget.NestedScrollView>

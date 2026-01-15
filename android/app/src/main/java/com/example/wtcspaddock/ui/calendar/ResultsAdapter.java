@@ -62,6 +62,25 @@ public class ResultsAdapter extends RecyclerView.Adapter<ResultsAdapter.ViewHold
             }
         });
 
+        // 1. FONDO AZUL (Privateer)
+        if (row.isPrivateer()) {
+            // Azul oscuro con transparencia (Alpha 30)
+            int privateerColor = androidx.core.content.ContextCompat.getColor(holder.itemView.getContext(), R.color.privateer_bg);
+            holder.itemView.setBackgroundColor(privateerColor);
+        } else {
+            // Fondo por defecto (el drawable del borde)
+            holder.itemView.setBackgroundResource(R.drawable.border_bottom_dark);
+        }
+
+        // 2. PENALIZACIÓN
+        if (row.getPenalty() != null && !row.getPenalty().isEmpty()) {
+            holder.tvPenalty.setText(row.getPenalty());
+            holder.tvPenalty.setVisibility(View.VISIBLE);
+        } else {
+            holder.tvPenalty.setVisibility(View.GONE);
+        }
+
+
         // 3. Lógica según sesión (Qualy vs Carrera)
         if (sessionType.equals("qualy")) {
             // MODO QUALY: Muestra Neumático
@@ -113,7 +132,7 @@ public class ResultsAdapter extends RecyclerView.Adapter<ResultsAdapter.ViewHold
     public int getItemCount() { return results.size(); }
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
-        TextView tvPos, tvDriver, tvTeamCar, tvTime, tvTyreBadge, tvPointsBadge;
+        TextView tvPos, tvDriver, tvTeamCar, tvTime, tvTyreBadge, tvPointsBadge, tvPenalty;
         View viewTeamColor;
 
         public ViewHolder(View v) {
@@ -125,6 +144,7 @@ public class ResultsAdapter extends RecyclerView.Adapter<ResultsAdapter.ViewHold
             tvTyreBadge = v.findViewById(R.id.tvTyreBadge);
             tvPointsBadge = v.findViewById(R.id.tvPointsBadge);
             viewTeamColor = v.findViewById(R.id.viewTeamColor);
+            tvPenalty = v.findViewById(R.id.tvPenalty);
         }
     }
 }

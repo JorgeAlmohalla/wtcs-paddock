@@ -5,6 +5,44 @@ All notable changes to the **WTCS Paddock** project will be documented in this f
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [v4.4.0-android-beta] - 14-01-2026
+
+### 🏎️ Added (Teams Ecosystem)
+- **Teams List UI:** Implemented card-based team list with "Works/Privateer" badges and dynamic colored strips.
+- **Team Detail Hub:** Created a comprehensive detail view featuring:
+    - **Dynamic Specs Table:** Displays engine, power, layout, and chassis data fetched directly from the DB.
+    - **Livery Showcase:** Large car image header.
+    - **Smart Roster:** Driver list with automatic logic to highlight "Team Principals" (Gold badge) and "Reserve Drivers".
+- **Backend Integration:** Updated `/teams/{id}` endpoint to expose technical specifications and improved role detection logic.
+
+### ⚖️ Added (Stewarding System)
+- **Incident Reporting:** Full implementation of the reporting flow.
+    - **Form Interface:** Created a submission form with dynamic dropdowns for Races and Drivers.
+    - **API Integration:** Connected `POST /incidents` to store reports in the database.
+- **Report History:** Dashboard table showing the status (Pending/Resolved) of reports filed by or against the user.
+- **Report Detail View:** Deep-dive view showing full description, video evidence links, and the final Steward Decision/Penalty.
+
+### 👤 Changed (User Profile)
+- **Unified Dashboard:** Merged the "Public Profile" and "Private Dashboard" concepts.
+    - Users now see their own stats/graphs in the "Profile" tab alongside editing tools.
+- **Edit Profile:** Implemented a form to update Bio, Nationality, and Equipment via `Multipart` request (prepared for avatar upload).
+- **Backend Sync:** Updated API to expose `bio` and `reported_id` correctly to the mobile client.
+
+### 🏁 Changed (Race Center)
+- **Visual Feedback:**
+    - **Privateer Highlighting:** Rows for privateer teams now have a distinct blue background in race results.
+    - **Penalties:** Added red text indicators (e.g., "+5s pen") below race times for penalized drivers.
+- **Activity to Fragment:** Refactored `RaceDetailActivity` into `RaceDetailFragment` to maintain the bottom navigation bar visible while browsing results.
+
+### 🐛 Fixed (Technical Debt)
+- **Networking:**
+    - Fixed `java.net.ProtocolException` with large images by implementing Local IP configuration and `Connection: close` headers in Glide.
+    - Added JSON Interceptor to Retrofit to prevent HTML error responses from Laravel.
+- **Database Logic:**
+    - Fixed SQL Error `1364` by aligning Laravel Model `$fillable` fields (`reported_id`) with the database schema.
+    - Fixed `RelationNotFoundException` by aliasing `accused()` and `reported()` relationships.
+- **Data Parsing:** Updated `ResultRow` model to handle both String and Object formats for Team data to prevent Gson crashes.
+
 ## [v4.4.0-android-beta] - 13-01-2026
 
 ### 📰 Added (News Module)

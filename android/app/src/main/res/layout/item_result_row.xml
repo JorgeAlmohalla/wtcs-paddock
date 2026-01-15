@@ -85,6 +85,16 @@
             android:textSize="12sp"
             android:textStyle="bold"/>
 
+        <!-- PENALIZACIÓN (NUEVO) -->
+        <TextView
+            android:id="@+id/tvPenalty"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            tools:text="+5s pen"
+            android:textColor="#FF5555"
+            android:textSize="10sp"
+            android:visibility="gone"/> <!-- Oculto por defecto -->
+
         <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"

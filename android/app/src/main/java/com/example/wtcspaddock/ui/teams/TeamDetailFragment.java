@@ -18,6 +18,9 @@ import com.example.wtcspaddock.R;
 import com.example.wtcspaddock.api.RetrofitClient;
 import com.example.wtcspaddock.models.TeamDetailResponse;
 
+import com.bumptech.glide.load.model.GlideUrl;
+import com.bumptech.glide.load.model.LazyHeaders;
+
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -93,11 +96,36 @@ public class TeamDetailFragment extends Fragment {
         setText(v, R.id.tvSpecChassis, team.getSpecs().chassis);
         setText(v, R.id.tvSpecEngine, team.getSpecs().engine);
         setText(v, R.id.tvSpecPower, team.getSpecs().power);
-
-        // AQUÍ EL CAMBIO CLAVE: Usamos Layout, no Weight
         setText(v, R.id.tvSpecLayout, team.getSpecs().layout);
-
         setText(v, R.id.tvSpecGearbox, team.getSpecs().gearbox);
+
+        // --- LOGO (NUEVO) ---
+        ImageView imgLogo = v.findViewById(R.id.imgTeamDetailLogo);
+        String urlString = team.getLogo();
+
+        if (urlString != null) {
+            // 1. TRUCO DE EXPERTO: Crear una GlideUrl con cabeceras personalizadas
+            GlideUrl urlWithHeaders = new GlideUrl(urlString, new LazyHeaders.Builder()
+                    .addHeader("Connection", "close") // <--- ESTO SOLUCIONA EL ERROR
+                    .build());
+
+            Glide.with(this)
+                    .load(urlWithHeaders) // Usamos el objeto urlWithHeaders en vez del string directo
+                    .error(android.R.drawable.ic_delete)
+                    .into(imgLogo);
+
+            imgLogo.setVisibility(View.VISIBLE);
+        } else {
+            imgLogo.setImageResource(R.drawable.ic_menu_grid);
+        }
+
+        // --- BIO (NUEVO) ---
+        TextView tvBio = v.findViewById(R.id.tvTeamBio);
+        if (team.getBio() != null && !team.getBio().isEmpty()) {
+            tvBio.setText(team.getBio());
+        } else {
+            tvBio.setText("No biography available.");
+        }
     }
 
     // Asegúrate de tener este helper al final de la clase:
