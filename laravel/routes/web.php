@@ -47,7 +47,11 @@ Route::get('/report/{report}', [ReportController::class, 'show'])->name('report.
 
 
 Route::get('/legal/{page}', function ($page) {
-    return view('legal.generic', ['title' => ucfirst(str_replace('-', ' ', $page))]);
+    // Validar que la página existe para evitar errores
+    if (!view()->exists("legal.{$page}")) {
+        abort(404);
+    }
+    return view("legal.{$page}");
 })->name('legal.show');
 
 //Fichar / Despedir piloto
