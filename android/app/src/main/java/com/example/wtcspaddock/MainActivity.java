@@ -2,6 +2,9 @@ package com.example.wtcspaddock;
 
 import android.content.Intent;
 import android.os.Bundle;
+
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
@@ -15,6 +18,14 @@ import com.example.wtcspaddock.ui.login.LoginActivity;
 import com.example.wtcspaddock.utils.SessionManager;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.example.wtcspaddock.ui.home.HomeFragment;
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.target.CustomTarget;
+import com.bumptech.glide.request.transition.Transition;
+import android.graphics.drawable.Drawable;
+import android.graphics.Bitmap;
+import androidx.core.graphics.drawable.RoundedBitmapDrawable;
+import androidx.core.graphics.drawable.RoundedBitmapDrawableFactory;
+import android.view.MenuItem;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -72,6 +83,7 @@ public class MainActivity extends AppCompatActivity {
         if (savedInstanceState == null) {
             loadFragment(new com.example.wtcspaddock.ui.home.HomeFragment());
         }
+        loadUserProfileIcon();
     }
 
     private void loadFragment(Fragment fragment) {
@@ -213,6 +225,45 @@ public class MainActivity extends AppCompatActivity {
 
     public void navigateToReportDetail(com.example.wtcspaddock.models.Report report) {
         loadFragment(com.example.wtcspaddock.ui.profile.ReportDetailFragment.newInstance(report));
+    }
+
+    private void loadUserProfileIcon() {
+        SessionManager session = new SessionManager(this);
+        String avatarUrl = session.getUserAvatar();
+
+        // Si no hay avatar, nos quedamos con el icono por defecto
+        if (avatarUrl == null || avatarUrl.isEmpty()) return;
+
+        // 1. IMPORTANTE: Desactivar el tintado automático para que se vea la foto a color
+        // Ojo: Esto hará que el resto de iconos (Home, Menu) se vean con su color original del SVG (blanco).
+        // Si tus SVGs son blancos, perfecto. Si son negros, no se verán en fondo oscuro.
+        bottomNav.setItemIconTintList(null);
+
+        // 2. Descargar y procesar imagen con Glide
+        Glide.with(this)
+                .asBitmap() // Pedimos un Bitmap para poder redondearlo
+                .load(avatarUrl)
+                .circleCrop() // Recorte circular
+                .into(new CustomTarget<Bitmap>() {
+                    @Override
+                    public void onResourceReady(@NonNull Bitmap resource, @Nullable Transition<? super Bitmap> transition) {
+                        // Crear un Drawable redondo a partir del Bitmap
+                        RoundedBitmapDrawable circularDrawable =
+                                RoundedBitmapDrawableFactory.create(getResources(), resource);
+                        circularDrawable.setCircular(true);
+
+                        // Buscar el item del menú y cambiarle el icono
+                        MenuItem profileItem = bottomNav.getMenu().findItem(R.id.nav_profile);
+                        if (profileItem != null) {
+                            profileItem.setIcon(circularDrawable);
+                        }
+                    }
+
+                    @Override
+                    public void onLoadCleared(@Nullable Drawable placeholder) {
+                        // No hace falta hacer nada aquí
+                    }
+                });
     }
 
 

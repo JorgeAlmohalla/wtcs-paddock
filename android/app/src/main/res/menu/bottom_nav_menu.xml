@@ -4,13 +4,13 @@
     <!-- IZQUIERDA: Home (Dashboard) -->
     <item
         android:id="@+id/nav_home"
-        android:icon="@drawable/ic_home"
+        android:icon="@drawable/house_line_duotone"
         android:title="Home" />
 
     <!-- CENTRO: El Hub Desplegable -->
     <item
         android:id="@+id/nav_menu_hub"
-        android:icon="@drawable/ic_menu_grid"
+        android:icon="@drawable/list"
         android:title="Paddock" />
 
     <!-- DERECHA: Perfil -->

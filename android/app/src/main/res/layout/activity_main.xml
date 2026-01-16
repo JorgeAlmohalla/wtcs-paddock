@@ -51,17 +51,6 @@
             app:layout_constraintStart_toEndOf="@+id/logoPart1"
             app:layout_constraintBaseline_toBaselineOf="@+id/logoPart1"/>
 
-        <!-- Icono de Menú Hamburguesa (Para el futuro menú lateral) -->
-        <ImageView
-            android:id="@+id/btnMenu"
-            android:layout_width="24dp"
-            android:layout_height="24dp"
-            android:src="@android:drawable/ic_menu_sort_by_size"
-            app:tint="@color/white"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintBottom_toBottomOf="parent"/>
-
     </androidx.constraintlayout.widget.ConstraintLayout>
 
     <!-- 2. BARRA DE NAVEGACIÓN INFERIOR (Fixed Bottom) -->

@@ -84,19 +84,22 @@ public class LoginActivity extends AppCompatActivity {
                 btnLogin.setEnabled(true);
 
                 if (response.isSuccessful() && response.body() != null) {
-                    // ÉXITO: Laravel devolvió 200 OK y el Token
+                    // 1. Obtener datos de la respuesta
                     String token = response.body().getToken();
                     int userId = response.body().getUser().getId();
+                    String avatarUrl = response.body().getUser().getAvatarUrl(); // <-- Coger URL
 
-                    // Guardar token
+                    // 2. Guardar en SessionManager
                     sessionManager.saveToken(token);
                     sessionManager.saveUserId(userId);
+                    sessionManager.saveUserAvatar(avatarUrl); // <-- Guardar Avatar
 
+                    // 3. Navegar
                     Toast.makeText(LoginActivity.this, "Bienvenido " + response.body().getUser().getName(), Toast.LENGTH_LONG).show();
                     goToMainActivity();
 
                 } else {
-                    // ERROR: Laravel devolvió 401 (Credenciales mal) o 500
+                    // ERROR 401
                     Toast.makeText(LoginActivity.this, "Error: Credenciales incorrectas", Toast.LENGTH_SHORT).show();
                 }
             }
