@@ -2,10 +2,10 @@
 
 > **Final Degree Project (DAM)** - *Development of Multi-Platform Applications*
 
-**WTCS Paddock** is a comprehensive Multi-Platform ecosystem designed to professionalize the management of the **World Touring Car Series (WTCS)** SimRacing league. It replaces legacy spreadsheet workflows with a centralized API-driven architecture serving both Web and Mobile clients.
+**WTCS Paddock** is a comprehensive Multi-Platform ecosystem designed to professionalize the management of the **World Touring Car Series (WTCS)** SimRacing league. It replaces legacy spreadsheet workflows with a centralized API-driven architecture serving both a responsive Web Portal and a Native Android App.
 
-![Project Status](https://img.shields.io/badge/Status-Active%20Development-success?style=flat-square)
-![Version](https://img.shields.io/badge/Version-v4.0.0--API-blue?style=flat-square)
+![Project Status](https://img.shields.io/badge/Status-Feature%20Complete-success?style=flat-square)
+![Version](https://img.shields.io/badge/Version-v4.5.0-blue?style=flat-square)
 ![License](https://img.shields.io/badge/License-MIT-gray?style=flat-square)
 
 ## 🧐 The Problem
@@ -17,8 +17,8 @@ The league was previously managed using static Excel spreadsheets shared via Dis
 ## 💡 The Solution
 **WTCS Paddock** decouples data management from social interaction, providing a robust backend serving multiple frontend experiences:
 
-1.  **Web Portal:** For desktop management, deep analytics, and administration.
-2.  **Mobile App (Android Native):** A companion app for drivers to check schedules, standings, and profiles on the go.
+1.  **Web Portal:** For desktop management, deep analytics, live standings, and administration.
+2.  **Mobile App (Android Native):** A companion app for drivers to manage their career, check schedules, view telemetry graphs, and submit steward reports on the go.
 3.  **Automated Scoring:** Algorithms calculate Driver, Team, and Manufacturer standings instantly upon result entry.
 
 ## 🛠️ Tech Stack
@@ -27,7 +27,8 @@ The league was previously managed using static Excel spreadsheets shared via Dis
 *   **Framework:** Laravel 11 (PHP 8.2)
 *   **Database:** MySQL
 *   **Admin Panel:** FilamentPHP v3
-*   **Authentication:** Laravel Sanctum (API Token Auth)
+*   **Authentication:** Laravel Sanctum (Token-based Auth)
+*   **Optimization:** Server-side Caching (Redis/File)
 
 ### 🌐 Client 1: Web Portal
 *   **Frontend:** Blade Templates + Tailwind CSS v4
@@ -39,49 +40,53 @@ The league was previously managed using static Excel spreadsheets shared via Dis
 *   **Language:** Java (Native)
 *   **IDE:** Android Studio
 *   **Networking:** Retrofit + Gson (REST API Consumption)
-*   **Images:** Glide
+*   **Images:** Glide (with CircleCrop & Transformation)
+*   **Charts:** MPAndroidChart (Performance Analytics)
 *   **Architecture:** Clean Architecture (Model-View) with Singleton Network Layer.
 
-## 📂 Project Structure
-The repository is organized as a Monorepo containing both the backend and the mobile client:
+## 🚀 Key Features Implemented
 
-```text
-wtcs-paddock/
-├── backend/          # Laravel Project (API & Web)
-│   ├── app/
-│   ├── routes/
-│   └── ...
-├── android/          # Android Studio Project
-│   ├── app/
-│   │   ├── src/main/java/com/example/wtcspaddock/
-│   │   │   ├── api/      # Retrofit Client & Services
-│   │   │   ├── models/   # POJO Data Models
-│   │   │   └── ui/       # Activities & Fragments
-│   └── ...
-└── README.md
-```
+### 🌍 Web & Admin
+- **Automated Standings:** Real-time calculation of Drivers, Constructors, and Manufacturers championships.
+- **Admin Dashboard:** Custom widgets for quick league monitoring.
+- **Historical Data:** Archive system for previous seasons.
+- **Official Docs:** Automatic generation of PDF reports and steward decisions.
 
-## 🚀 Release History & Roadmap
+### 📱 Android App
+- **Driver Hub:** Personal dashboard with editable bio, performance stats, and qualifying history.
+- **Interactive Analytics:** Dynamic graphs for Race Finish Positions and Championship Points progression.
+- **Stewarding System:** Native form to submit incident reports (video evidence, lap selection) and track their status (Pending/Resolved).
+- **Team Center:** Detailed team profiles with official livery showcase and technical homologation specs.
+- **Smart Navigation:** Centralized "Paddock Hub" bottom sheet for quick access to all modules.
 
-### Phase 1: Foundation (v0.x - v1.0)
+## 📅 Release History & Roadmap
+
+### Phase 1: Foundation (v1.0)
 - [x] **Core Architecture:** Database Design, Git Workflow, and Environment Setup.
 - [x] **Admin Backoffice:** FilamentPHP implementation for managing Users, Teams, and Races.
 - [x] **Web Launch:** Public portal with Live Standings, Calendar, and News.
 
-### Phase 2: Ecosystem Expansion (v2.x - v3.x)
+### Phase 2: Ecosystem Expansion (v2.0 - v3.0)
 - [x] **Driver Experience:** Advanced Career Dashboard, Telemetry Charts, and Rival Comparison.
 - [x] **League Management:** Stewarding System (Incident Reports), Team Principal Portal, and CSV Result Automation.
 - [x] **Professionalization:** Multi-Season Architecture and PDF Report Generation.
 
-### Phase 3: Mobile Integration (Current - v4.0)
-- [x] **API Development:** RESTful API implementation with protected routes (`/api/user`).
-- [x] **Mobile Auth:** Login system via Sanctum Tokens.
-- [ ] **Android App (Alpha):** Building UI for Calendar and Standings (WIP).
-- [ ] **Push Notifications:** Firebase integration (Planned).
+### Phase 3: Mobile Integration (Final Phase - v4.5)
+- [x] **API Development:** RESTful API implementation with protected routes (`/api/user`, `/api/incidents`).
+- [x] **Mobile Auth:** Secure login system via Sanctum Tokens.
+- [x] **Android App:** Full native implementation including:
+    - **Home:** Live Countdown & News.
+    - **Race Center:** Grouped Calendar & Session Details.
+    - **Standings:** Multi-tab views with Privateer highlighting.
+    - **Profile:** User dashboard with editing capabilities.
+    - **Reports:** Incident reporting system integration.
+
+## 🔮 Future Scope
+- [ ] **Push Notifications:** Firebase integration for race alerts.
+- [ ] **Live Timing:** WebSocket integration for real-time race telemetry.
 
 ## 📝 License
 This project is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
 
 ---
 *Developed by Jorge Caro Almohalla - 2025/2026*
-```

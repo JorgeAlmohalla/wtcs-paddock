@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <!-- 1. El color de fondo (Tu azul oscuro) -->
+    <item android:drawable="@color/wtcs_background" />
+
+    <!-- 2. Tu logo centrado -->
+    <item>
+        <bitmap
+            android:gravity="center"
+            android:src="@drawable/wtcs_logo_white" />
+    </item>
+
+</layer-list>

@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/wtcs_background">
+
+    <!-- CONTENEDOR CENTRAL -->
+    <LinearLayout
+        android:id="@+id/centerContainer"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:gravity="center"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.45">
+
+        <!-- LOGO GRANDE -->
+        <ImageView
+            android:id="@+id/imgSplashLogo"
+            android:layout_width="200dp"
+            android:layout_height="80dp"
+            android:src="@drawable/wtcs_logo_white"
+            android:adjustViewBounds="true"
+            android:scaleType="fitCenter"/>
+
+        <!-- CAJA PADDOCK -->
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="PADDOCK"
+            android:textColor="@color/white"
+            android:background="@color/black"
+            android:textStyle="bold"
+            android:textSize="14sp"
+            android:paddingHorizontal="8dp"
+            android:paddingVertical="2dp"
+            android:letterSpacing="0.2"
+            android:layout_marginTop="16dp"/>
+
+        <!-- SUBTÍTULO -->
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Official SimRacing Manager"
+            android:textColor="@color/text_secondary"
+            android:textSize="14sp"
+            android:layout_marginTop="8dp"/>
+
+    </LinearLayout>
+
+    <!-- FOOTER (Abajo del todo) -->
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="v1.0.0 Alpha"
+        android:textColor="#50FFFFFF"
+        android:textSize="12sp"
+        android:layout_marginBottom="24dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

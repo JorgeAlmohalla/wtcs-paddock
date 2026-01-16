@@ -25,4 +25,12 @@
         <item name="hintTextColor">@color/wtcs_red</item>
         <item name="shapeAppearanceOverlay">@style/ShapeAppearance.MaterialComponents.SmallComponent</item>
     </style>
+
+    <!-- TEMA DE LANZAMIENTO (Splash) -->
+    <style name="Theme.WTCSPaddock.Splash" parent="Theme.MaterialComponents.DayNight.NoActionBar">
+        <!-- Pinta el fondo de la ventana con tu diseño (Logo + Azul) -->
+        <item name="android:windowBackground">@drawable/splash_background</item>
+        <!-- Oculta la barra de estado para que sea full screen -->
+        <item name="android:statusBarColor">@color/wtcs_background</item>
+    </style>
 </resources>

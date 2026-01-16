@@ -5,6 +5,36 @@ All notable changes to the **WTCS Paddock** project will be documented in this f
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [v4.5.0-beta] - 16-01-2026
+
+### 🖥️ Added (Web & Admin)
+- **Admin Dashboard:** Created custom `StatsOverview` widget displaying key metrics (Total Drivers, Pending Reports, Next Race) for quick monitoring.
+- **Branding:** Customized FilamentPHP admin panel with "WTCS Paddock" branding, official logo, and corporate red color scheme.
+- **Favicon:** Implemented custom favicon across both public and admin interfaces.
+
+### 📱 Added (Android App - User Experience)
+- **Profile Editing Suite:**
+    - Implemented `EditProfileFragment` allowing users to update Bio, Nationality, and Equipment.
+    - **Avatar Upload:** Added `Multipart` support and `FileUtils` helper to select images from the gallery and upload them to the server.
+    - **Security:** Added a custom Dialog for password changes with validation.
+- **Native Splash Screen:** Implemented Android 12+ compatible Splash Screen API (`windowSplashScreenAnimatedIcon`) for an instant, branded startup experience without artificial delays.
+- **Dynamic Menu Icon:** The bottom navigation "Profile" button now fetches and renders the user's actual avatar in a circle, replacing the generic icon.
+- **Custom Iconography:** Replaced stock assets with custom SVGs for Home, Paddock, and Profile navigation items.
+
+### 🎨 Changed (UI Polish)
+- **Team Detail View:** 
+    - Refined the "Homologation Data" table layout for better alignment.
+    - Applied `RoundedCorners` transformation to Team Logos to integrate square images seamlessly.
+- **Driver Detail View:** 
+    - Fixed layout issues where the "Input Method" text overlapped with team names.
+    - Enforced circular styling on Avatars using `ShapeableImageView`.
+- **Loading States:** Implemented central `ProgressBar` logic in Home and Profile screens to prevent placeholder text ("Mancinelli") from flashing before API data arrives.
+
+### 🐛 Fixed
+- **(Web) Widget Architecture:** Corrected namespace issues with Filament Widgets to ensure proper loading on the dashboard.
+- **(Android) Networking:** Fixed `java.net.ProtocolException` when loading large assets (Car Liveries) from the local Laravel server by enforcing connection closure in Glide.
+- **(Android) Data Binding:** Fixed multiple instances of hardcoded strings and incorrect ID mappings in the Team Specs view.
+
 ## [v4.4.0-android-beta] - 14-01-2026
 
 ### 🏎️ Added (Teams Ecosystem)
