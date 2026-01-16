@@ -33,9 +33,18 @@ public class User {
     public String getEquipment() { return equipment; }
 
     public String getAvatarUrl() {
-        if (avatarUrl != null && avatarUrl.contains("127.0.0.1")) {
-            return avatarUrl.replace("127.0.0.1", "10.0.2.2");
+        if (avatarUrl == null) return null;
+
+        // 1. Si ya es una URL completa (http...), aplicamos el parche de la IP por si acaso
+        if (avatarUrl.startsWith("http")) {
+            if (avatarUrl.contains("127.0.0.1")) return avatarUrl.replace("127.0.0.1", "10.0.2.2");
+            if (avatarUrl.contains("localhost")) return avatarUrl.replace("localhost", "10.0.2.2");
+            return avatarUrl;
         }
-        return avatarUrl;
+
+        // 2. SI NO EMPIEZA POR HTTP (Es una ruta relativa tipo "avatars/foto.jpg")
+        // Le pegamos la URL base de tu servidor.
+        // OJO: Cambia la IP '192.168.1.35' por la que tengas en Constants.java o usa 10.0.2.2
+        return "http://10.0.2.2:8000/storage/" + avatarUrl;
     }
 }

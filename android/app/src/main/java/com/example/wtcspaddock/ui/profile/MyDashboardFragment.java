@@ -105,12 +105,17 @@ public class MyDashboardFragment extends Fragment {
     private void loadMyData(int myId) {
         progressBar.setVisibility(View.VISIBLE);
         contentLayout.setVisibility(View.INVISIBLE);
-        loadReports();
 
-        // Usamos el MISMO endpoint que el perfil público, ya que trae stats y history
         RetrofitClient.getApiService().getDriverDetails(myId).enqueue(new Callback<DriverDetailResponse>() {
             @Override
             public void onResponse(Call<DriverDetailResponse> call, Response<DriverDetailResponse> response) {
+                // --- PROTECCIÓN ANTI-CRASH ---
+                // Si el usuario ya se ha ido de la pantalla, paramos aquí.
+                if (!isAdded() || getView() == null) {
+                    return;
+                }
+                // -----------------------------
+
                 progressBar.setVisibility(View.GONE);
                 contentLayout.setVisibility(View.VISIBLE);
 
@@ -118,8 +123,13 @@ public class MyDashboardFragment extends Fragment {
                     updateUI(response.body());
                 }
             }
+
             @Override
             public void onFailure(Call<DriverDetailResponse> call, Throwable t) {
+                // --- AQUÍ TAMBIÉN ---
+                if (!isAdded() || getView() == null) return;
+                // --------------------
+
                 progressBar.setVisibility(View.GONE);
                 Log.e("API", "Error dashboard: " + t.getMessage());
             }
@@ -127,6 +137,8 @@ public class MyDashboardFragment extends Fragment {
     }
 
     private void updateUI(DriverDetailResponse data) {
+        View v = getView();
+        if (v == null) return;
         DriverDetailResponse.DriverInfo info = data.getDriver();
         DriverDetailResponse.DriverStats stats = data.getStats();
 
@@ -302,25 +314,54 @@ public class MyDashboardFragment extends Fragment {
     @Override
     public void onResume() {
         super.onResume();
-        // Cargar datos cada vez que la pantalla se muestra (incluso al volver de editar)
+
         SessionManager session = new SessionManager(requireContext());
+
+        // 1. Cargar Perfil (Gráficos, Bio, Stats...)
         loadMyData(session.getUserId());
+
+        // 2. Cargar Reportes (¡ESTO FALTABA!)
+        loadReports();
     }
 
     private void loadReports() {
+        // 1. Necesitamos el Token para datos privados
         SessionManager session = new SessionManager(requireContext());
         String token = "Bearer " + session.getToken();
 
-        RetrofitClient.getApiService().getUserReports(token).enqueue(new Callback<List<Report>>() {
+        // 2. Llamada a la API
+        RetrofitClient.getApiService().getUserReports(token).enqueue(new Callback<List<com.example.wtcspaddock.models.Report>>() {
             @Override
-            public void onResponse(Call<List<Report>> call, Response<List<Report>> response) {
+            public void onResponse(Call<List<com.example.wtcspaddock.models.Report>> call, Response<List<com.example.wtcspaddock.models.Report>> response) {
+                // Protección anti-crash
+                if (!isAdded() || getView() == null) return;
+
                 if (response.isSuccessful() && response.body() != null) {
+                    List<com.example.wtcspaddock.models.Report> reports = response.body();
+
+                    // 3. Vincular con el RecyclerView de Reportes
                     RecyclerView rv = getView().findViewById(R.id.recyclerReports);
-                    rv.setLayoutManager(new LinearLayoutManager(getContext()));
-                    rv.setAdapter(new ReportsAdapter(response.body()));
+                    if (rv != null) {
+                        rv.setLayoutManager(new LinearLayoutManager(getContext()));
+                        rv.setAdapter(new com.example.wtcspaddock.ui.profile.ReportsAdapter(reports));
+
+                        // Opcional: Mostrar mensaje si está vacío
+                        if (reports.isEmpty()) {
+                            rv.setVisibility(View.GONE);
+                            // Podrías mostrar un TextView que diga "No reports yet"
+                        } else {
+                            rv.setVisibility(View.VISIBLE);
+                        }
+                    }
                 }
             }
-            @Override public void onFailure(Call<List<Report>> call, Throwable t) {}
+
+            @Override
+            public void onFailure(Call<List<com.example.wtcspaddock.models.Report>> call, Throwable t) {
+                Log.e("API", "Error loading reports: " + t.getMessage());
+            }
         });
     }
+
+
 }
