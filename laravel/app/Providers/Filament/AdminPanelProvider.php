@@ -20,16 +20,25 @@ use Illuminate\View\Middleware\ShareErrorsFromSession;
 
 class AdminPanelProvider extends PanelProvider
 {
-    public function panel(Panel $panel): Panel
+public function panel(Panel $panel): Panel
     {
         return $panel
             ->default()
             ->id('admin')
             ->path('admin')
             ->login()
+            
+            // --- PERSONALIZACIÓN WTCS ---
+            ->brandName('WTCS Paddock Admin')
+            ->brandLogo(asset('images/wtcs-logo-white.png'))
+            ->brandLogoHeight('3rem')
+            ->favicon(asset('images/favicon.png'))
             ->colors([
-                'primary' => Color::Amber,
+                'primary' => \Filament\Support\Colors\Color::Red, // Rojo Corporativo
             ])
+            ->darkMode(true) // Forzar modo oscuro si quieres
+            // ----------------------------
+
             ->discoverResources(in: app_path('Filament/Resources'), for: 'App\\Filament\\Resources')
             ->discoverPages(in: app_path('Filament/Pages'), for: 'App\\Filament\\Pages')
             ->pages([
@@ -37,8 +46,7 @@ class AdminPanelProvider extends PanelProvider
             ])
             ->discoverWidgets(in: app_path('Filament/Widgets'), for: 'App\\Filament\\Widgets')
             ->widgets([
-                Widgets\AccountWidget::class,
-                Widgets\FilamentInfoWidget::class,
+                \App\Filament\Widgets\StatsOverview::class,
             ])
             ->middleware([
                 EncryptCookies::class,
