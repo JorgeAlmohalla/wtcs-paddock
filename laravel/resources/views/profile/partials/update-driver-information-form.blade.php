@@ -44,13 +44,6 @@
             <x-input-error class="mt-2" :messages="$errors->get('bio')" />
         </div>
 
-        <!-- Race Number -->
-        <div>
-            <x-input-label for="driver_number" :value="__('Race Number')" class="text-gray-300" />
-            <x-text-input id="driver_number" name="driver_number" type="number" class="mt-1 block w-24 bg-gray-900 border-gray-600 text-white" :value="old('driver_number', $user->driver_number)" min="0" max="999" />
-            <x-input-error class="mt-2" :messages="$errors->get('driver_number')" />
-        </div>
-
         <div class="flex items-center gap-4">
             <x-primary-button>{{ __('Save') }}</x-primary-button>
 

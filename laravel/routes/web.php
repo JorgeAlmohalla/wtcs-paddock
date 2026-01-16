@@ -43,7 +43,6 @@ Route::patch('/my-team', [TeamManagementController::class, 'update'])->name('tea
 Route::get('/driver/{user}', [PublicProfileController::class, 'show'])->name('driver.show');
 Route::get('/team/{team}', [PublicTeamController::class, 'show'])->name('team.show');
 Route::get('/standings/pdf', [PdfController::class, 'downloadStandings'])->name('standings.pdf');
-Route::get('/report/{report}', [ReportController::class, 'show'])->name('report.show');
 
 
 Route::get('/legal/{page}', function ($page) {
@@ -83,11 +82,14 @@ Route::middleware('auth')->group(function () {
     
 });
 
-// Página de reportes
+// Página de reportes (GRUPO PROTEGIDO)
 Route::middleware(['auth', 'verified'])->group(function () {
+    // 1. Crear (Específica)
     Route::get('/report/new', [ReportController::class, 'create'])->name('report.create');
     Route::post('/report', [ReportController::class, 'store'])->name('report.store');
+    
+    // 2. Ver Detalle (Genérica / Comodín) -> ESTA VA DESPUÉS
+    Route::get('/report/{report}', [ReportController::class, 'show'])->name('report.show');
 });
 
-// Carga las rutas de login/registro (NO BORRAR)
 require __DIR__.'/auth.php';

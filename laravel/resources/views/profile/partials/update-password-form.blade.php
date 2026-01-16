@@ -1,4 +1,6 @@
-<section>
+<section id="password-form"
+         x-data
+         x-init="@if($errors->updatePassword->any()) document.getElementById('password-form').scrollIntoView({ behavior: 'smooth' }) @endif">
     <header>
         <h2 class="text-lg font-medium text-gray-900 dark:text-gray-100">
             {{ __('Update Password') }}
