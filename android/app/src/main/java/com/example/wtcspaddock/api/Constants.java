@@ -1,13 +1,14 @@
 package com.example.wtcspaddock.api;
 
 public class Constants {
-    // CAMBIA ESTO por tu IP real si cambia (míralo en ipconfig)
-    public static final String SERVER_IP = "192.168.0.13";
+    // TU DOMINIO DUCKDNS
+    public static final String SERVER_IP = "wtcs-paddock.duckdns.org";
 
-    // Dejamos el puerto vacío porque Apache usa el 80 por defecto
+    // NO USAMOS PUERTO (Es el 80 por defecto)
+    // Eliminamos la variable PORT para no liarnos o la dejamos vacía pero no la usamos abajo
     public static final String PORT = "";
 
-    // URL Base para la API (http://192.168.0.13/api/)
+    // URL CORRECTA (Sin los dos puntos ':')
     public static final String BASE_URL = "http://" + SERVER_IP + "/api/";
 
     // --- MÉTODO PARA ARREGLAR IMÁGENES ---
@@ -16,22 +17,20 @@ public class Constants {
 
         String fixedUrl = url;
 
-        // 1. Reemplazar localhost/127.0.0.1 por la IP real
+        // 1. Reemplazar localhost/127.0.0.1 por tu dominio
         if (fixedUrl.contains("localhost")) {
             fixedUrl = fixedUrl.replace("localhost", SERVER_IP);
         } else if (fixedUrl.contains("127.0.0.1")) {
             fixedUrl = fixedUrl.replace("127.0.0.1", SERVER_IP);
         }
 
-        // 2. ELIMINAR EL PUERTO 8000 (Vital si vienes de artisan serve)
-        // Como ahora usamos Apache (puerto 80), el :8000 sobra y rompería la imagen
+        // 2. Limpiar puertos viejos si quedan (por si la BD tiene guardado :8000)
         if (fixedUrl.contains(":8000")) {
             fixedUrl = fixedUrl.replace(":8000", "");
         }
 
-        // 3. Si viene relativa (sin http), le pegamos la base del storage
+        // 3. Rutas relativas
         if (!fixedUrl.startsWith("http")) {
-            // Asumiendo que tu Apache apunta directamente a la carpeta public
             fixedUrl = "http://" + SERVER_IP + "/storage/" + fixedUrl;
         }
 

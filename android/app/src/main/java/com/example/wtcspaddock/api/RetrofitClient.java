@@ -1,9 +1,11 @@
 package com.example.wtcspaddock.api;
 
 import java.io.IOException;
+import java.util.Collections;
 
 import okhttp3.Interceptor;
 import okhttp3.OkHttpClient;
+import okhttp3.Protocol;
 import okhttp3.Request;
 import okhttp3.Response;
 import okhttp3.logging.HttpLoggingInterceptor;
@@ -16,30 +18,24 @@ public class RetrofitClient {
 
     public static ApiService getApiService() {
         if (retrofit == null) {
-            // 1. Logger (Para ver el cuerpo de la respuesta)
             HttpLoggingInterceptor logging = new HttpLoggingInterceptor();
             logging.setLevel(HttpLoggingInterceptor.Level.BODY);
 
-            // 2. Cliente HTTP con Interceptor de Cabeceras
             OkHttpClient client = new OkHttpClient.Builder()
+                    // 1. ESTA ES LA LÍNEA MÁGICA: Forzar HTTP 1.1
+                    .protocols(Collections.singletonList(Protocol.HTTP_1_1))
+                    // -----------------------------------------------------
+
                     .addInterceptor(logging)
-                    .addInterceptor(new Interceptor() {
-                        @Override
-                        public Response intercept(Chain chain) throws IOException {
-                            Request original = chain.request();
-
-                            // Añadimos la cabecera para forzar JSON
-                            Request request = original.newBuilder()
-                                    .header("Accept", "application/json")
-                                    .method(original.method(), original.body())
-                                    .build();
-
-                            return chain.proceed(request);
-                        }
+                    .addInterceptor(chain -> {
+                        okhttp3.Request original = chain.request();
+                        okhttp3.Request request = original.newBuilder()
+                                .header("Accept", "application/json")
+                                .build();
+                        return chain.proceed(request);
                     })
                     .build();
 
-            // 3. Instancia de Retrofit
             retrofit = new Retrofit.Builder()
                     .baseUrl(Constants.BASE_URL)
                     .addConverterFactory(GsonConverterFactory.create())

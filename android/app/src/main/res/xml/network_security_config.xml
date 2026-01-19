@@ -1,8 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <network-security-config>
+    <!-- Permitir tráfico no cifrado (HTTP) para estos dominios -->
     <domain-config cleartextTrafficPermitted="true">
         <domain includeSubdomains="true">10.0.2.2</domain>
         <domain includeSubdomains="true">localhost</domain>
+
+        <!-- TU IP LOCAL (Por si pruebas en WiFi interno sin NAT Loopback) -->
         <domain includeSubdomains="true">192.168.0.13</domain>
+
+        <!-- ¡EL DOMINIO NUEVO! (Sin http://) -->
+        <domain includeSubdomains="true">wtcs-paddock.duckdns.org</domain>
     </domain-config>
 </network-security-config>

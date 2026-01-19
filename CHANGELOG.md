@@ -15,6 +15,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### 📉 Performance
 - **Infrastructure Insight:** Identified `php artisan serve` single-threaded limitations as the root cause for image loading timeouts on heavy requests, implementing client-side mitigations.
 
+### 📦 Distribution & Compatibility
+- **Device Support:** Downgraded `minSdk` version to **24 (Android 7.0)** to resolve "There was a problem parsing the package" errors on older devices.
+- **APK Building:** Verified build process to ensure universal APK generation (supporting both ARM and x86 architectures) for wider distribution outside the emulator.
+
 ## [v4.5.0-beta] - 16-01-2026
 
 ### 🖥️ Added (Web & Admin)

@@ -31,6 +31,6 @@
         <!-- Pinta el fondo de la ventana con tu diseño (Logo + Azul) -->
         <item name="android:windowBackground">@drawable/splash_background</item>
         <!-- Oculta la barra de estado para que sea full screen -->
-        <item name="android:statusBarColor">@color/wtcs_background</item>
+        <item name="android:statusBarColor">@color/wtcs_red</item>
     </style>
 </resources>
