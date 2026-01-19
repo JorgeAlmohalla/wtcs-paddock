@@ -29,11 +29,7 @@ public class Race {
     public String getDate() { return date; }
 
     public String getImageUrl() {
-        // Parche para localhost (Emulador)
-        if (imageUrl != null && imageUrl.contains("127.0.0.1")) {
-            return imageUrl.replace("127.0.0.1", "10.0.2.2");
-        }
-        return imageUrl;
+        return com.example.wtcspaddock.api.Constants.fixImageUrl(imageUrl);
     }
 
     public String getTitle() { return title; }

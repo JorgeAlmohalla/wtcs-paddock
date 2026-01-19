@@ -36,9 +36,6 @@ public class Driver {
     }
 
     public String getAvatarUrl() {
-        if (avatarUrl != null && avatarUrl.contains("127.0.0.1")) {
-            return avatarUrl.replace("127.0.0.1", "10.0.2.2");
-        }
-        return avatarUrl;
+        return com.example.wtcspaddock.api.Constants.fixImageUrl(avatarUrl);
     }
 }

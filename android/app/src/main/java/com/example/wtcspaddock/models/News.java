@@ -21,9 +21,6 @@ public class News {
     public String getContent() { return content; }
 
     public String getImageUrl() {
-        if (imageUrl != null && imageUrl.contains("127.0.0.1")) {
-            return imageUrl.replace("127.0.0.1", "10.0.2.2");
-        }
-        return imageUrl;
+        return com.example.wtcspaddock.api.Constants.fixImageUrl(imageUrl);
     }
 }

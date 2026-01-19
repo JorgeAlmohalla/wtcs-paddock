@@ -28,6 +28,8 @@ public class RaceEvent {
     public int getRound() { return round; }
     public String getTrackName() { return trackName; }
     public String getDate() { return date; }
-    public String getImageUrl() { return imageUrl; }
+    public String getImageUrl() {
+        return com.example.wtcspaddock.api.Constants.fixImageUrl(imageUrl);
+    }
     public List<Race> getSessions() { return sessions; }
 }

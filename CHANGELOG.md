@@ -5,6 +5,16 @@ All notable changes to the **WTCS Paddock** project will be documented in this f
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [v4.5.1-android-rc] - 19-01-2026
+
+### 📱 Android App (Polishing & Fixes)
+- **Networking Architecture:**
+    - **Local Network Support:** Refactored `Constants` and `NetworkSecurityConfig` to support physical device testing via local IP (`192.168.x.x`), abandoning the emulator-only `10.0.2.2` bridge.
+    - **Centralized URL Patching:** Created a static `fixImageUrl` helper to automatically rewrite localhost URLs from the API to the correct reachable IP address across all models.
+
+### 📉 Performance
+- **Infrastructure Insight:** Identified `php artisan serve` single-threaded limitations as the root cause for image loading timeouts on heavy requests, implementing client-side mitigations.
+
 ## [v4.5.0-beta] - 16-01-2026
 
 ### 🖥️ Added (Web & Admin)

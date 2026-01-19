@@ -70,43 +70,25 @@ public class TeamDetailFragment extends Fragment {
         View v = getView();
         if (v == null) return;
 
-        // 1. Cabecera y Color
-        v.findViewById(R.id.headerContainer).setBackgroundColor(android.graphics.Color.parseColor(team.getColor()));
+        // 1. CABECERA Y COLOR
+        try {
+            v.findViewById(R.id.headerContainer).setBackgroundColor(android.graphics.Color.parseColor(team.getColor()));
+        } catch (Exception e) {
+            // Color por defecto si falla el hex
+            v.findViewById(R.id.headerContainer).setBackgroundColor(android.graphics.Color.parseColor("#192e8a"));
+        }
+
         ((TextView)v.findViewById(R.id.tvDetailName)).setText(team.getName());
         ((TextView)v.findViewById(R.id.tvDetailCar)).setText(team.getCarModel());
 
-        // 2. Stats (Big Numbers)
-        setStat(v.findViewById(R.id.statDrivers), "DRIVERS", String.valueOf(team.getStats().activeDrivers));
-        setStat(v.findViewById(R.id.statWins), "WINS", String.valueOf(team.getStats().wins));
-        setStat(v.findViewById(R.id.statPodiums), "PODIUMS", String.valueOf(team.getStats().podiums));
-        setStat(v.findViewById(R.id.statPoints), "POINTS", String.valueOf(team.getStats().totalPoints));
-
-        // 3. Roster (Lista de pilotos)
-        androidx.recyclerview.widget.RecyclerView rv = v.findViewById(R.id.recyclerRoster);
-        rv.setLayoutManager(new LinearLayoutManager(getContext()));
-        rv.setAdapter(new RosterAdapter(getContext(), team.getRoster()));
-
-        // 4. Livery (Foto del coche)
-        ImageView imgLivery = v.findViewById(R.id.imgLivery);
-        if (team.getLiveryImage() != null) {
-            Glide.with(this).load(team.getLiveryImage()).into(imgLivery);
-        }
-
-        // 5. SPECS (CORREGIDO Y COMPLETO)
-        // Usamos el helper setText para no repetir código y evitar nulos
-        // Fíjate que ya NO ponemos "Engine: " delante, solo el valor.
-        setText(v, R.id.tvSpecChassis, team.getSpecs().chassis);
-        setText(v, R.id.tvSpecEngine, team.getSpecs().engine);
-        setText(v, R.id.tvSpecPower, team.getSpecs().power);
-        setText(v, R.id.tvSpecLayout, team.getSpecs().layout);
-        setText(v, R.id.tvSpecGearbox, team.getSpecs().gearbox);
-
-// --- LOGO CON PROTECCIÓN ANTIFALLOS ---
+        // 2. LOGO DEL EQUIPO (Con protección de conexión)
         ImageView imgLogo = v.findViewById(R.id.imgTeamDetailLogo);
         String logoUrl = team.getLogo();
 
-        if (logoUrl != null) {
-            // Usamos GlideUrl con cabeceras para evitar cortes de conexión en local
+        // CHIVATO: Mira el Logcat filtrando por "DEBUG_IMG" para ver la URL real
+        if (logoUrl != null) android.util.Log.d("DEBUG_IMG", "Logo URL: " + logoUrl);
+
+        if (logoUrl != null && !logoUrl.isEmpty()) {
             com.bumptech.glide.load.model.GlideUrl urlWithHeaders = new com.bumptech.glide.load.model.GlideUrl(
                     logoUrl,
                     new com.bumptech.glide.load.model.LazyHeaders.Builder()
@@ -116,22 +98,81 @@ public class TeamDetailFragment extends Fragment {
 
             Glide.with(this)
                     .load(urlWithHeaders)
-                    .transform(new RoundedCorners(48))
-                    .placeholder(R.drawable.circle_bg_gray) // Mientras carga
-                    .error(android.R.drawable.ic_delete)    // Si falla (saldrá una X)
+                    // CAMBIO: Forzamos el orden: Primero CenterCrop (llenar), luego Redondear
+                    .apply(com.bumptech.glide.request.RequestOptions.bitmapTransform(
+                            new com.bumptech.glide.load.resource.bitmap.CenterCrop()
+                    ))
+                    .transform(new com.bumptech.glide.load.resource.bitmap.RoundedCorners(48))
+                    // ----------------------------------------------------
+
+                    // AÑADE ESTO PARA VER EL ERROR EXACTO SI FALLA OTRA VEZ
+                    .listener(new com.bumptech.glide.request.RequestListener<android.graphics.drawable.Drawable>() {
+                        @Override
+                        public boolean onLoadFailed(@androidx.annotation.Nullable com.bumptech.glide.load.engine.GlideException e, Object model, com.bumptech.glide.request.target.Target<android.graphics.drawable.Drawable> target, boolean isFirstResource) {
+                            android.util.Log.e("GLIDE_ERROR", "Fallo logo: " + e.getMessage());
+                            if (e != null) e.logRootCauses("GLIDE_ERROR"); // <--- MIRA ESTO EN EL LOGCAT
+                            return false;
+                        }
+                        @Override
+                        public boolean onResourceReady(android.graphics.drawable.Drawable resource, Object model, com.bumptech.glide.request.target.Target<android.graphics.drawable.Drawable> target, com.bumptech.glide.load.DataSource dataSource, boolean isFirstResource) {
+                            return false;
+                        }
+                    })
+                    .placeholder(R.drawable.circle_bg_gray)
+                    .error(android.R.drawable.ic_delete)
                     .into(imgLogo);
 
             imgLogo.setVisibility(View.VISIBLE);
         } else {
-            imgLogo.setImageResource(R.drawable.ic_menu_grid);
+            imgLogo.setImageResource(R.drawable.ic_menu_grid); // Icono por defecto
         }
 
-        // --- BIO (NUEVO) ---
+        // 3. BIO (Biografía)
         TextView tvBio = v.findViewById(R.id.tvTeamBio);
         if (team.getBio() != null && !team.getBio().isEmpty()) {
             tvBio.setText(team.getBio());
         } else {
             tvBio.setText("No biography available.");
+        }
+
+        // 4. STATS (Estadísticas)
+        setStat(v.findViewById(R.id.statDrivers), "DRIVERS", String.valueOf(team.getStats().activeDrivers));
+        setStat(v.findViewById(R.id.statWins), "WINS", String.valueOf(team.getStats().wins));
+        setStat(v.findViewById(R.id.statPodiums), "PODIUMS", String.valueOf(team.getStats().podiums));
+        setStat(v.findViewById(R.id.statPoints), "POINTS", String.valueOf(team.getStats().totalPoints));
+
+        // 5. ROSTER (Lista de pilotos)
+        androidx.recyclerview.widget.RecyclerView rv = v.findViewById(R.id.recyclerRoster);
+        rv.setLayoutManager(new LinearLayoutManager(getContext()));
+        rv.setAdapter(new RosterAdapter(getContext(), team.getRoster()));
+
+        // 6. LIVERY (Imagen del coche - Con protección de conexión)
+        ImageView imgLivery = v.findViewById(R.id.imgLivery);
+        String liveryUrl = team.getLiveryImage();
+
+        if (liveryUrl != null) android.util.Log.d("DEBUG_IMG", "Livery URL: " + liveryUrl);
+
+        if (liveryUrl != null && !liveryUrl.isEmpty()) {
+            com.bumptech.glide.load.model.GlideUrl urlWithHeaders = new com.bumptech.glide.load.model.GlideUrl(
+                    liveryUrl,
+                    new com.bumptech.glide.load.model.LazyHeaders.Builder()
+                            .addHeader("Connection", "close")
+                            .build()
+            );
+
+            Glide.with(this)
+                    .load(urlWithHeaders)
+                    .placeholder(android.R.color.darker_gray)
+                    .into(imgLivery);
+        }
+
+        // 7. SPECS (Especificaciones Técnicas)
+        if (team.getSpecs() != null) {
+            setText(v, R.id.tvSpecChassis, team.getSpecs().chassis);
+            setText(v, R.id.tvSpecEngine, team.getSpecs().engine);
+            setText(v, R.id.tvSpecPower, team.getSpecs().power);
+            setText(v, R.id.tvSpecLayout, team.getSpecs().layout); // Layout, no Weight
+            setText(v, R.id.tvSpecGearbox, team.getSpecs().gearbox);
         }
     }
 

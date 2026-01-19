@@ -24,8 +24,7 @@ public class Team {
     }
 
     public String getLogo() {
-        if (logo != null && logo.contains("127.0.0.1")) return logo.replace("127.0.0.1", "10.0.2.2");
-        return logo;
+        return com.example.wtcspaddock.api.Constants.fixImageUrl(logo);
     }
 
     public boolean isPrivateer() { return "privateer".equalsIgnoreCase(type); }
