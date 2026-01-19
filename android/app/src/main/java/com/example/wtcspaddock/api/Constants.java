@@ -1,31 +1,38 @@
 package com.example.wtcspaddock.api;
 
 public class Constants {
-    // CAMBIA ESTO POR TU IP ACTUAL (La que te diga ipconfig)
-    // Funciona tanto en Emulador como en Móvil Real
-    public static final String CURRENT_IP = "192.168.0.13";
+    // CAMBIA ESTO por tu IP real si cambia (míralo en ipconfig)
+    public static final String SERVER_IP = "192.168.0.13";
 
-    public static final String PORT = "8000";
-    public static final String BASE_URL = "http://" + CURRENT_IP + ":" + PORT + "/api/";
+    // Dejamos el puerto vacío porque Apache usa el 80 por defecto
+    public static final String PORT = "";
 
-    // --- MÉTODO MÁGICO PARA ARREGLAR IMÁGENES ---
-    // Todos los modelos llamarán a esto. Si la URL viene mal, esto la arregla.
+    // URL Base para la API (http://192.168.0.13/api/)
+    public static final String BASE_URL = "http://" + SERVER_IP + "/api/";
+
+    // --- MÉTODO PARA ARREGLAR IMÁGENES ---
     public static String fixImageUrl(String url) {
         if (url == null) return null;
 
-        // Si la URL ya viene perfecta con la IP actual, no tocamos nada
-        if (url.contains(CURRENT_IP)) return url;
-
-        // Si viene con localhost, 127.0.0.1 o es relativa, la forzamos a tu IP
         String fixedUrl = url;
 
-        if (url.contains("localhost")) {
-            fixedUrl = url.replace("localhost", CURRENT_IP);
-        } else if (url.contains("127.0.0.1")) {
-            fixedUrl = url.replace("127.0.0.1", CURRENT_IP);
-        } else if (!url.startsWith("http")) {
-            // Si viene relativa ("avatars/foto.jpg"), le pegamos el dominio
-            fixedUrl = "http://" + CURRENT_IP + ":" + PORT + "/storage/" + url;
+        // 1. Reemplazar localhost/127.0.0.1 por la IP real
+        if (fixedUrl.contains("localhost")) {
+            fixedUrl = fixedUrl.replace("localhost", SERVER_IP);
+        } else if (fixedUrl.contains("127.0.0.1")) {
+            fixedUrl = fixedUrl.replace("127.0.0.1", SERVER_IP);
+        }
+
+        // 2. ELIMINAR EL PUERTO 8000 (Vital si vienes de artisan serve)
+        // Como ahora usamos Apache (puerto 80), el :8000 sobra y rompería la imagen
+        if (fixedUrl.contains(":8000")) {
+            fixedUrl = fixedUrl.replace(":8000", "");
+        }
+
+        // 3. Si viene relativa (sin http), le pegamos la base del storage
+        if (!fixedUrl.startsWith("http")) {
+            // Asumiendo que tu Apache apunta directamente a la carpeta public
+            fixedUrl = "http://" + SERVER_IP + "/storage/" + fixedUrl;
         }
 
         return fixedUrl;
