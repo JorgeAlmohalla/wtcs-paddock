@@ -70,6 +70,13 @@
                         <a href="{{ route('profile.edit') }}" class="bg-gray-700 hover:bg-gray-600 text-white px-3 py-2 rounded text-xs font-bold transition">⚙️ Edit</a>
                         <a href="{{ route('report.create') }}" class="bg-red-600 hover:bg-red-700 text-white px-3 py-2 rounded text-xs font-bold transition flex items-center gap-1 shadow-md hover:shadow-lg transform hover:scale-105">⚠️ Report</a>
                     </div>
+                    <!-- Botón Admin Panel (Solo si es Admin o Steward) -->
+                    @if($user->isAdmin() || $user->isSteward())
+                        <a href="/admin" target="_blank" 
+                           class="bg-yellow-600 hover:bg-yellow-500 text-white px-3 py-2 rounded text-xs font-bold transition flex items-center gap-1 border border-yellow-500 shadow-md">
+                            <span>🛡️ Admin Panel</span>
+                        </a>
+                    @endif
                 </div>
             </div>
             <div class="mt-6 p-4 bg-gray-900/50 rounded-lg border border-gray-700/50">
