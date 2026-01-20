@@ -12,6 +12,7 @@ use App\Models\Team;
 use App\Models\Season;
 use App\Models\Post;
 use App\Http\Resources\RaceResource;
+use Intervention\Image\Facades\Image;
 
 /*
 |--------------------------------------------------------------------------
@@ -519,11 +520,21 @@ Route::middleware('auth:sanctum')->group(function () {
 
         // Subir Avatar si viene uno nuevo
         if ($request->hasFile('avatar')) {
-            // Borrar anterior si existe (opcional, buena práctica)
-            // if ($user->avatar_url) Storage::disk('public')->delete($user->avatar_url);
+            $file = $request->file('avatar');
+            $filename = uniqid() . '.webp';
             
-            $path = $request->file('avatar')->store('avatars', 'public');
-            $user->avatar_url = $path;
+            // Redimensionar a 400x400, convertir a WebP, calidad 80%
+            $image = Image::read($file)
+                ->resize(400, 400, function ($constraint) {
+                    $constraint->aspectRatio();
+                    $constraint->upsize();
+                })
+                ->encode(new \Intervention\Image\Encoders\WebpEncoder(quality: 80));
+
+            // Guardar manualmente en Storage
+            \Illuminate\Support\Facades\Storage::disk('public')->put('avatars/' . $filename, (string) $image);
+            
+            $user->avatar_url = 'avatars/' . $filename;
         }
 
         $user->save();
