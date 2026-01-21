@@ -8,4 +8,17 @@ export default defineConfig({
             refresh: true,
         }),
     ],
+
+    // --- AÑADE ESTO ---
+    build: {
+        minify: 'terser',
+        terserOptions: {
+            compress: {
+                drop_console: true, // Borra los console.log de producción
+                drop_debugger: true,
+            },
+        },
+        cssMinify: true, // Aplasta el CSS
+        chunkSizeWarningLimit: 1000,
+    },
 });

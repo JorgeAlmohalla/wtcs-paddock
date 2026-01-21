@@ -7,6 +7,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [v4.6.0-stable] - 21-01-2026
 
+### 🚀 Deployment & Infrastructure (The Home Lab)
+- **Self-Hosting Setup:** Successfully deployed the full stack on a local Windows Server (XAMPP) exposed to the internet via **DuckDNS**.
+- **Server Optimization (100/100 Lighthouse Score):**
+    - **Apache Tuning:** Enabled `mod_deflate` (GZIP compression) and `mod_expires` (Browser Caching) to drastically reduce load times.
+    - **PHP Performance:** Activated **OPcache** (`php_opcache`) to pre-compile PHP scripts in memory, cutting server response time (TTFB) by ~50%.
+    - **Asset Minification:** Configured Vite/Tailwind to purge unused CSS/JS and minify assets for production (`npm run build`).
+
 ### ⚡ Performance & Optimization
 - **Smart Image Compression:** Implemented a backend-side `CompressUploads` Trait using `Intervention Image`.
     - Automatically detects uploaded images larger than 300KB.

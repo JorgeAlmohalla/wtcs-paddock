@@ -19,7 +19,7 @@
 <!-- Logo -->
 <a href="/" class="flex items-center gap-3 group">
                     <!-- SIN FILTROS, SOLO SHADOW PARA RESALTAR -->
-                    <img src="{{ asset('images/wtcs-logo-white.png') }}" class="h-8 w-auto object-contain drop-shadow-md" alt="WTCS Logo"> 
+                    <img src="{{ asset('images/wtcs-logo-white.png') }}" class="h-8 w-auto object-contain drop-shadow-md" alt="WTCS Logo" fetchpriority="high" loading="eager">
                     
                     <span class="bg-black text-white px-2 py-0.5 rounded text-sm font-black uppercase tracking-widest border border-white/20 shadow-md group-hover:bg-gray-800 transition">
                         PADDOCK
