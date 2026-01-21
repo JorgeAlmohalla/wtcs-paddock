@@ -12,12 +12,12 @@
             <!-- Avatar -->
             <div class="relative flex-shrink-0">
                 @if($user->avatar_url)
-                    <img src="{{ asset('storage/' . $user->avatar_url) }}" class="h-32 w-32 rounded-full object-cover border-4 border-gray-600 shadow-xl">
+                    <img src="{{ asset('storage/' . $user->avatar_url) }}" class="h-32 w-32 rounded-full object-cover border-4 border-gray-600 shadow-xl" alt="avatar">
                 @else
                     <div class="h-32 w-32 rounded-full bg-gray-700 flex items-center justify-center text-5xl font-bold text-gray-500 border-4 border-gray-600">{{ substr($user->name, 0, 1) }}</div>
                 @endif
                 @if($user->nationality)
-                    <img src="https://flagcdn.com/28x21/{{ strtolower($user->nationality) }}.png" class="absolute bottom-0 right-0 rounded shadow border border-gray-800 transform translate-x-2">
+                    <img src="https://flagcdn.com/28x21/{{ strtolower($user->nationality) }}.png" class="absolute bottom-0 right-0 rounded shadow border border-gray-800 transform translate-x-2" alt="nationality">
                 @endif
             </div>
 

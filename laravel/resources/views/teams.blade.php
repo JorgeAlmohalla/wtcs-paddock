@@ -36,7 +36,7 @@
                     <!-- Logo Flotante (Círculo blanco) -->
                     <div class="absolute right-6 -bottom-8 z-20 h-20 w-20 bg-gray-800 rounded-full border-4 border-gray-700 p-1 shadow-xl flex items-center justify-center overflow-hidden">
                         @if($team->logo_url)
-                            <img src="{{ asset('storage/' . $team->logo_url) }}" class="max-h-full max-w-full object-contain">
+                            <img src="{{ asset('storage/' . $team->logo_url) }}" class="max-h-full max-w-full object-contain" alt="logo">
                         @else
                             <span class="text-2xl font-black text-gray-600">{{ $team->short_name }}</span>
                         @endif

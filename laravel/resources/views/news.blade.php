@@ -13,7 +13,7 @@
                 <a href="{{ route('post.show', $post) }}" class="block overflow-hidden h-48 relative">
                     @if($post->image_url)
                         <img src="{{ asset('storage/' . $post->image_url) }}" 
-                             class="w-full h-full object-cover transform group-hover:scale-110 transition duration-500">
+                             class="w-full h-full object-cover transform group-hover:scale-110 transition duration-500" alt="card">
                     @else
                         <div class="w-full h-full bg-gray-700 flex items-center justify-center text-gray-500">
                             No Image

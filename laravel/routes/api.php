@@ -360,14 +360,19 @@ Route::get('/teams', function () {
     });
 });
 
-// 11. DETALLE DE EQUIPO (100% DINÁMICO)
+// 11. DETALLE DE EQUIPO (Lógica integrada para evitar error de redelcaring)
 Route::get('/teams/{id}', function ($id) {
     $seasonId = \App\Models\Season::where('is_active', true)->value('id');
     
-    // Cargamos el equipo y los pilotos
+    // Cargamos equipo y pilotos
     $team = \App\Models\Team::with('drivers')->findOrFail($id);
 
-    // Stats Dinámicos (Esto ya estaba bien)
+    // Stats
+    $racePoints = \App\Models\RaceResult::where('team_id', $id)
+        ->whereHas('race', fn($q) => $q->where('season_id', $seasonId))->sum('points');
+    $qualyPoints = \App\Models\QualifyingResult::where('team_id', $id)
+        ->whereHas('race', fn($q) => $q->where('season_id', $seasonId))->sum('points');
+
     $stats = [
         'active_drivers' => $team->drivers->count(),
         'wins' => \App\Models\RaceResult::where('team_id', $id)
@@ -376,10 +381,7 @@ Route::get('/teams/{id}', function ($id) {
         'podiums' => \App\Models\RaceResult::where('team_id', $id)
             ->whereHas('race', fn($q) => $q->where('season_id', $seasonId))
             ->where('position', '<=', 3)->count(),
-        'total_points' => (int) (
-            \App\Models\RaceResult::where('team_id', $id)->whereHas('race', fn($q) => $q->where('season_id', $seasonId))->sum('points') +
-            \App\Models\QualifyingResult::where('team_id', $id)->whereHas('race', fn($q) => $q->where('season_id', $seasonId))->sum('points')
-        )
+        'total_points' => (int) ($racePoints + $qualyPoints)
     ];
 
     return response()->json([
@@ -390,10 +392,9 @@ Route::get('/teams/{id}', function ($id) {
         'type' => $team->type, 
         'livery_image' => $team->car_image_url ? asset('storage/'.$team->car_image_url) : null,
         'stats' => $stats,
-        'bio' => $team->bio, // Asegúrate de tener esta columna en la BD, o usa 'description'
+        'bio' => $team->bio,
         'logo' => $team->logo_url ? asset('storage/'.$team->logo_url) : null,
         
-        // --- AQUÍ ESTABA LO HARDCODED: AHORA DINÁMICO ---
         'specs' => [
             'chassis' => $team->tech_chassis ?? 'N/A', 
             'engine'  => $team->tech_engine ?? 'N/A',
@@ -401,12 +402,12 @@ Route::get('/teams/{id}', function ($id) {
             'layout'  => $team->tech_drivetrain ?? 'N/A', 
             'gearbox' => $team->tech_gearbox ?? 'N/A'
         ],
-        // --- ROSTER (Lógica corregida para leer tabla 'users') ---
+        
+        // --- AQUÍ ESTÁ LA LÓGICA INTEGRADA (Sin función externa) ---
         'roster' => $team->drivers->map(function ($d) {
             $finalRole = 'Primary'; // Valor por defecto
 
             // 1. INTENTO A: Columna 'role' (String simple)
-            // Si en tu BD la columna se llama 'role' y vale "Team Principal"
             if (!empty($d->role) && is_string($d->role)) {
                 if (stripos($d->role, 'Principal') !== false) {
                     $finalRole = 'Team Principal';
@@ -414,22 +415,14 @@ Route::get('/teams/{id}', function ($id) {
             }
 
             // 2. INTENTO B: Columna 'roles' (JSON o Array)
-            // Si usas Spatie o un array ["Driver", "Team Principal"]
             if ($finalRole === 'Primary' && !empty($d->roles)) {
                 $rolesData = $d->roles;
-                
-                // Si viene como string JSON, lo convertimos a array
-                if (is_string($rolesData)) {
-                    $rolesData = json_decode($rolesData, true);
-                }
+                if (is_string($rolesData)) $rolesData = json_decode($rolesData, true);
 
-                // Buscamos si existe el rol en el array
                 if (is_array($rolesData)) {
-                    // Buscamos exacto o contenido
                     if (in_array('Team Principal', $rolesData)) {
                         $finalRole = 'Team Principal';
                     } else {
-                        // Búsqueda "sucia" por si acaso
                         foreach ($rolesData as $r) {
                             if (stripos($r, 'Principal') !== false) {
                                 $finalRole = 'Team Principal';
@@ -441,7 +434,6 @@ Route::get('/teams/{id}', function ($id) {
             }
 
             // 3. INTENTO C: Chequeo de contrato (Reserve)
-            // El reserva suele tener prioridad visual baja, pero si es Principal y Reserva, gana Principal
             if ($finalRole !== 'Team Principal' && ($d->contract_type ?? '') === 'reserve') {
                 $finalRole = 'Reserve';
             }
@@ -450,28 +442,14 @@ Route::get('/teams/{id}', function ($id) {
                 'id' => $d->id,
                 'name' => $d->name,
                 'nationality' => $d->nationality,
-                'role' => $finalRole, // <--- Aquí va el resultado
+                'role' => $finalRole,
                 'avatar' => $d->avatar_url ? asset('storage/'.$d->avatar_url) : null,
             ];
         })
     ]);
 });
 
-// Función auxiliar para determinar el rol (ponla fuera de la ruta o usa lógica inline)
-function determineDriverRole($driver) {
-    // Ajusta esto a cómo guardas los roles en tu Laravel
-    // OPCIÓN A: Si usas Spatie o columna JSON 'roles'
-    if (in_array('Team Principal', $driver->roles ?? []) || $driver->role === 'Team Principal') {
-        return 'Team Principal';
-    }
-    
-    // OPCIÓN B: Columna contract_type
-    if (($driver->contract_type ?? '') === 'reserve') {
-        return 'Reserve';
-    }
 
-    return 'Primary'; 
-}
 
 // 12. NOTICIAS LISTA
 Route::get('/news', function () {

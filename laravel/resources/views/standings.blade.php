@@ -54,7 +54,7 @@
                         <td class="px-6 py-4">
                             <div class="flex items-center gap-4">
                                 @if($driver->nationality)
-                                    <img src="https://flagcdn.com/20x15/{{ strtolower($driver->nationality) }}.png" class="shadow-sm">
+                                    <img src="https://flagcdn.com/20x15/{{ strtolower($driver->nationality) }}.png" class="shadow-sm" alt="nationality">
                                 @endif
                                 <div>
                                     <p class="font-bold text-white text-base group-hover:text-red-400 transition">{{ $driver->name }}</p>

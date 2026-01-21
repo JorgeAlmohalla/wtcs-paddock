@@ -17,7 +17,7 @@
         <h1 class="text-4xl md:text-6xl font-black text-white mb-2 uppercase">{{ $track->name }}</h1>
         <div class="flex justify-center items-center gap-2">
             @if($track->country_code)
-                <img src="https://flagcdn.com/24x18/{{ strtolower($track->country_code) }}.png" class="h-5 rounded shadow">
+                <img src="https://flagcdn.com/24x18/{{ strtolower($track->country_code) }}.png" class="h-5 rounded shadow" alt="country_code">
             @endif
             <p class="text-gray-400 text-xl font-mono">{{ $sprint->race_date->format('d F Y') }}</p>
         </div>

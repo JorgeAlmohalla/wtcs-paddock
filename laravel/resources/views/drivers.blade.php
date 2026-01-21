@@ -30,7 +30,7 @@
                     <div class="flex-shrink-0">
                         @if($driver->avatar_url)
                             <img src="{{ asset('storage/' . $driver->avatar_url) }}" 
-                                 class="h-16 w-16 rounded-full object-cover border-2 border-gray-600 group-hover:border-white transition shadow-md">
+                                 class="h-16 w-16 rounded-full object-cover border-2 border-gray-600 group-hover:border-white transition shadow-md" alt="avatar">
                         @else
                             <div class="h-16 w-16 rounded-full bg-gray-700 flex items-center justify-center text-xl font-bold text-gray-400 border-2 border-gray-600 group-hover:border-white transition">
                                 {{ substr($driver->name, 0, 1) }}
@@ -42,7 +42,7 @@
                         <h2 class="text-xl font-bold text-white flex items-center gap-2 group-hover:text-red-400 transition truncate">
                             {{ $driver->name }}
                             @if($driver->nationality)
-                                <img src="https://flagcdn.com/16x12/{{ strtolower($driver->nationality) }}.png" class="h-3 rounded-sm opacity-80 shadow-sm">
+                                <img src="https://flagcdn.com/16x12/{{ strtolower($driver->nationality) }}.png" class="h-3 rounded-sm opacity-80 shadow-sm" alt="flag">
                             @endif
                         </h2>
                         

@@ -27,7 +27,7 @@
             <!-- Logo -->
             <div class="mb-8 relative z-10">
                 <a href="/" class="flex flex-col items-center gap-2 group">
-                    <img src="{{ asset('images/wtcs-logo-white.png') }}" class="h-12 w-auto drop-shadow-lg filter"> 
+                    <img src="{{ asset('images/wtcs-logo-white.png') }}" class="h-12 w-auto drop-shadow-lg filter" alt="logo"> 
                     <!-- (Si tu imagen ya es blanca, quita el filter) -->
                     <span class="text-white font-black tracking-[0.3em] text-xs uppercase border-t border-red-500 pt-2 mt-1">Paddock Access</span>
                 </a>

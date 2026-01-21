@@ -145,7 +145,7 @@
 <div class="col-span-1 md:col-span-1">
                 <div class="flex items-center gap-2 mb-4">
                     <!-- SIN FILTROS -->
-                    <img src="{{ asset('images/wtcs-logo-white.png') }}" class="h-7 w-auto object-contain drop-shadow-md">
+                    <img src="{{ asset('images/wtcs-logo-white.png') }}" class="h-7 w-auto object-contain drop-shadow-md" alt="PADDOCK">
                     <span class="font-black text-white tracking-tighter text-lg">PADDOCK</span>
                 </div>
                 

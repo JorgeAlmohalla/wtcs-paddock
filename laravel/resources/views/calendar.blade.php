@@ -44,7 +44,7 @@
                             </h2>
                             <div class="flex items-center gap-3 text-gray-400">
                                 @if($mainRace->track->country_code)
-                                    <img src="https://flagcdn.com/24x18/{{ strtolower($mainRace->track->country_code) }}.png" class="h-4 rounded shadow-sm">
+                                    <img src="https://flagcdn.com/24x18/{{ strtolower($mainRace->track->country_code) }}.png" class="h-4 rounded shadow-sm" alt="flag">
                                 @endif
                                 
                                 <span class="font-mono text-sm uppercase tracking-wide">

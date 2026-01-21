@@ -51,7 +51,7 @@
                     
                     @if($nextRace->track->layout_image_url)
                         <img src="{{ asset('storage/' . $nextRace->track->layout_image_url) }}" 
-                             class="absolute top-0 right-0 w-full h-full object-cover opacity-10 group-hover:opacity-20 transition duration-500 pointer-events-none">
+                             class="absolute top-0 right-0 w-full h-full object-cover opacity-10 group-hover:opacity-20 transition duration-500 pointer-events-none" alt="layout">
                     @endif
                 @else
                     <div class="flex flex-col items-center justify-center flex-grow">
