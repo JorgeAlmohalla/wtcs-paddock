@@ -5,6 +5,22 @@ All notable changes to the **WTCS Paddock** project will be documented in this f
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [v4.6.0-stable] - 21-01-2026
+
+### ⚡ Performance & Optimization
+- **Smart Image Compression:** Implemented a backend-side `CompressUploads` Trait using `Intervention Image`.
+    - Automatically detects uploaded images larger than 300KB.
+    - Resizes excessively large images to HD standard (1200px width).
+    - Compresses file size by ~80% (e.g., 550KB -> 94KB) to ensure instant loading on mobile networks.
+- **Server Infrastructure:** Installed `intervention/image-laravel` driver to handle image processing pipelines within the Filament Admin Panel lifecycle.
+
+### 🛠️ Backend Fixes
+- **Data Integrity:** Refined `TeamResource` and `TrackResource` to trigger optimization events (`saved`) correctly, ensuring no heavy assets bypass the optimization filter.
+- **Logging:** Added detailed logging to `laravel.log` to track compression ratios and file operations for debugging purposes.
+
+### 🏁 Milestone
+- **Feature Complete:** System is now fully optimized for production deployment. Mobile App and Web Dashboard are synchronized and performant under 4G conditions.
+
 ## [v4.5.1-android-rc] - 19-01-2026
 
 ### 📱 Android App (Polishing & Fixes)

@@ -149,7 +149,7 @@
             
             <!-- Imagen de Fondo (Coches) -->
             <div class="absolute inset-0 bg-cover bg-[center_73%] transition duration-700 transform group-hover:scale-105" 
-                 style="background-image: url('{{ asset('images/discord-bg.png') }}');">
+                 style="background-image: url('{{ asset('images/discord-bg.webp') }}');">
             </div>
             
             <!-- Capa Oscura (Gradiente) -->
