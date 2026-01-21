@@ -6,7 +6,14 @@
         <meta name="csrf-token" content="{{ csrf_token() }}">
 
         <title>Login - WTCS Paddock</title>
-        <link rel="icon" type="image/png" href="{{ asset('images/favicon.png') }}">
+        <head>
+    <!-- FAVICONS -->
+     <!-- tus muertos -->
+    <link rel="icon" type="image/png" sizes="96x96" href="{{ url('images/favicon-96x96.png') }}?v=4">
+    <link rel="shortcut icon" href="{{ url('images/favicon.ico') }}?v=4">
+    <link rel="apple-touch-icon" sizes="180x180" href="{{ url('images/apple-touch-icon.png') }}?v=4">
+    <link rel="manifest" href="{{ url('images/site.webmanifest') }}?v=4">
+        </head>
 
         <!-- Fonts -->
         <link rel="preconnect" href="https://fonts.bunny.net">

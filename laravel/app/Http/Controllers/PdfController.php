@@ -51,12 +51,13 @@ class PdfController extends Controller
         // 1. Buscamos la carrera
         $race = \App\Models\Race::with(['track', 'season'])->findOrFail($raceId);
         
-        // 2. Buscamos reportes resueltos
+        // 2. Buscamos TODOS los reportes resueltos (con o sin sanción)
         $penalties = \App\Models\IncidentReport::where('race_id', $raceId)
-            ->where('status', 'resolved')
-            ->whereNotNull('penalty_applied')
+            ->whereIn('status', ['resolved', 'dismissed']) // <--- Aceptamos ambos estados
+            // Quitamos el whereNotNull('penalty_applied') para que salgan también los NFA
             ->with(['reported', 'reported.team'])
             ->get();
+
 
         // 3. Calculamos la fecha simulada
         $seasonName = $race->season->name;

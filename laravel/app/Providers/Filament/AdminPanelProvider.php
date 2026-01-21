@@ -27,6 +27,8 @@ public function panel(Panel $panel): Panel
             ->id('admin')
             ->path('admin')
             ->login()
+
+            ->favicon(asset('images/favicon-96x96.png')) 
             
             // --- PERSONALIZACIÓN WTCS ---
             ->brandName('WTCS Paddock Admin')

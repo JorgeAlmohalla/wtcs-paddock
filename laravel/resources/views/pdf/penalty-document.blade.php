@@ -114,7 +114,7 @@
         <div class="header-logos">
             <!-- Asegúrate de que las imágenes existen en public/images -->
             <img src="{{ asset('images/fia-logo.png') }}" class="logo-fia">
-            <img src="{{ asset('images/wtcs-logo.png') }}" class="logo-wtcs">
+            <img src="{{ asset('images/wtcs-logo-white.png') }}" class="logo-wtcs">
         </div>
 
         <!-- 2. INFO BOX (Idéntico a la referencia) -->
@@ -155,11 +155,18 @@
         <div class="content">
             @forelse($penalties as $penalty)
                 <div class="penalty-block">
-                    <!-- Formato: NOMBRE - 5 second penalty for reason. explanation. -->
-                    <span class="driver-name">{{ $penalty->reported->name }}</span> 
-                    - {{ $penalty->penalty_applied }} penalty for {{ strtolower($penalty->description) }}
-                    <br>
-                    {{ $penalty->steward_notes }}
+                    <p>
+                        <span class="driver-name">{{ $penalty->reported->name }}</span> 
+                        
+                        @if($penalty->status === 'dismissed' || empty($penalty->penalty_applied))
+                            - <strong>No Further Action</strong>.
+                        @else
+                            - {{ $penalty->penalty_applied }} penalty for {{ strtolower($penalty->description) }}.
+                        @endif
+                        
+                        <br>
+                        {{ $penalty->steward_notes }}
+                    </p>
                 </div>
             @empty
                 <p style="text-align: center; font-style: italic; color: #666; margin-top: 50px;">
