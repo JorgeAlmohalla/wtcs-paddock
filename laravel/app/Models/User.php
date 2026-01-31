@@ -48,13 +48,11 @@ class User extends Authenticatable
      *
      * @return array<string, string>
      */
-    protected function casts(): array
-    {
-        return [
-            'email_verified_at' => 'datetime',
-            'password' => 'hashed',
-        ];
-    }
+    protected $casts = [
+        'email_verified_at' => 'datetime',
+        'password' => 'hashed',
+        'roles' => 'array',
+    ];
     
     // RELACIÓN: Un piloto pertenece a un equipo
     public function team(): BelongsTo
