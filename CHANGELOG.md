@@ -5,6 +5,12 @@ All notable changes to the **WTCS Paddock** project will be documented in this f
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [v4.6.0-stable] - 31-01-2026
+
+### Fixed
+- **CSV Import Engine:** Resolved critical crash (`Invalid datetime format`) during Feature Race import by adding input sanitization for non-numeric grid positions (e.g., pitlane starts marked as '-').
+- **Status Parsing:** Updated regex logic to correctly identify `Withdrew` and mechanical failure descriptions as DNS/DNF statuses.
+
 ## [v4.6.0-stable] - 21-01-2026
 
 ### 🚀 Deployment & Infrastructure (The Home Lab)
